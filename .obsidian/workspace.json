@@ -4,17 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "8d2d547487976c24",
+        "id": "a8d3e84e513a369d",
         "type": "tabs",
         "children": [
           {
-            "id": "e6074c42ebd90f21",
+            "id": "3f5b4732d00f47cb",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
-              "icon": "lucide-file",
-              "title": "New tab"
+              "type": "image",
+              "state": {
+                "file": "Docker/Screen Shot 2022-08-10 at 21.37.00.png"
+              },
+              "icon": "lucide-image",
+              "title": "Screen Shot 2022-08-10 at 21.37.00"
             }
           }
         ]
@@ -90,12 +92,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "CS/DNS( Domain Name System).md",
+                "file": "Docker/Screen Shot 2022-08-10 at 21.37.00.png",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from DNS( Domain Name System)"
+              "title": "Outgoing links from Screen Shot 2022-08-10 at 21.37.00"
             }
           },
           {
@@ -178,11 +180,23 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d9e8e1c46c91a7b9",
+  "active": "3f5b4732d00f47cb",
   "lastOpenFiles": [
-    "IPアドレス.md",
-    "TCP/IP.md",
+    "HTML&CSS/cssの基本.md",
+    "Flutter:Dart/Flutter.md",
+    "Flutter:Dart/flutter_lib.md",
+    "Docker/Docker入門.md",
+    "Docker/Screen Shot 2022-08-10 at 21.37.00.png",
+    "Ruby/Ruby.md",
+    "Ruby/Ruby 見直しシート .md",
+    "Rails/RSpec.md",
+    "Flutter:Dart/Dart.md",
+    "PHP/laravel.md",
+    "Linux/Package Manager.md",
     "CS/DNS( Domain Name System).md",
+    "IPアドレス.md",
+    "Python/Python.md",
+    "TCP/IP.md",
     "TCP",
     "CS/network",
     "CS",
@@ -201,7 +215,6 @@
     "Ruby/Ruby 見直しシート .rb",
     "Rails/Rails_Tutorial.txt",
     "Rails/Rails progate.txt",
-    "Rails/MVCの説明.png",
     "Rails/heroku_troubleshoot.txt",
     "Welcome.md",
     "2025-11-26.md",
