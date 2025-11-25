@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "35adbc0a491b1ab9",
+        "id": "8d2d547487976c24",
         "type": "tabs",
         "children": [
           {
-            "id": "59abc608c87ce214",
+            "id": "e6074c42ebd90f21",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -90,11 +90,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
+                "file": "CS/DNS( Domain Name System).md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links"
+              "title": "Outgoing links from DNS( Domain Name System)"
             }
           },
           {
