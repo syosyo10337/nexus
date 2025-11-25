@@ -177,8 +177,14 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "59abc608c87ce214",
+  "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "IPアドレス.md",
+    "TCP/IP.md",
+    "CS/DNS( Domain Name System).md",
+    "TCP",
+    "CS/network",
+    "CS",
     "SQL/各クエリの実行順序.png",
     "SQL/SQL.txt",
     "SQL/4つの構文.png",
@@ -196,10 +202,6 @@
     "Rails/Rails progate.txt",
     "Rails/MVCの説明.png",
     "Rails/heroku_troubleshoot.txt",
-    "Rails/Screen Shot 2022-08-14 at 23.10.14.png",
-    "Rails/RSpec.rb",
-    "Rails/具体的な機能実装に関して.txt",
-    "Python/Python.py",
     "Welcome.md",
     "2025-11-26.md",
     "Untitled.canvas"
