@@ -1,0 +1,1440 @@
+[Railsの開発環境構築]====================================
+*ruby -v  --Rubyのバージョンを確認する。
+*rbenvを使ってrubyのバージョンを管理する。
+*rails -v --Railsのインストール/バージョンの確認
+*railsのバージョンダウンはブックマーク参照
+*gem install rails --Railsのインストール
+
+
+
+**Gemfileでのgemのバージョン指定の方法 --バージョンを指定しないとbundlerは最新のバージョンをインストールする。
+①gem 'capybara', '>= 2.15' --ver2.15以上で(最新の)capybaraをインストール
+②gem 'rails', '~> 6.0.1' -- ver6.0.1以上6.1.0未満のrailsをインストール("~> 6.3.0"とすると6.3.0..6.3.9の中で新しいものになるらしい)
+
+*$ bundle install --gemfile.lockを確認し、gemfile.lockに記述されてなく、かつgemfileに記述されているgemがある場合、そのgemとそのgemに関連するgemをインストールしてgemfile.lockを更新する
+ref)$ bundle update --Gemfile.lockに書かれている内容は無視し、Gemfileに書かれているgemを全てインストールする(本番環境などでは慎重に)
+
+*$ bundle update gem名 --gemを指定してアップデートする。
+
+**本番環境(production)だけに特定のgemを適応する。
+--①Gemfil内のgem :production do - endに追記する。
+②ローカル環境にインストールしないようにcuiコマンドを発行する。
+ex)①Gemfileにて
+group :production do
+	gem 'pg', '1.1.4'		#postgreSQL(1.1.1ver)を本番環境にだけ設定する。
+end
+②
+$ bundle (_2.2.17_) config set --local without 'production' 
+#バンドラーの設定を、prodution環境に記載のあるgemはインストールしないように設定。
+$ bundle (_2.2.17_) install
+
+
+*yarnとは？ --JavaScriptのパッケージマネージャ
+*rails webpacker:install ----webpackerをインストール(overwriteはno)
+
+
+*gitのセットアップ --rails newコマンドでgitのローカルリポジトリは自動生成されている(しかし、git initで手動初期化する意識は忘れない)
+
+
+
+**{Bootstrap(cssフレームワーク)の導入}---
+①Gemfileを更新する。BootstrapデフォルトだとLESS CSSを使っているが、Railsの(Asset pipeline)デフォルトサポートはSassなので(-sass)と追記すること。
+ex)#Gemfileにて
+gem 'bootstrap-sass', '3.4.1' #-sass忘れないで
+②$ bundle install
+③カスタムCSSファイルを新規作成(rail g controllerでも作成されるが、、)チュートリアルでは簡素化のために手動でファイルをapp/assets/stylesheets/に作成。拡張子に注意
+ex)app/assets/stylesheets/ファイル名(custom.scssとか)
+④作成したファイル内でBootstrapを読み込む
+tpl) #ファイルの冒頭で
+@import "bootstrap-sprockets";
+@import "bootstrap";
+--------------------------------------
+
+
+**rails c/rails sはデフォルトでdevelopment環境で起動している(当たり前)。環境名を指定して起動することもできる。
+コマンドによって指定の仕方は異なる。
+ex1)rails console test #-テスト環境で起動(テスト環境でのデバッグの際などに)。
+ex2)rails server --enviroment production
+ex3)rails db:migrate RAILS_ENV=production 
+また、"RAILS_ENV=環境"を先に記述しても実行できる
+ex4) RAILS_ENV=production rails serverでも本番環境で実行できる
+
+また、herokuにデプロイしている場合は、herokuコマンドで環境を確認することができる
+ex)
+$ heroku run rails console
+> Rails.env
+#=> "production"
+> Rails.env.production?
+#=> true
+
+
+
+**{本番環境(heroku上)}------------------
+①{SSL(secure socket layer)}
+SSLで通信路を安全にする。
+1.@「config/environments/production.rb」以下の行を有効化する
+.
+.
+# Force all access to the app over SSL, use Strict-Transport-Security,
+# and use secure cookies.
+config.force_ssl = true
+.
+.
+
+2.サーバーにて、domainごとのSSL証明書を買って、セットアップして有効化する
+(heroku.comのドメインは、自動で有効化される(HerokuのSSL証明書に便乗している)
+
+
+②{Server}
+herokuデフォルトのWEBrickというサーバーから、Puma(多数のリクエストを捌けるRubyアプリ用サーバー)に置き換える
+
+1.Gemfileで puma(gem)を追加する！(Rails 5以降はデフォルトでそうなっているのでいじる必要なし)
+2.Procfileと呼ばれる、Heroku上でPumaのプロセスを走らせる設定ファイルを"作成"。なお、このProcfileはルートディレクトリ（Gemfileと同じディレクトリ）に置いておく必要がある
+
+@「./Procfile」
+web: bundle exec puma -C config/puma.rb
+7.5.3
+
+
+③{データベース}
+herokuではデフォルトでpostgreSQl動作するが、念の為インストラクションに従って、データベース設定ファイルを更新する。
+@「config/database.yml」
+
+.
+.
+.
+production:
+adapter: postgresql
+encoding: unicode
+# For details on connection pooling, see Rails configuration guide
+# https://railsguides.jp/configuring.html#データベース接続をプールする
+pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+database: sample_app_production
+username: sample_app
+password: <%= ENV['SAMPLE_APP_DATABASE_PASSWORD'] %>
+
+
+------------------------------------
+
+***{本番環境でのメール送信}-------
+herokuアドオンのMailgunを使う場合
+
+①設定ファイルでSMTP情報を記入
+＠「config.environments.production.rb」
+
+config.action_mailer.raise_delivery_errors = true
+config.action_mailer.delivery_method = :smtp
+
+#ドメインのホスト名edit_xx_urlのホスト名のところはデフォルトでなに？
+#つまりアプリケーションのドメイン
+host = 'quiet-springs-92301.herokuapp.com'
+config.action_mailer.default_url_options = { host: host }
+
+ActionMailer::Base.smtp_settings = {
+																		:port           => ENV['MAILGUN_SMTP_PORT'],
+																		:address        => ENV['MAILGUN_SMTP_SERVER'],
+																		:ser_name      => ENV['MAILGUN_SMTP_LOGIN'],
+																		:password       => ENV['MAILGUN_SMTP_PASSWORD'],
+																		:domain         => host,
+																		:authentication => :plain
+																		}
+#必ず環境変数「ENV」に設定するよ.今回,変数はMailgunアドオンが自動的に設定してくれる
+#=>暗号化されていないIDやパスワードのような重要なセキュリティ情報は「絶対に」ソースコードに直接書き込まない
+
+
+②最新の状態にデプロイして
+$ rails test
+$ git push
+$ git push heroku
+$ heroku run rails db:migrate
+#アドオンを追加
+$ heroku addons:create mailgun:starter
+#設定ファイルで、定めたHerokuの環境変数を表示したい。
+$ heroku config:get MAILGUN_SMTP_LOGIN
+$ heroku config:get MAILGUN_SMTP_PASSWOR
+#ブラウザでmailgunを開く
+$ heroku addons:open mailgun
+
+③ブラウザで「Sending」→「Domains」とたどり、sandboxと書かれたドメインを選択、認証済み受信者にメアドをあらかじめ登録する。
+
+④好きなだけSignupする。
+
+-----------------------------
+
+**{yarnを使ったjQueryとBootstrapの導入}------
+①CLIコマンドを使って、必要なフレームワークをインストール
+ex)$ yarn add jquery@3.4.1 bootstrap@3.4.1
+
+②Webpackの環境設定ファイルに追記する。
+ex)@「config/webpack/environment.js」
+
+const webpack = require('webpack')
+environment.plugins.prepend('Provide',
+new webpack.ProvidePlugin({
+	$: 'jquery/src/jquery',
+	jQuery: 'jquery/src/jquery'
+})
+)
+
+③JavaScriptで使えるように、import/requireする。
+ex)@「app/javascript/packs/application.js」
+.
+.
+
+require("jquery")
+import "bootstrap"
+
+------------------------------------------
+
+=================================================
+
+
+
+**[アプリケーション/ファイルの作成]=========================
+**$ rails new --railsアプリの新規作成。バージョン指定はオプショナル
+tpl)$ rails (_バージョン_) new アプリケーション名
+
+**$ rails server --ローカルサーバーを起動($ rails s)。アプリのディレクトリでコマンドを実行すること。(ex)cd ~/../../アクセスは、URL -->http://localhost:3000/
+
+**
+
+{Railsアプリのファイル/ディレクトリ概要}--------
+app/	--モデル、ビュー、コントローラ、ヘルパーなどを含む主要なアプリケーションコード
+app/assets	--アプリケーションで使うCSS（Cascading Style Sheet）,JavaScriptファイル,画像などのアセット
+bin/	--バイナリ実行可能ファイル(コマンドを書く格納している
+config/	アプリケーションの設定(route.rbなど)
+db/	データベース関連のファイル
+doc/	マニュアルなど、アプリケーションのドキュメント
+lib/	ライブラリやモジュール置き場
+log/	アプリケーションのログファイル
+public/	エラーページなど、一般（Webブラウザなど）に直接公開するデータ
+bin/rails	コード生成、コンソールの起動、ローカルのWebサーバーの立ち上げなどで使うRailsスクリプト
+test/	アプリケーションのテスト
+tmp/	一時ファイル
+README.md	アプリケーションの簡単な説明
+Gemfile	このアプリケーションに必要なGemの定義ファイル。bundle installをする時これを参照している。
+Gemfile.lock	アプリケーションで使われるgemのバージョンを確認するためのリスト
+config.ru	Rackミドルウェア用の設定ファイル
+.gitignore	Gitに取り込みたくないファイルを指定するためのパターン
+
+$ rails c(onsole)	--railsアプリの環境を反映したconsoleの立ち上げ(opt: --sandbox (砂場)環境(=仮想環境)で実行できる。)
+
+
+---------------------------------------
+
+*{Scaffold}----------
+-Routing,Controller,View,Model,Table(データベース)のすべて(リソース)をコマンド一つで自動で作成してくれる。さらに、index/show/new/edit/create/update/destroyアクションの７つとルーティングを作成してくれる(RoutingFileでは、 resources :usersの記載のみ)
+tpl)$ rails generate scaffold 
+
+ex) #Usersというリソースを(単数指定で)を作成。データモデルのカラムとなる情報も含める。
+$ rails generate scaffold User name:string email:string
+
++リソース --データモデルとWebインターフェイスの組み合わせ。リソースは、HTTPプロトコル経由で自由に作成/取得/更新/削除できるオブジェクトとみなすことができる。
+--------------------
+
+**{Generateのコマンドたち。}-----------------------------
+***generateスクリプトを使ったControllerの新規作成 
+--controllerファイル(アクション)とviewディレクトリに(アクション名の対応したファイル群)、またテストやscssファイル,Routing,Helperも自動で生成する。慣習としてキャメルケースかつ複数形で、命名する(ファイル名はスネークケースで)。
+
+tpl)$ rails generate controller コントローラ名("複数") アクション1 アクション2		#アクション生成はオプション
+ex)$ rails g controller static_pages home help 
+#static_pagesコントローラを、home,helpアクションをファイル内含んで作成します。aap/view/static_pages/とその下にhome.html.erbとhelp.html.erbも作成する(helperやら、ルーティングなど他にも色々ある)
+
+
+***generateスクリプトを使ったModelの新規作成 
+モデルファイル(/app/models/)とマイグレーションファイル(/db/migrate/)の作成。命名は、頭大文字かつ単数。オプションでカラム名(データモデルで言う属性)とそのデータ型も設定すると、migrationファイルを自動で作成してくれる
+
+tpl)$ rails generate model モデル名("単数") カラム名1:データ型 カラム名2:データ型2... #カラム名はオプション
+ex)$ rails g model Post content:text #Postsテーブルを、カラム名content、データ型textで作成(同時にPostモデルも作成)
+（コントローラの作成で別途必要）
+
+
+**rails db:create -データベースを作成する。
+>Created database 'db/development.sqlite3'
+>Created database '.scc/test.sqlite3'
+
+
+**{モデルのデータ型指定の一例}
+*:text/:string --textの方が柔軟性がある。stringの上限は255文字(8bit)
+*:date-time --日時
+*:boolean --カラム名?で真偽値を返すメソッドが使えるようになる。
++(オプション)としてデフォルト値を設定できる
+#:admin属性等などにはdefault値をfalse ex) default: falseと指定できる。
+
+*:references --カラム作成、インデックス追加、外部キー作成、(ポリモーフィック関連付けカラムの作成)までやってくれるショートハンド
+
+**誤ってgenerateしたコントローラ(/モデル)の削除 --generateコマンドを使うと関連ファイルも一度に作成されるため、controllerファイルだけを削除するだけでは不十分。そのような際は、destroyコマンドを使ってまとめて削除する。
+
+tpl)$ rails destroy controller(/model) 削除したいコントローラ(/モデル名)
+ex)$ rails destroy controller StaticPages home help 
+
+-----------------------------------------------------------
+
+
+
+
+
+
+[tips/メモ]!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*?アプリ内のルートディレクトリはrails newで指定したアプリ名。パスを書く時は相対パス書く 
+ex)app/controler/xxxx
+
+
+
+
+***REST --webアプリ開発のアーキテクチャの1つ。操作の対象となるリソースをURLを使って表し、それに対してHTTPメソッドの「GET」「POST」「DELETE」「PUT」を使って操作を行なうというもの。あるURLへGETを使ってアクセスすれば、結果を取得でき、同じURLへPUTでアクセスすれば新しく作成されるよう設定を行なう。
+
+**リソース --さまざまなフォーマットの情報のこと。RESTに従うと、
+クライアントがCRUD操作をする時のアクセス先に対応する。
+
+
+
+
+
+**railsに用いられる省略的な記法(メソッド、ハッシュ)-------
+1.メソッド呼び出し時の()の省略
+2.ハッシュがメソッドの引数の中で最後尾に来る場合は,{}を省略できる。
+ex)
+stylesheet_link_tag('application', { media: 'all', 'data-turbolinks-track': 'reload'} )
+#rails標準的な書き方をすると、、
+stylesheet_link_tag 'application', media: 'all', 
+																	 'data-turbolinks-track': 'reload'
+#メソッドの引数を改行して表示しているが、改行と空白は区別されないため、OK
+#上の例では、stylesheet_link_tagメソッドを、第一引数でスタイルシートへのパスを渡して、第二引数に、メディアタイプやらの機能を渡している。
+
+
+*Rubyでは、build-inクラスを拡張(メソッドの追加など)することは可能だが、非推奨。Railsでは、大義名分のある範囲で拡張している。
+ex)blank?メソッド(Objectクラスに定義)
+"      ".empty? #=> false
+"      ".blank? #=> true
+nil.blank? #=> true
+
+*shim/shiv --シム、一枚噛ませて、帳尻合わせ
+
+Railsコンソールにて、y user.attributesのように yメソッドを使うと、オブジェクトの属性をyaml形式で表示できる。
+(==puts user.attributes.to_yaml)
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+
+
+
+=====================================================
+
+
+
+****[MVC(Model/View/Controller)モデル] ==============================================
+Railsのアーキテクチャ。Webサーバーにリクエスト（request）を送信され、リクエストを処理する役割のRailsのコントローラ（controller）に渡される。コントローラは、静的なサイトではすぐにビュー（view）を生成してHTMLをブラウザに送り返す。動的なサイトでは、コントローラは（ユーザーなどの）サイトの要素を表しており、データベースとの通信を担当しているRubyのオブジェクトのモデル（model）と対話します。モデルを呼び出した後、コントローラは、ビューを描画し、完成したWebページをHTMLとしてブラウザに返す。
+
+
+
+***[View]-----------------------------------------
+--見た目を構成するファイル(.html.erb) 
+*ERB --(Embedded Ruby)RubyのスクリプトをHTMLなどに埋め込むためのライブラリ(テンプレートシステム)。<% %>で囲んだ部分にRubyのコードを書く。<%= %>は評価された値を出力する。
+<%# %>でコメントアウトする。
+
+**手動でviewを有効化する手順
+①ルーティングを書く(アクションとURLを対応させる。)
+②アクションをコントローラー内に記述する。
+③template(view)ファイルを新規作成。
+
+
+**Helper --RailsにおけるへルパーとはViewをDRYに作るためのモジュール。モデルやコントローラでも利用できるが、そもそもはViewは使うために定義されている。(組み込みヘルパーの一例:link_to/form_with/label_for/image_tag/render)そのため、viewで,カスタムヘルパーを使う際、ヘルパーの親クラスであるApplicationHelperが自動ですべてのViewファイルにincludeしてくれている。モデル/コントローラで使用する際にはinclude必須です。
++カスタムヘルパー(新しく自ら作成したメソッド)helperのファイルに記述する。->すべてのviewで利用可能。
+
+
+**viewなどのファイルでURLを参照したい時に、生のURLをハードコードする方法と、名前付きルート(Named Route)を使う方法がある。
+
+**名前付きルート(Named Routes) -- _path/_urlで終わる形を取り、URLを指定できるヘルパー(メソッド)。
++_urlと_pathの違い
+ex)
+about_path => '/about'  #_pathだと"/"以下を返す
+about_url  => 'https://www.example.com/about'	#_urlだと、完全なURLを返す
+
+*慣習に従い、基本的には_pathを使い、redirectの場合のみ_url書式を使う。これは、HTTPプロトコルに忠実考えた時、リダイレクトには完全なURLを求められることに起因します。ただ、実際のブラウザでは_path書式にも対応している場合が多いです。
+
+
+--------------------------------------------------------
+
+***[Controller] ------------------------------
+--HTTPリクエストに対応し、view,modelを制御する
+*変数の定義はアクション内で,インスタンス変数の形(@xxxx)でする(それをviewで使える。)。
+
+*Railsのそれぞれのコントローラーは、ApplicationContorllerクラスを継承した"クラス"。
+アクションは、そのコントローラー(クラス)内に定義されたメソッド達のこと。アクションをRuby的にみると、戻り値のない空のメソッド。Rails的に見ると、アクションはWebページを表示するためのもの。
+
+***{params}  --Railsにおいて、リクエストデータを受け取るため変数(ハッシュ)/オブジェクト
+*ユーザから送信されるパラメータは一般的に2つあり、
+①GETリクエストの際のクエリ文字列パラメータ(URLからの値(:id))
+②POSTデータ(ユーザによるフォーム送信で送られるデータ)(htmlタグ内の属性「name="〇〇[△△]"」が付いたフォームの入力内容)
+ex1)'/users/1'に対してGETメソッドでHTTPリクエストが送られた 「params[:id] => 1」
+
+ex2)*フォーム送信がされた時のparamsの中身一例
+params => {:user => { :name => "Foo Bar",		#ネストしたハッシュ(hash of hash)になってるね。
+		:email => "foo@invalid",
+		:password => "[FILTERED]",
+	:password_confirmation => "[FILTERED]"},
+	:controller => xxx,
+	:action => xxx,
+	.
+	.	
+}
+
+
+**flash --中身がリクエストごとにクリアされる変数。つまり、直後のリクエストで1度だけ表示される(サクセスメッセージなど利用)、任意のキーに対して、文字列を代入しておき、リダイレクト後に表示させる。慣習的に:successなどが使われる。(自由に設定可能)
+#notice/alertは事前に用意されflash[:]抜きで、ローカル変数のように使えます
+ex)flash[:success] = "Welcome to the Sample App!"
++viewでHTML等に変換される際に、キーはシンボル表記だが、Railsが自動で文字列に変換してくれる(式展開使えるね。)
+**flash.now --rendering後のページでフラッシュメッセージを表示させる。その後リクエストが発生した時に消滅する。
+
+
+
+** headメソッド
+HTTPヘッダーのみのレスポンスを作成してブラウザを送信する。
+e.g.)
+head :bad_request
+status_code 400のレスポンスヘッダーが作成され、ブラウザへ返すことになる。
+
+- :ok 
+200番のレスポンスが返ってくる(putやdeleteが成功した時に帰すべきレスポンスにあたる。)
+
+
+
+
+
+-----------------------------------------------
+
+***[Router]--------------------------------------------
+--config/routes.rbファイルで設定する。送信されたURL(HTTPリクエスト)に対して「どのコントローラのどのアクション」で処理するかを決める対応表。アクションに割り当てることをdispatchと呼ぶ。ファイルの上から順に割り当てられていきます。
+
+*$rails routes --現状のルーティングの一覧を見られる。
+rails routesは実行のたびにRails環境を読み込むので、そのままでは遅いので有名です。
+
+### 高速にみる方法。
+dev環境でRailsを起動中ならhttp://localhost:3000/rails/infoを参照する 
+(Rails 4以降)
+http://localhost:3000/rails/info/routesでも参照できます。
+
+
+pryとpry-rails gemがインストールされているなら、rails consoleを起動しておいてshow-routesを実行
+spring gemがインストールされているならspring rails routesとすれば2度目以降から高速になる
+
+
+*名前付きルート --prefix_path/_urlの形で,パス名を変数として扱える。
+これはurlヘルパーとも呼ばれている。これは、route.rbの記述をもとにパスを作成するものなので、バックエンドでフロントで用いるURLなどが欲しい場合に、Controllerやviewが存在しない場合でも、route.rbの記述と適切なurlヘルパーを使用することで、URLを生成することはできる。ただし、
+```
+include Rails.application.routes.url_helpers
+```
+をすると、エラーが発生した事例もあるのと、本来の用途とは異なるため、非推奨な対応になる。
+
+｀
+
+{ルーティングの書き方}#config/routes.rbにて
+①(非推奨) generateスクリプトなどを使った際に、デフォルトで設定されるルーティング。名前付きルートは「コントローラ名_アクション名_url」というように冗長になる。。
+tpl)get "コントローラ名/アクション名"
+ex)get "static_pages/about"
+#/static_pages/aboutのページにHTTPリクエスト(get)が来た時に、自動でStaticPagesコントローラのaboutアクションへ
+#名前付きルートを書くなら、static_pages_help_pathのように書く。
+
+②ハッシュロケット
+tpl)get "/URL" => "コントローラー名#アクション名" #ハッシュのリテラル表記
+
+③シンボル表記(推奨)
+tpl)get "/URL", to:"コントローラー名#アクション名"
+ex) get '/help', to: 'static_pages#help'
+#/helpのページにHTTPリクエスト(get)が来た時に、StaticPagesコントローラのhelpアクションへ
+②,③の方法だとどちらも任意のURLに対して、名前付きルートが使えるようになる。ex)help_path/help_url
+
+*as: 別名 --名前付きルートに別名をつけることができる,参照時は「別名_path/_url」と記述する。
+ex)as:helfなどと別名をつけた時 #=>helf_pathで参照
+
+④root('/')ルーティングのためのメソッド。ファイル内の冒頭に記述。root_pathやroot_urlの名前付きルートを利用できる
+tpl)root "コントローラー名#アクション名" 
+
+
+**⑤resources --routing用のメソッドのひとつ。
+resources :コントローラ名で宣言すると、コントローラの基本7アクション(index/show/new/create/edit/update/destroy)に対応したルーティングを一括設定してくれる。
+
+ex)resources :usersとした時
+[リクエスト]							(名前付きルート)					->(コントローラ＃)アクション	*アクションの概要
+[GET	/users]						(users_path)						->index										*すべてのユーザーを一覧するページ
+[GET	/users/:id]				(user_path(:id))				->show										*特定のユーザーを表示するページ
+[GET	/users/new]				(new_user_path)					->new											*ユーザーを新規作成するページ（ユーザー登録）
+[POST	/users]						(users_path)						->create									*ユーザーを作成する'アクション'
+[GET	/users/:id/edit]	(edit_user_path(:id))		->edit										*特定のユーザーを編集するページ
+[PATCH	/users/:id]			(user_path(:id)	)				->update									*ユーザーを更新する'アクション'
+[DELETE	/users/:id]			(user_path(:id))				->destroy									*ユーザーを削除する'アクション'
+
+
+-------------------------------------------------------------------------
+
+***[Model(Active Record)] -------------------------
+*ORマッパー(Object/RDB mapping)つまり、データベースのレコードとActiveRecordオブジェクトを結びつける役割と、validationやデータベースに保存する際のコールバックなどビジネスロジック的振る舞いをする役割。後者の役割は、ActiveRecord内部のActiveModelモジュールによって担われている。
+
+
+
+
+*private --controllerでも使用できる。private以下に記述されるメソッドはカプセル化され、外部からアクセスできなくなる
+*仮想的な属性だが、set/getできる形で扱いたい時は、attr_accessorを使う
+
+
+**モデル内のself モデル内では、self.update_attribute/self.emailなどは、オブジェクトが理解されているので、基本的には省略できる。#しかし、self.mail =など代入する形を取る時に,emailなどと省略すると、新変数emailにassignしていると捉えられるので、省略できない。 
+
+*has_many(1)->(many)/belongs_to(1)->(1) -- というモデル同士のE-R関係を表す
+
+
+{CRUD操作に対応するActiveRecordメソッド}
+ref)Notion 
+
+
+=======================================================
+
+
+-------------------------------
+
+
+***[テスト]================================
+**$ rails test	 --テストの実行(省略:$ rails t)。特定のディレクトリ下のテストだけを実行したい場合は,「:ディレクトリ名」を追記。
+ex) rails test:integration #/test/integrationのテストを実行
+
+**テストの意義
+①機能停止に陥るような回帰バグ（Regression Bug: 以前のバグが再発したり機能の追加/変更に副作用が生じたりすること）を防止できる。
+②コードを安全にリファクタリングできる。
+③テストコードは、アプリケーションコードから見ればクライアントとして動作するので、アプリケーションの設計やシステムの他の部分とのインターフェイスを決めるときにも役に立つ
+
+**TDD(red/green/REFACTORサイクル)すべきかの指標 
+1.明らかにテストコードのが短くシンプルになる（=簡単に書ける）とき
+2.セキュリティが重要な課題またはセキュリティ周りのエラーが発生した場合
+3.回帰バグを防ぐ体制を整えてから修正に取りかかるとき
+4.リファクタリングするとき
+(TDDじゃなくても良さそうな時)
+1.動作の仕様がまだ固まりきっていない場合、
+2.すぐにまた変更しそうなコード（HTML構造の細部など）の時)
+
+*Test Suite --複数のテストケースをまとめたもの。自動化テストにおいては、テストの実行単位となる。suite(一束)
+
+*テスト用のヘルパーメソッドはtest/test_helper.rbに定義するよ。
+
+{minitest reportersとguardの導入}-----------------
+**minitest reportersの導入(テスト結果を色付きで表示する) --Gemfileに追加してminitest-reportersをインストールしておく。導入したいテストファイル(ここでは「test/test_helper.rb」)にて、
+require "minitest/reporters" #ライブラリ(gem)を読み込み
+Minitest::Reporters.use!
+と追記すると有効化される。
+
+**guardによるテストの自動化 --Gemfileに書いてインストールした上で、
+$ bundle exec guard init #初期化。Guardfileが生成されるので、各自設定してください
+$ bundle exec guard #テスト自動化プログラムガードさんを立ち上げ。フルで実行したい時は,起動中に returnを押しましょう。ctrl + dで終了
+
+**原因不明で、テストが失敗する時は、Guardをいったん終了し、Spring（Railsの情報を事前読み込みしてテストを高速化するツール）を止めて再起動。
+$ bin/spring stop    # テストが原因不明で動かなくなったら、このコマンドを実行してみる
+$ bundle exec guard
+--------------------------------------------------
+
+**[統合テストの導入]---------------------
+**テストファイルの作成。自動で末尾に_test.rbと自動追記される。
+tpl)$ rails g integration_test テストファイル名
+ex)$ rails g integration_test site_layout   #site_layout_test.rbという統合テストファイルが作成される。
+
+**テストの実行
+$ rails test:integration --もしくはファイル名を指定
+
+***統合テストではsessionメソッドは使えない。
+テストヘルパーはclass ActionDispatch::IntegrationTestの中に定義すること。
+---------------------------------------
+
+
+**setupメソッド --def setup ~~~end。メソッド内に定義された処理を各テスト前に実行する。テスト同士で共通の処理がある場合にインスタンス変数などを定義したい時などに使うと良い。
+ex)
+def setup
+	@base_title = "Ruby on Rails Tutorial Sample App" 
+	#base_titleというインスタンス変数をセットアップして、ファイル内に規定されたテストで使えるようにしている。
+end
+
+*testディレクトリでもApplicationヘルパーを使えるようにする(元々はviewのため)
+->/test/test_helper.rbで「include ApplicationHelper」を追記
+
+
+{assertion}--------------
+アサーション（assertion: 主張）とは、オブジェクトまたは式を評価して、期待された結果が得られるかどうかをチェックするコード。すべてのアサーションが成功してはじめてテストがパスする。
+
+
+**assert( test, [msg] ) --testはtrueであると主張する。(testにはvalid?など真偽値を返すものを入れる)
+**assert_not( test, [msg] ) --testはfalseであると主張する。
+*assert_equal( expected, actual, [msg] ) --expected == actual であると主張する.期待する値から書くことを忘れずに
+
+**assert_select(セレクタ, [条件], [メッセージ]) --セレクタで指定されたHTML要素と条件が一致することを主張します。セレクタにはCSSセレクタの式（文字列）や代入値を持つ式を使えます。
+ex1)#<title>要素の中の文字列を条件に合っているかとチェックしたい時
+assert_select "title", "Welcome to Rails Testing Guide"
+
+ex2)#<div id="error_explanation">というid属性を持つタグがあるか？
+assert_select 'div#error_explanation'
+ex3) #<div class="field_with_errors">を持つものが存在する。
+assert_select 'div.field_with_errors'
+
+ex4)
+assert_select "input[name=email][type=hidden][value=?]", user.email
+#=>
+<input id="email" name="email" type="hidden" value="michael@example.com" />
+
+
+*assert_template --引数にとったviewファイルが描画(render)されると主張する。
+
+*assert_difference(式, (差分)) {...} --ブロック処理の前後で、第一引数の値が,(opt:第二引数差分)違うと主張。
+*assert_no_difference(式){...} --ブロック処理の前後で、第一引数(式)の値が変わらないと主張。
+ex)
+
+*assert_match(regexp, string) --第一引数に正規表現、第二引数に文字列ととり、正規表現にマッチする文字列があるかをtrue/falseで返す。
+ex)assert_match /expired/i, response.body
+#response.body(レスポンスされたhtmlのboby部すべて)のどこかに、IgnoreCaseで/expired/という文字列があるか
+
+*assert_response(タイプ) --引数にとったHTTPレスポンスだと主張する。ex:redirect,:success)
+
+
+{具体例}--------------------
+
+ex1)_urlでのルーティングで検証(_pathでのルーティングしているとエラーになるよ)
+test "should get home" do
+	get static_pages_home_url #https://ドメイン名/static_pages/home(_url)にGETリクエストをして
+	assert_response :success #HTTPレスポンスは、success(200 ok)で
+end
+# static_pages_home_urlはrailsヘルパーの一つらしい。ほかにも root_urlなどもある。
+
+
+ex2)(統合テスト)名前付きルートにした上で、サイトページのリンクが正常に作動しているかをテストする
+test "layout links" do  #テスト名layout linksを実行する。
+	get root_path		#'/'にアクセスするGETリクエストを送る。
+	assert_template 'static_pages/home' #正しくview(static_pages/home(.html.erb))が描画されるか?
+	assert_select "a[href=?]", root_path, count: 2 #<a href="/">となっているのが'2'コあるか？
+	assert_select "a[href=?]", help_path		#?を第二引数の値に置換した上で、セレクタを検証する。
+	assert_select "a[href=?]", about_path 	#<a href="/about(<-about_path)">..</a>があるか？
+	assert_select "a[href=?]", contact_path
+end
+
+
+ex3)Applicationヘルパー自体のテストを書く#(full_titleヘルパーの単体テスト)
+->test/helpers/application_helper_test.rbで
+ex)
+test "full title helper" do
+	assert_equal full_title, 'Ruby on Rails Tutorial Sample App'
+	#full_titleメソッドを呼び出した時に期待する値と、(,)以降が一致するという主張
+	assert_equal full_title("Help"), "Help | Ruby on Rails Tutorial Sample App"
+end
+
+
+===================================================
+
+
+
+
+
+
+
+[View/Routingについて(５章)]============================
+
+{レイアウトを整形する}------------------
+*yieldメソッド --共通のレイアウト(template)をまとめるためのメソッド。「layouts/application.html.erb」内の、<%= yield %>の部分に、各ビューファイルは差し込まれ、ブラウザに表示される。この仕組みによって、ヘッダーなどの共通のレイアウトを1つにまとめることができる(さらにこれらをパーシャルで管理したり、、)。また、application.html.erbは全アクションから呼び出されていることも留意する
+ex)
+</header>
+<div class="container">
+<%= yield %>    # headerの下のyield要素に対して、各ページに対応するviewファイルを引き込んでブラウザへ表示
+</div>。
+
+**yield(:title)などと、ラベル(シンボル)を引数と指定すると、対応するラベルを持つprovideメソッドprovide(:title, "文字列")の第2引数の要素がひきこむ。このメソッドはcontent_forの代替でもある、
+
+**{Partial(一部分)}
+--Railsの機能の一つで、layoutやテンプレートを簡潔に保つために、header,head要素などをまとまった単位として、layoutの中に収めずに別ファイルとしてまとめること。手動でファイルを作成します。
+*複数のviewファイルで利用されるもの(エラーメッセージ表示)等は,慣習的にsharedディレクトリに置かれます。
+*パーシャルの命名規則  --_header.html.erbというように(_)アンダースコアから始める。
++renderメソッドで呼び出す際には、(_)と拡張子を無視して、.....views/以降を記載する形で書く。ref)renderメソッド
+-------------------------------------
+
+***{view関連ヘルパーの一例}-------------------------
+**link_to --Railsヘルパー(メソッド)で、linkを作成する(ブラウザに出力された時にはhtmlのaタグとして表示される。)。第一引数にリンクテキスト、第2引数にURL(＃はスタブ)、第３引数にはオプションのハッシュを取り、htmlの属性を自由に追加できる。(ex) method: "post"/ id: "logo" // method: :delete)
+tpl)link_to リンクを貼りたいテキスト, URL, オプション
+
+#*リンクを貼る
+#hrefの中身をルーティングの""URL部分""と同じにする
+#ex)<a href='/'>XXX</a>   root 'home#top'
+#<a href='about'>XXX</a>   get 'about' => 'home#about'
+
+
+**image_tagヘルパー --Railsヘルパー(メソッド)。第一引数に画像ファイルのパス、第二引数にハッシュ(option)をとる(htmlの属性を自由に追加できる)
+tpl) image_tag(ファイルのパス, {ハッシュ})
+ex)#"https://rubyonrails.org/"へのリンクテキストとして、画像を差し込む
+<%= link_to image_tag("rails.svg", alt: "Rails logo", width: "200px"),
+											"https://rubyonrails.org/" %>
+#rails.svgの画像をalt="Rails logo"/width="200px"属性を付与されたHTML要素として表現
+
+**render(描画する)メソッド --表示させたいviewファイルを指定して表示する。ファイルの名の表記は拡張子は省略可.view/以下を指定すること。また、同コントローラの配下であればコントローラ名も省略可。redirect_toじゃないのは、コントローラを経由させる必要がないから。
+ex)<%= render 'layouts/shim' %> #layouts直下の_shim.html.erbというパーシャルファイルを指定
+
+**renderとredirect_to	--
+基本的には、redirect_toはURLを指定してrenderはビューファイルを指定する。
+使い分けとしては、データの更新/削除が必要な場合はredirect_to/
+入力失敗など、エラーを表示させたいだけの時はrenderを利用する。
+#、renderで表示されるviewは、renderが記載されているアクション内のインスタンス変数が使える。(コントローラを介さない)(入力値を補完したりに活かせる.
+)/renderの引数には、シンボルと文字列形式でアクション名をする
+#redirect_toで表示されるviewは、redirect_toで指定したパスに付随するアクション内のインスタンス変数が使える
+*flashメッセージを、以下のようにリダイレクトのオプションとして記述することもできます。オプションとして:notice、:alertの他に、一般的な:flashも使えます。ref)Rails guideアクションコントローラー
+tpl)
+「redirect_to(/URL)
+「render("フォルダ名/ファイル名")」
+
+
+**redirect_back() --リダイレクトでひとつ前にリクエストされたページにいく.キーワード引数の形でdefault値も取れる。
+ex)
+redirect_back(fallback_location: root_url)
+#	redirect_to request.referrer || root_urlと同値
+
+*redirect_to の引数にモデルにActiveRecordのインスタンスだと理解すると、Userだった場合には、user_path(user)に当たるルーティングを探す。
+
+
+*content_tag --タグを生成する。htmlとerbが混在する場合などに活用できる。
+tpl)content_tag( タグ名, コンテンツ, クラス属性: "xxxxxxx")
+ex)content_tag(:div, message, class: "alert alert-#{message_type}")
+#<div class="alert alert-XXXX">message(変数)</div>
+
+
+*hidden_field_tag --隠しフィールドを作る(<input type="hidden">)
+
+ex)
+#html.erb
+<%= hidden_field_tag :email, @user.email %> #第一引数で、name属性/id属性の値を指定.第二引数はvalue属性
+#htmlソース
+<input type="hidden" name="email" id="email" value="example@railstutorial.org">
+
+------------------------------------------
+
+**{アセットパイプライン(Asset Pipeline) } ----------
+-CSS、JavaScript(Webpack,Yarn)、画像などの静的コンテンツを最小化(不要な空白やインデントを取り除く)や圧縮して連結する機能を提供するフレームワーク。(開発者にわかりやすいように、特定の場所にファイルを分割して管理したものを、読み込む際には1つのファイルとしてブラウザに出力できるようにしている仕組み)
+
+{メリット}
+開発環境で、scssなどのスタイルシートをアセットディレクトリに分けて管理して、インデントしまくって管理してたけども、本番環境としては、ロードに時間がかかるので非効率。それを解決するために、Asset Pipelineがすべてのスタイルシートを1つのCSSファイル（application.css）にまとめ、インデントを消してファイルサイズを最小化までしてくれます。これによってユーザ体験の向上につながる(クライアント視点だと1つのcssファイルを読み込んでいるだけ)。
+
+
+①アセットディレクトリ --静的ファイルを目的別にグループ化して保存しておく。(custom.scssはアプリ固有のアセットだよね？だからapp/assetsに入れたよ)
+app/assets: 現在のアプリケーション固有のアセット
+lib/assets: あなたの開発チームによって作成されたライブラリ用のアセット
+vendor/assets: サードパーティのアセット（デフォルトでは存在しません）
+
+②マニュフェストファイル --それぞれのアセットディクレトリ内で、ファイルのまとめ方を記述しているファイル。
+(実際にアセットをまとめる処理を行うのはSprocketsというgem) 。また、マニフェストファイルはCSSとJavaScritには適用されますが、画像ファイルには適用されません
+
+③プリプロセッサエンジン --①、②で見たようにディレクトリにアセット(cssや、jsや画像の資産)を配置し、マニフェストて統一した後に、ブラウザに配信できるよう結合する役割をするエンジン。
+Railsはどのファイルに対してどのプリプロセッサを使うのか、ファイル名の拡張子を使って判断する。ex)拡張子が.erbであれば埋め込みRuby（ERb）用の、scssであればSass用の前処理（プリプロセス）を実行
+ex)foobar.js.erb というようにすると、右から左に埋め込みルビーが実行され、その後それをjsのコードとして処理するというようにつなげることもできる。
+
+
+----------------------------------------------
+
+=========================================================
+
+
+[Validation/migration/BCryptについて(6章)]=====================
+Rubyでクラスを作成する際にはattr_accessorを使って、インスタンス変数(クラスの持つ属性(変数))にアクセス(getter/setter)できるようにした。しかしRailsでは、Modelを作成する時に属性を明示的に識別する必要がない。なぜなら、データの保存をデフォルトでデータベースに任せているから。属性を指定してテーブルを作るだけで良い。
+
+**データベースの値を更新する方法
+-user.属性 =""	オブジェクトの属性に値を代入する。ex)user.name = "Masanao"
+-updateメソッドを使う方法
+user.update(name: '', email: '')
+
+
+
+
+*errorメッセージのスタイリング。 --Railsは、無効な内容の送信によって元のページに戻されると、CSSクラスfield_with_errorsを持ったdivタグでエラー箇所を囲むので、それをセレクタとしてCSSをかける。
+
+詳細についてはNotion参照してください
+
+-----------------------------------------------
+
+
+***{Migration}-------------------------
+*マイグレーションファイル --データベースを生成する際の設計図(変更内容はchangeメソッド内に記述される)。マイグレーションファイルを実行することで、記述した内容に基づいてインクリメンタルに、データテーブルが生成/更新されます。(データベースの定義をRubyで記述できるので,sql不要。DBの隠蔽を可能している。)
++変更を加える時もインクリメンタルにするのがrails流。一度マイグレートしたマグレーションファイルをロールバックしてchangeメソッドを書き直すのはNG
+
+*マイグレーションエラー --データベースに反映されていないマイグレーションファイルが存在する状態で、どこかのページにアクセスすると発生するエラー。マイグレーションファイルを作成したら必ず、rails db:migrateすること
+
+{migration関連のコマンド}
+$ rails db:reset データベースをdropして再度設定します
+このコマンドは、すべてのマイグレーションを実行することと等価ではありません。このコマンドは単に現在のschema.rbの内容をそのまま使い回します。
+
+
+
+*$ rails db:migrate	--マイグレーションファイルを実行する。(モデル作成時等の初回は、単純にデータベースにテーブルを作成する。id, created_at, updated_atは自動で追加される)
+
+*$ rails db:migrate:status --マイグレーションファイルの状態が表示される。upになっていれば実行済み
+
+*$ rails db:rollback --データベースを1つ前のマイグレーションの状態に戻す。
+*$ 
+0 --データベースを最初の状態に戻す(ver0に戻す、)#?また、数字を指定すればその時の状態に戻せる)
+*$ rails db:migrate:reset --いちからマイグレーションし直す。(中身のデータをリセットし、1からテーブルを構築する。)
+	
+$ rails db --単にSQliteを起動してRDBMSプロンプトを起動する
+
+
+**マイグレーションファイルを作成し、データベースの構造に変更を加える
+ref)Notion
+
+ex1)$ rails g migration add_password_digest_to_users password_digest:string
+#以下のadd_columnメソッド。usersテーブルに、password_digestカラムを、string型まで、自動で作成してくれる。
+class AddPasswordDigestToUsers < ActiveRecord::Migration[6.0]
+	def change
+		add_column :users, :password_digest, :string 	#--:テーブル名, :カラム名, :データ型の順で記述する。
+	end
+end
+ex2)$ rails g migration add_index_to_users_email #indexの追加もできる。
+def change
+	add_index :users, :email, unique: true		#index自体は一意性を保証しないが、unique: trueで一意性を確保している
+end
+
+*changeメソッドで定義されているマイグレーション一例-add_column/remove_column/add_index...etc詳しくはRailsガイド参照
+
+*本番環境で異なるDBを使用している時は、そちらへのマイグレーションを忘れずに。$ heroku run rails db:migrate
+
+
+------------------------------------------------
+
+
+
+============================================================
+
+
+
+[Debug/FormHelper/StrongParameters//Errors.messages/7章]==
+
+***{Debugツールの一例}------------------------
+**debug()へルパー --RailsのBuildinヘルパー(view用のツール)。引数にとった変数(paramsとか@user)の値を、yaml形式で出力する。ブラウザに対しては<pre>タグを用いて返している。スタイルを整えたい時は、.debug_dump(返されたpreタグが持つクラス) をいじる。
+ex)
+#この時本番環境やテストのviewにもデバッグに関する情報が表示されると厄介なので、以下のように書くことを推奨します。
+<%= debug(params) if Rails.env.development? %>
+#if文がtureになるのは、開発環境のみ
+
+ex)ブラウザ画面にて,<pre>
+.
+.
+controller: users  
+action: show		#どのコントローラのどのアクションが呼び出されたのか？
+id: '1'	#get
+permitted: false
+
+また、コンソール上でも
+オブジェクトに対して.to_yamlとすると似通った結果が見られる。
+y()メソッドを使うこともできる
+
+
+**byebug(gem) --このgemを導入すると、debugger(/byebug)メソッドが使えるようになる(controller用のツール)
+*debugger/byebug/binding.breakメソッド --アクション内で、調べたいタイミングにbyebugとメソッドを挿入して使う。挿入されたアクションの処理が行われたタイミングで、ローカルサーバーの画面に(byebug)プロンプトが起動する。コンソール上で、byebugの起動された時の状態(変数(ex/@userとかparams))を調べることができる。「ctrl + d」で終了できる。
+ex)
+@「app/controllers/users_controller.rb」
+def show
+	@user = User.find(params[:id])
+	byebug		#調べたいタイミングにメソッドを差し込む(今回はユーザの詳細ページが表示された時の@userの値)
+end
+
+@「(byebug)コンソール」 --#@userの値を調べられる
+(byebug) @user.name
+"Michael Hartl"
+(byebug) @user.email  #@user
+"michael@example.com"
+(byebug) params[:id]  #+byebugコンソールで、puts params.to_yamlすると、paramsをyaml形式で表示できる。viewでやれば良くないか？
+"1"
+
+
+***yaml(YAML Ain’t Markup Language) --人間とコンピュータの双方が理解しやすいデータのシリアライズ言語。このファイル形式の基本構造はハッシュ(つまり、key: value)の形をとっている
+
+
+---------------------------------------------------
+
+
+***{formヘルパー}---------------------
+***form_with --モデルから生成されたオブジェクトを取り込み、その属性を用いてフォームを構築するヘルパーメソッド
+tpl)form_with( model: @変数, (url:xxx, scope: xxx, オプション)) do |f| ~~end 
+
+*引数にはmodel:や(/url:)を取る。オプションの一例として、local: trueとするとページ遷移を行うデータ通信を強要させている。ref)“remote” XHR request
+また、プロックパラメータ(つまりはモデルインスタンス)に対して、特定のメソッドを用いて、HTMLフォームを作成してくれます。(メソッドによってはオブジェクトの属性を設定できる)
+
+**ActiveRecordを関連づけてないリソースの場合(ex:セッション管理)は第一引数にURLを取ること
+
+ex)<%= form_with(url: login_path, scope: :session, local: true) do |f| %>end
+	#url: login_path(POST)で、送信先がわかり、scopeで設定することで、HTMLのname属性などに反映させてくれて、ネストしたハッシュである。params[:session]の値としてに送信内容が格納されてるようになる。
+	
+ヘルパーメソッド
+
+ex) #Userインスタンスのname属性を設定するフォーム
+@「erb」
+<%= form_with(model: @user, loal: true) do |f| %>
+	<%= f.label :name %>
+	<%= f.text_field :name %> #Userモデルの@userオブジェクトかつ、:name属性についてのテキストフィールドだと理解して->"☆"
+<% end %>
+@「html」
+<form accept-charset="UTF-8" action="/users" class="new_user" id="new_user" method="post">
+	<label for="user_name">Name</label>		
+	<input id="user_name" name="user[name]" type="text" /> #"☆"、name="user[name]"も自動追加している。params[:user][:name]で受け取ることができる。
+</form>
+#より具体的/詳細なのは機能実装のノートを参照してください。
+
+
+**form_withへルパーはオブジェクトを理解した上で、formタグ(とその内部のタグ要素)を作成する。
+--form_withメソッドを使ってformタグを作成するとき、Rubyオブジェクトは自分のクラスを理解しているので、Userモデルのオブジェクト@userだということをRailsは認識している。また、@userは新たなユーザー(= User.new)であるため,:nameと入れておくだけで、htmlタグのid属性(.labelだとfor)にuser_name、name属性に"user[name]"をつけてくれたり、さらにPOSTで"/users"へのHTTPリクエスト(->create アクション)を送信するように自動に設定してくれている。
+
+*ユーザ編集のような時も@userで受け取ったオブジェクトを理解するので、nameやemailの初期値を入力してくれるほか、formタグの中身で、webブラウザがPATCHリクエストを送るように偽造までしてくれる。
+
+*new_record?(Active Recordのメソッド) --新規登録もユーザ編集もformには@userを渡しているが、Active Recordの論理値メソッドnew_record?を用いて、@userが新規(POST)か既存(PATCH)かを判断している。(Railsはオブジェクトを理解している。と言える所以)
+-------------------------------------------
+
+
+
+
+
+[session/fixtures/loginに関する統合テスト(８章)]==========
+
+**session --Rails組み込みメソッド。simpleなログイン機能実装のために用いる。(メソッドらしくない振る舞いをする。)sessionメソッドで作成された一時cookiesはブラウザが閉じられた時に消滅する。ref)cookiesメソッド
+ex)@「app/helpers/sessions_helper.rb」
+module SessionsHelper
+	#sessionによって判別した状態を、呼び出しやすくするためにヘルパーメソッド定義
+	def log_in(user)
+		session[:user_id] = user.id	
+	end
+end
+
+
+*findとfind_by --
+ex)ユーザがログインしているかどうかがわかったので、ログイン中のユーザの情報を取得できるようにしたい。
+if @current_user.nil?
+	@current_user = User.find_by(id: session[:user_id])
+	#findメソッドだとログインしてない時に例外が発生し,
+	#find_byを使うとnilを返してくれる
+else
+	@current_user
+end
+
+#or equals記法をつかってより簡潔に）
+@current_user ||= User.find_by(id: session[:user_id])
+#インスタンス変数にいれることでHTTPリクエスト1回に対して、データベースへの問い合わせを１度した後に、インスタンス変数を参照するように工夫している。
+
+**Rubyでは、「変数の値がnilなら変数に代入するが、nilでなければ代入しない（変数の値を変えない）というような場合によくor equalsを使う。
+
+
+
+***{ログイン機能の統合テストに必要なサンプルデータの扱い}
+**fixture --(備品)サンプルデータのこと。ここに事前定義したデータをテスト実行前にテストデータベースに導入することができる。(yaml形式で記述される)。データベースのデータモデルに対応する形で書くこと(passwordじゃなく、password_digestとかね).idは暗黙的に持ってるぽい、明示することも可能。
+
+ex)@「test/fixtures/users.yml」
+michael:
+	name: Michael Example
+	email: michael@example.com
+password_digest: <%= User.digest('password') %>
+#自作のdigestメソッドを使って、適格なpassword_digest属性を用意した。
+*ハッシュ化されてないパスワードも参照したいが、データとして足してしまうと、データベースに存在しないカラムとしてエラーが発生する。そのため、fixtureでは'password'というパスワードがよく使われる。
+
+
+**テストファイルで参照する際には次のように書ける。
+-->user = users(:michael) #usersはusers.yml(fixturesファイル)を示し、:michaelは一人のテストユーザを参照するキーを表している。
+
+*fixture_file_upload(file, type)--fixtureで定義されたファイルをアップロードする
+ex)
+image = fixture_file_upload('test/fixtures/kitten.jpg', 'image/jpeg', :binary)
+#:binaryはオプション
+
+=====================================
+
+[Remember me(9章)]======================
+*cookiesメソッド --sessionと同様にハッシュのように扱え、一つのクッキーは値と、オプションとしてexpires(有効期限)からできている。sessionとは異なり、保存する情報を暗号化する必要性がある。
+ex)cookies[:remember_token] ={ value: remember_token, expires: 20.years.from_now.utc }
++.permanentを使うと、20年有効のクッキーを設定してくれる(RailsがIntegerクラスに組み込んだメソッド) 
+ex)#ひとつ前の例を次のように書くこともできる。
+cookies.permanent[:remember_token] = remember_token
++.encrypted --クッキーの内容は平文らしいので,ブラウザ側に保存するユーザIDはこのメソッドで暗号化する。
+
+
+永続的なログイン機能(ログインしたままにする)の実装.--sessionメソッドだとブラウザを閉じると消えてしまうので、cookiesメソッドを使って、ユーザの暗号化済みのIDと記憶トークンをブラウザのクッキーに保存することで実現させる。ref)具体的な機能実装
+
+
+
+**(非推奨)assignsメソッド --特殊なテストメソッド。コントローラのアクション内で定義したインスタンス変数に対応したシンボルを引数に取ることで、テスト内でコントローラのインスタンス変数にアクセスできる。コントローラが実行された後に変数が定義される(何かしらのアクションが動いた時)
+#Rails5以降日推奨になってるので使いたい時は、'rails-controller-testing'(gem)を導入すること
+ex)@userがあったとすると、assigns(:user)
+この時@userが持つメソッドや仮想の属性にもアクセスできるようになるからお得
+
+
+=================================
+
+
+[authentication(アクセスの制限)/before_action/pagination(10章)]===
+
+**authentication --ユーザの属性(admin,current_user)、状態(login)によって、ページや操作を制限すること。主にコントローラ内でbeforeフィルター(アクションが実行される前に、特定の処理(メソッドを実行)する)をかける形で実装する。
+
+*RBAC(Role-Based Access Control) --ユーザアカウントにロールを付与して、ロールごとにアクセス制限を加える。(ex:admin(管理者)というroleを作ってアクセス制御(Access Control)を行う)
+
+**before_action --beforeフィルターをかけるメソッド。オプションハッシュでフィルターをかけたいアクションを選べる。(コントローラ)
+ex) @「app/controllers/users_controller.rb」
+#ログイン済みかを確認するメソッド:logged_in_user,をindex/edit/update/destroyアクションにフィルターとしてかける。
+before_action :logged_in_user, only: [:index, :edit, :update, :destroy]
+
+except:/only: [ ]の形で条件付きでフックを追加する。
+skip_before_action :メソッド名などで条件付きにもできる。
+
+**friendly forwarding --ユーザビリティを意識した、リダイレクト
+ex)ログインしていないがためにユーザ詳細ページ(マイページ)に行けなかったとしたら、ログイン後はその詳細ページにリダイレクトしてあげる
+-
+[実装の仕方]ユーザがリクエストした時点のページをsessionメソッドで記憶し、その場所へとリダイレクトさせる。その後sessionを消す。ref) 機能実装
+
+
+
+**{Faker/will_paginateの導入} ----------
+Gemfileを更新して、bundle installする
+ex)@Gemfile
+gem 'faker',                   '2.20.0'
+gem 'will_paginate',           '3.3.1'
+gem 'bootstrap-will_paginate', '1.0.0'#will_paginateのスタイリング
+
+
+*Faker -主に開発環境にサンプルユーザを用意するためのgem。---
+①@「db/seeds.rb」
+
+# サンプルユーザー(初期化ハッシュ)を1人作成する#サンプルユーザでログインできるように。
+User.create!(name:  "Example User", #create!はユーザが無効な場合に例外を発生させる。
+email: "example@railstutorial.org",
+password:              "foobar",
+password_confirmation: "foobar")
+
+# 追加のユーザーをまとめて生成する
+99.times do |n| #ここが実際のFaker gemが活躍しているところ。
+	name  = Faker::Name.name
+	email = "example-#{n+1}@railstutorial.org"
+	password = "password"
+	User.create!(name:  name,
+	email: email,
+	password:              password,
+	password_confirmation: password)
+end
+
+**②サンプルユーザ生成スクリプトを用意したら、dbに変更を加える
+$ rails db:migrate:reset #migrationをまた1からし直して(テーブルを再構築)、中のデータをリセット
+$ rails db:seed #サンプルユーザを植える。
+
+
+------
+
+**{will_paginate}---------
+paginationを実装するためのgem。will_paginate/.paginateメソッドが使えるようになる。
+*pagination --ページ分割のこと (ex:前へ < 1 < 次へ )
+
+**will_paginate()メソッド --(view)。引数にとった@変数(オブジェクト)を当該viewファイルから探し出して,そのオブジェクトに関するページネーションリンクを作成してくれる。また、.paginateに対してparams[:page]の形でページ数の情報を送る#userコントローラに関連するviewであれば引数を省略しても@userに対応するリンクを作成してくれる(userコントーラの@user.paginateとした時に/users/何かしらのviewであれば省略可)
+
+**.paginateメソッド --(controller)オブジェクトをwill_paginateが理解できるように置き換える。引数に:pageをキー、ページ番号を値としたハッシュを取る。
+
+ex)
+User.paginateとすると、:pageの値に応じた一塊(デフォルトでは30)のユーザをデータベースから取り出す。(page: nil ->最初のページを返す。
+ex)User.paginate(page: 2)
+#データベース上の31-60のデータを取り出す。
+
+
+
+------------
+
+====================================
+
+[Callback/ActionMailer/メタプログラミング(11章)]==============
+*{callbacks}---------------------------------
+オブジェクトの状態が切り替わる「前」または「後」にロジックをトリガすること。そのためのメソッド。
+
+
+ref) Notion参照
+--------------------------------------------
+
+
+**{Action Mailer(ライブラリ)}-----------------------
+構成としてはcontrollerに似ていて、メールのtemplateをviewのように作成する。(viewファイルはhtml/txtの2形式分用意される。)
+
+**Userメイラーの生成 --Controller生成のように書く。メソッドはオプション
+tpl)$ rails g mailer メーラー名 メーラーメソッド1 メーラーメソッド2
+ex)$ rails g mailer UserMailer account_activation password_reset
+
+ex)
+実際に生成されるファイル等
+#mailer(controller的な)
+app/mailers/user_mailer.rb 
+#view(メールテンプレート達)
+app/views/user_mailer
+app/views/user_mailer/account_activation.text.erb
+app/views/user_mailer/account_activation.html.erb
+app/views/user_mailer/password_reset.text.erb
+app/views/user_mailer/password_reset.html.erb
+#+α testも生成される。
+
+
+基本的な動作のフロー ------
+1.なんらかのきっかけで呼ばれたmailerメソッドが呼び出される(メソッド内の処理をする)
+2.対応するviewファイルを呼び出して、layoutを噛ませた上で
+3.メールが送信される。
+---------
+
+基本的な仕組み ----
+①.@「app/mailers/application_mailer.rb」--送信元アドレス/レイアウトベースを指定
+
+class ApplicationMailer < ActionMailer::Base
+	#共通の送信元アドレスを指定。
+	default from: "noreply@example.com"
+	#app/views/layouts/mailer.(html/txt.erb)をテンプレートとして参照する。
+	layout 'mailer'
+end
+
+②.＠「app/mailers/user_mailer.rb」--メーラーでいうコントローラ。@変数をメーラーviewで参照できる。
+ex)
+
+def account_activation(user)
+	@user = user #viewで参照できる
+	#メールの宛先(to:)と件名(subject:)を指定
+	mail to: user.email, subject: "Account activation"
+end
+
+----------------
+
+**クエリパラメータ --URLのgetリクエストに含めることができる付加情報。「?」から始まり、email=foo%40example.comのような形で、key=valueのペアで記述される。URLで扱える文字列は限られているので、適宜文字コードを使ってエスケープ処理する。#ex)「@」 => 「%40」
+
+
+
+**{.sendメソッドを用いたメタプログラミング}--------
+
+.send --レシーバの持っているメソッドを呼び出してくれるメソッド.動的にメソッドの挙動を変えたりするときに有効。式展開が必要な場合はシンボルも文字列に変換する。
+
+ex1)
+#引数に:length/'length'を取るとき、レシーバーに対してlengthメソッドを呼び出す。
+#シンボルを渡しても文字列を渡しても、有効な(シンボル推奨)
+>> a = [1, 2, 3]
+>> a.length
+#=> 3
+>> a.send(:length)
+#=> 3
+>> a.send("length")
+#=> 3
+
+ex2)
+#同様にシンボル/文字列を渡す形で、ユーザのデータ属性にもアクセス可(.activation_digest)を呼び出している。
+>> user = User.first
+>> user.activation_digest
+#=> "$2a$10$4e6TFzEJAVNyjLv8Q5u22ensMt28qEkx0roaZvtRcp6UZKRM6N9Ae"
+>> user.send(:activation_digest)
+#=> "$2a$10$4e6TFzEJAVNyjLv8Q5u22ensMt28qEkx0roaZvtRcp6UZKRM6N9Ae"
+>> user.send("activation_digest")
+#=> "$2a$10$4e6TFzEJAVNyjLv8Q5u22ensMt28qEkx0roaZvtRcp6UZKRM6N9Ae"
+>> attribute = :activation
+>> user.send("#{attribute}_digest") #->"activation_digest"  渡されたシンボル(/文字列)を式展開の過程で文字列に変換する。(Ruby)
+=> "$2a$10$4e6TFzEJAVNyjLv8Q5u22ensMt28qEkx0roaZvtRcp6UZKRM6N9Ae"
+
+----------
+
+========================================
+
+
+
+[インデックス(inDB)/associations(データモデルの関連付け)/ActiveStorage(13章)]=========
+
+*インデックス --イメージとしては本の巻末にある索引ページ。構造的にはsortされたデータをツリー構造(b-tree)で持ち、二分探索法を使う。
+*複合インデックス(Multiple Key Index) --2つ以上のkey(カラム)でインデックスを構成すること。*2つ目のkey単体では並び順を保持していない点に注意
+#平易に説明すると、大分類/小分類でソートして論理的に索引を作成している。
+
+*railsでの複合インデックスの作り方
+ex)and_index :microposts, [:user_id, :created_at], unique: true
+#micropostsテーブルに、user_idとcreated_atをキーとする複合のインデックスを作成。unique: trueでこの二つのカラムの一意性を確保
+
+
+
+**{簡易的なデータモデルの関連付け(Associations)} -------------------------
+has_many/belongs_toなどでデータモデル同士を関連づけること。それぞれのモデルで定義する。
++dependentなどの依存性の追加/外部キー制約(foreign_key constraint)もできる。
+ex)
+＠「app//user.rb」
+has_many :microposts, dependent: :destroy
+
+@「app/models/micropost.rb」
+belongs_to :user
+
+***#Railsの仕様として、参照先のモデル名(クラス名)+_idというsuffix(接尾辞)を形を取るカラム名を外部キーとして使うことを前提(デフォルト)としている
+
+***belongs_to --関連付けで指定するモデル名(関連付け名)は必ず「単数形」。他のモデルのインスタンスに従属する。(相手を参照先にする。)また、自身にリンクカラムを持つ。(-> 自身がが外部キーを持つテーブルである)
+
+
+***has_many --関連付けを宣言する際、相手のモデル名は「複数形」で指定する。指定した相対側のモデルが自身への参照してくる(つまり自信が相手にとっての参照先となる。)。相手側(参照する側)がリンクするカラム持っている。
+(内部的には、has_manyの引数(複数形)をclassifyメソッドを用いてクラス名に変換している。) 
+ex)
+has_many :microposts
+#=> Micropost
+
+
+**has_many :through --他方のモデルと「多対多」のつながりを設定する場合によく使われます。、2つのモデルの間に「第3のモデル」（joinモデル）が介在し、それによって相手のモデルの「0個以上」のインスタンスとマッチします。
+ex)class Physician < ApplicationRecord
+has_many :appointments
+has_many :patients, through: :appointments
+end
+
+class Appointment < ApplicationRecord
+	belongs_to :physician
+	belongs_to :patient
+end
+
+class Patient < ApplicationRecord
+	has_many :appointments
+	has_many :physicians, through: :appointments
+end
+ref)https://railsguides.jp/association_basics.html#has-many-through%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91
+
+
+*associationsをすると使えるメソッド一例
+*create/create! --通常のモデルのcreateと同様にオブジェクトを作成保存する。(データモデル同士の関連付けも自動的にされる。ex)user_idの設定)
+*build --newと同じ
+*find_by
+ex)
+user.microposts.find_by(id: 1) --#ユーザに関連付けられ、かつid=1を持つマイクロポスト
+
+
+-------------------
+!!!!用語集!!!!
+**default scope --すべてのクエリに対して追加の絞り込みや順序を指定するメソッド
+#安易に使うと、メンテ性が悪くなるよ
+ex)default_scope { where(disabled: false) } #disabled:trueなitemは常に除外する
+
+
+*time_ago_in_words(datetime) -渡された日時から現在までどれほど経過したのかを文字列として出力していくれるヘルパーメソッド
+
+
+*placeholder --textareaなどにおける初期値や入力内容に関する説明書きを加える部分
+
+*ステータスフィード(フィード) --外部から刻々と配信されてくるデータの流れや、これを時系列に一覧できるよう整理した操作画面などのことを指すことが多い。(ツイッターでいうツイートが見れるプロフィールページみたいなの)
+!!!!!!!!!
+
+**{ActiveStorage}-----------------------
+Amazon S3などのクラウドストレージサービスへのファイルのアップロードや、ファイルをActive Recordオブジェクトにアタッチする機能を提供する。画像だけでなくさまざまなバイナリファイルを扱える。
+
+*ActiveStorageの導入
+$ rails active_storage:install
+#添付ファイルの保存に用いるデータモデル作成のマイグレーションが1つ生成されるので
+$ rails db:migrate
+
+
+**{ActiveStorageAPIメソッドの一例}
+*has_one_attached --指定のモデルと、アップロードされた1つのファイルを関連付けるのに使います*has_many_attached 
+
+ex)@「app/models/micropost.rb」
+
+has_one_attached :image
+#micropostモデルが、1つの:image(画像ファイル)を持つ
+
+
+*attachメソッド。既存のデータモデル(例えばユーザのプロフ画像の更新)を行う時に,使う(update的なニュアンス)attached?メソッドも使えるようになっている。
+
+**{Active Storageバリデーション用のgem}
+ネイティブでサポートされていないので、
+＠「Gemfile」
+gem 'active_storage_validations'
+
+
+ex)validatationの一例
+content_type: { in: %w[image/jpeg image/gif image/png],
+message: "must be a valid image format" }
+
+size: { less_than: 5.megabytes,
+message: "should be less than 5MB" }
+
+
+--------------------------------
+
+**{画像のリサイズ(imagemagick)の導入}--------
+herokuの本番環境には導入されている。
+
+onMacOS
+$ brew install imagemagick
+
+@「Gemfile」
+
+gem 'image_processing',           '1.12.2'
+gem 'mini_magick',                '4.9.5'
+#Ruby製ImageMagickプロセッサ
+
+このプロセッサをローカルに導入されていると、varient(ActiveStorageのメソッド)がRails上で使う準備ができる。
+
+**varient --Blob＃variant( 処理: 値 )ActiveStorageを使って保存したblob型の画像ファイルを変異させる。２度目以降の呼び出しはキャッシュされているので、データ効率が良い
+
+ex1)
+Blobオブジェクト.variant( resize: "100x100^", gravity: "center", crop: "100x100+0+0" )
+ex2)
+image.variant(resize_to_limit: [500, 500])
+
+
+
+------------------------------
+
+
+***本番環境でのストレージ(AWS S3を利用)------------
+①gemを追加
+gem 'aws-sdk-s3',              '1.113.0', require: false
+
+②AWSにログイン
+
+③ソースコードに機密な情報(AWSのキーやSTMPの設定)をハードコードしない
+-->herokuが用意するENV変数に格納して記述する。
+
+$ heroku config:set AWS_ACCESS_KEY=accessキー
+$ heroku config:set AWS_SECRET_KEY=secretキー
+$ heroku config:set AWS_REGION=リージョン名reo
+$ heroku config:set AWS_BUCKET=bucket名
+
+こうすることで、
+
+＠「config/storage.yml」#ストーレジオプション設定用ファイル
+
+amazon:
+service: S3
+access_key_id:     <%= ENV['AWS_ACCESS_KEY'] %>
+secret_access_key: <%= ENV['AWS_SECRET_KEY'] %>
+region:            <%= ENV['AWS_REGION'] %>
+bucket:            <%= ENV['AWS_BUCKET'] %> 
+
+AWSの設定情報をRailsに記述できて、
+
+④本番環境に、Active Storageの設定パラメータ(上のymlのこと)追加
+＠「config/environments/production.rb」
+
+config.active_storage.service = :amazon
+# アップロードされたファイルをAWSに保存する(本番環境のストレージをAWSに)
+
+
+----------------------------------
+
+=====================================
+
+
+============================
+14章
+(DBでのインデックスの役割と意味/応用的なAssociations)
+
+
+**Railsは外部キーのカラムを自動的に作成することはありません。外部キーを使うには、マイグレーションで明示的に定義する必要があります。(gスクリプトのreferencesを使うとある種暗示的に作成される点に気を付ける)
+
+****{もっとAssociations(belongs_to/has_many/:through)}--------
+
+関連付けっていうとモデル同士の関係性を定義する(level1)
+データベース上で外部キー主キーで関連させている(level2)
+関連付けた名前をメソッドのようにしてRails上で、CRUDしている(level3)
+
+belongs_to/has_many --macroメソッドを生成するメソッドこれらによって、
+user.microposts.buildみたいのが実現している。
+#引数に取るのはあくまで、関連付け名(:association name)であり、必ずしもモデル名や外部キーではない。理解としては、これから生成するメソッドの命名部だという認識が正確かと。
+
+***{has_manyの使い方} ----
+ex1)
+class User < ApplicationRecord
+	has_many :microposts, dependent: :destroy
+end
+
+User has_many microposts と言われると、Railsは
+①データベースレベルの話(prim.keyとfore.keyの関連付けという面では)、、、、
+:microposts =>Micropostクラス(モデル)を探して、
+②その中で、User => user_id というカラム名をforeign_keyとして設定する。
+
+③Ruby上での使えるようになるメソッドとしては、
+user = User.firstと仮に定義すると、
+user.microposts.buildや
+user.microposts --インスタンスの持つ投稿一覧(インスタンスに従属するオブジェクトのcollection)
+逆に(belongs_toで双方向的に関連づいているとき)
+micropost = user.microposts.firstと定義すると
+micropost.user -投稿が従属するユーザを表示
+というように使える。
+
+ex2)
+class User < ApplicationRecord
+	has_many :active_relationships, class_name: "Relationship",
+	foreign_key: "follower_id",
+	dependent: :destroy	
+end
+①	
+デフォルトで行くと、
+:active_relationships -> ActiveRelationshipクラス(モデル)を探すが、
+extension(拡張)として、class_name: "Relationship"があるので、
+#=>Relationshipクラス(モデル)を探す。
+
+②その探したクラスの中で、User -> user_idカラムを外部キーとしてUserモデルのテーブル上でいう主キーを関連づける。
+dependentはactive_relationshipsはユーザに依存するということ。
+
+③使えるようになるメソッドとしては、
+user = User.firstと仮に定義すると、
+user.active_relationships.build(follwed_id: "xx")や
+user.active_relationships --インスタンスの持つ関係一覧(インスタンスに従属するオブジェクトの集合などが使えるようになる。
+
+
+***{belongs_toの使い方}---
+ex1)
+class Micropost < ApplicationRecord
+	belongs_to :user
+end
+Micropost belongs_to :userと言われると、
+①:user -> Userクラス(モデル)を探し、
+② 大前提としてbelongs_toの主語側となるデータモデルに外部キーとなるカラムを持っておく必要があり、belongs_to :user -> user_idカラムをMicropostデータモデルから探し出して、外部キーとしたものをMicropostのuser_idとUser id(prim.key)が関連づける
+③Ruby上では、
+first_post = Micropost.firstと定義した時に
+first_post.user #=>ファーストポストと関連づいたユーザインスタンスの情報を取得できる
+#これは、見かけ上は、インスタンス.モデル名ではあるが、インスタンス.関連付け名-> belongs_to :hogeのhogeの部分であることを留意
+
+
+ex2)
+class Relationship < ApplicationRecord
+	belongs_to :follower, class_name "User"
+end
+①:follower -> Followerクラスを探すが、オプションとしてclass_name "User"があるため、関連付けの相手クラスとしてはUserだと伝える。
+②Relationshipクラス側のキー(つまり、外部キーは),素直にbelongs_to :follower -> follower_id(in Relationship)と、Userのprim.keyを関連づける。
+③Ruby上では、
+first_relationship = Relationship.firstと定義した時に
+first_relationship.follower #=> follower_idと一致するユーザを取得する
+#データベース上の一番最初に生成された関係の中でもフォローした側のユーザが返ってくる。(実用上の効能はあまりない)
+
+
+
+***has_many :through --多対多の関連を定義する時に使うメソッド(とオプション)。中間テーブルを持たせたDB設計を行う際に持ちいる。
+引数にとった関連付け名(単数形)_idとなる外部キーを :throughで指定されたassociationが意味するテーブル(モデル)にあることを確認して、その外部キーに関連する集合を構築する。(:class_name, :primary_key and :foreign_keyは、:throughに指定したassociationのものをそのまま使うため、無効になる。)
+class User < ApplicationRecord
+	
+	has_many :following, 
+	through: :active_relationships, source: :followed
+end
+
+①Railsはまず、:following -> following(単)_idの外部キーに関連した集合(参照先のデータ)を取得しようとするが、 source: :followedによって、followed_idを外部キーとした参照先の集合をとることと認識を改める。
+②どのテーブルの外部キーであるかをthrough: :active_relationshipsから、関連付け名active_relationships(relationshipsテーブル)だと認識する
+
+
+#(has_manyの内部的な話)
+#基本的には、渡された引数をclassifyメソッドでクラス名(モデル)化して、関連付けをしようと試みる。また、自身のクラス名をunderscoreメソッドによって、モデル名_idという外部キーと認識されるカラムを相手のモデルから探して、関連付けをする。
+
+--------------------
+
+*****{ルーティング応用}---------
+メンバールーティング --user/1/xxだとidがついてそれぞれを認識するルーティング ref)collection
+
+実装--リソースルーティングのブロックとしてメンバーブロックを追加する。
+
+ex)
+resources :users do
+	member do
+		get :following, :followers
+	end
+end
+
+#上の例では
+/users/:id/followingへGETリクエストが来た時に ->Users＃followingへ
+/users/:id/followersへGETリクエストが来た時に ->Users＃followersへ
+ちなみに名前付きルートはそれぞれ
+following_user_path(:id)
+followers_user_path(:id)で対応するようになる。
+
+=======
+
+
+
+
+

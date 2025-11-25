@@ -1,0 +1,195 @@
+CSS実際のスタイリングで用いること。
+
+**ヘッダーのレイアウト --ロゴやタイトルをページ左寄せ、メニューを右寄せにしたい時 
+inHTML---
+<header>
+<img src="./img/logo.png" alt="ロゴ" width="60px" height="60px">
+<nav>
+<ul>
+	<li><a href="">Menu</a></li>
+	<li><a href="">Menu</a></li>
+	<li><a href="">Menu</a></li>
+</ul>
+</nav>
+</header>
+---------
+inCSS----
+header {
+  display: flex;
+  /* justify-content: space-between; */ /*opt.1--二つのコンテンツのスペースを取るように配置*/
+
+}
+
+nav {
+  margin-left: auto;　　/*opt.2フレックスボックスにした上で、flexitemのmarginをautoで設定することで、余白部分全てを指定できる。*/
+}
+
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex
+}
+
+
+nav a {
+	display:block
+	width:100px
+	text-align: center;
+	line-height: 64x;	/*ロゴ画像と揃えてあげましたheightでやると文字が上に引っ付いて面倒になるからこっちがおすすめ。*/
+	
+
+
+----------
+
+
+*****画像と文章からなるコンテンツの画像を左右に振り分けながら表示したい。
+opt1は余白の位置を場合分けしてる感じ、opt2はコンテンツ間の余白遠空ける設計思想に基づいている感じ
+inHTML--------
+<body>
+  <section>
+    <div class="pic">
+      <img src="./img/logo.png" alt="">
+    </div>
+    <div class="desc">
+      <p>こんちはこんちはこんちはこんちはこんちはこんちはこんちはこんちはこんちはこんちはこんちはこんちは
+      </p>
+    </div>
+  </section>
+    .
+	.
+	.
+	x4全く同じsectionあります。
+ 
+</body>
+inCSS
+section {
+  display: flex;
+  margin-bottom: 60px;
+  justify-content: space-between;   /*opt2-2 コンテンツ間に32pxの余白が来るようにする。
+}
+
+
+section:nth-child(2n) {
+  flex-direction: row-reverse;
+ 
+}
+
+
+.pic {
+  width: 180px;
+  /* margin-right: 32px; */ 	/*opt1-1 余白をマージンつける
+}                       
+
+/*section:nth-child(2) .pic{   
+	margin: 0 0 0 32px; 
+}/								/*opt1-2 画像を切り返した時に余白が反対につくように設定
+
+
+.desc {
+  /* flex: 1; */				/*opt1-3 設定した余白、画像以外を文章をで埋めるよ。
+  width: calc(100% - 180px - 32px);	/*opt2-1 画像を固定長、余白も固定長で、文章を可変長で割合を決めることで柔軟なデザインにする　
+}
+
+
+**ふわっと色が変わるボタンをつくる---
+transition: background .3s;　トランジションを入れてあげる。さりげないけどいいらしい。
+
+**ローディングアイコンのテンプレーーーーーーーーー
+
+.loading {
+  width: 40px;
+  height: 40px;
+  border: 8px solid grey;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin infinite 0.8s linear;
+}
+
+@keyframes spin  {
+  from{
+    transform: none;
+  }
+  to{
+    transform: rotate(360deg);
+  }
+}
+
+
+***ポップアップ(無ー出現ー消失）のアニメーション
+
+@keyframes popup {
+  from{
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  
+  20%,80%{
+    transform: none;
+    opacity: 1;
+  }
+  
+  /* 80%{
+    transform: none;
+    opacity: 1;
+  } */
+  to{
+    transform: translateY(20px);
+    opacity: 0;
+	pointer-events: none   -----マウスのイベントが発生しなくなる。移動先の下（z軸方向）のものをクリックできるようになる。
+  }
+  
+}
+
+
+モバイルファーストのメディアクエリ
+ex)
+/* common */
+/*small screen*/
+body{
+  margin:0;
+}
+.image {
+  background-color: pink;
+  height: 100px;
+}
+.text {
+  background-color: silver;
+  height: 100px;
+}
+aside {
+  display: none;
+}
+
+/* medium screen */
+@media (min-width: 600px) {
+section {
+  display: flex;
+}
+.image{
+  width: 200px;
+}
+.text {
+  flex:1;
+}
+}
+
+/* large screen */
+@media (min-width: 800px) {
+  section {
+    width:800px;
+    margin: 0 auto;
+  }
+  aside {
+    display: block;
+    background-color: blue;
+    width: 160px;
+  }
+}
+
+**ユーザーアクションなどの怒るところでは、アクセントカラーを使いたい。補色を使うと目立つよ！
+補色を使う。hslの色相を+180だよ！もしくは+60°づつくらいで調整するとよい。
+
+
+--------------------------------

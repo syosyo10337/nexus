@@ -1,0 +1,143 @@
+*head/tail ファイルの中身一部の取得.オプションを付けない場合は、先頭(末尾)から10 行を標準出力します。ファイルコマンド。
+(opt: 
+-n 行  先頭(末尾)から指定した行を標準出力します。
+-c バイト  先頭(末尾)から指定したバイト分を標準出力します。
+)
+ex) 
+$head FILE 
+$cat FILE | head -
+$cat FILE | head    --この三つはどちらも先頭１０行を表示します。
+**特別なopt -f 
+tail は本来ファイルの終わり部分を表示するコマンドですが、ファイルによってはその終わり部分が随時変わるものもあります。そこで、tailの-f オプションを使うと変更をリアルタイムでモニタできます。終了する時は、ctrl +c cです。
+	
+***sort ---テキストファイルの中身をソートする.オプションがない場合は、アルファベット昇順になる
+sort [オプション] ファイル名
+	
+	オプション -r 逆順でソートする
+			 -k n n列目のデータをソートする。
+			 -n 数値としてソートする（デフォルトだとアルファベティカル）
+			 
+ex)$ sort score
+keiichi oka 70
+toru minemura 100
+yoshinori kawazu 85
+これを２列目（スペースを跨いだ二つ目の要素）でソートしたい時は、
+$sort -k 2 scoreとすると良い。
+
+また、数字の昇順にしたい時は、単に　-k3と列を指定するのだと、列の一文字目を参照してしまうので、ex)
+$ sort -k 3 score
+toru minemura 100
+keiichi oka 70
+yoshinori kawazu 85
+オプション-nを使い、数値として昇順になるようにする。
+ex)$ sort -n -k 3 score
+keiichi oka 70
+yoshinori kawazu 85
+toru minemura 100
+
+
+***uniq---行の重複の消去
+uniq ファイル名
+
+ex)
+$ cat > uniq-sample
+AAA
+BBB
+AAA
+CCC
+CCC
+DDD	#サンプルファイルを作成
+$ uniq uniq-sample
+AAA
+BBB
+AAA
+CCC
+DDD #AAA は2 行ありますが、結果はそのまま出力されています。これは、AAA の行は連続していないため、uniq の処理対象にはならないためです。
+
+***tr(TRanslate)---文字列の置き換え 各文字に対応させて変換できる。例をみてみよう
+tr 文字列1 文字列2
+
+ex)#ファイルを作成
+$ cat > translate
+Android
+iPhone
+Windows Phone
+（「Ctrl」D を押す。）
+#実行
+$ cat translate | tr on ON
+ANdrOid
+iPhONe
+WiNdOws PhONe
+#この出力を元ファイルを維持したまま、リダイレクトを使い、別ファイルに出力可能
+$ cat translate | tr on ON > translate2
+$ cat translate2
+ANdrOid
+iPhONe
+WiNdOws PhONe
+
+***diff---ファイルの比較
+diff [オプション] ファイル1 ファイル2
+		オプション	-c context diff 形式で差分を出力します。
+				   -u unified diff 形式で差分を出力します
+				   
+ex)
+$ cat file1
+test text
+$ cat file2
+test text
+new line
+#この時diffコマンドを使うとーーー
+$ diff file1 file2
+1a2
+> new line
+diff -u コマンドによる比較
+$ diff -u file1 file2
+--- file1 2012-07-06 11:00:00.098086703 +0900
++++ file2 2012-07-06 12:00:00.394135769 +0900
+@@ -1 +1,2 @@
+test text
++new line
+diff -c コマンドによる比較
+$ diff -c file1 file2
+*** file1 2012-07-06 11:00:00.098086703 +0900
+--- file2 2012-07-06 12:00:00.394135769 +0900
+***************
+*** 1 ****
+--- 1,2 ----
+test text
++ new line
+
+diff -u コマンドによる比較（共通点ない場合）
+$ diff -u file1 file2
+--- file1 2012-07-06 13:21:21.219249366 +0900
++++ file2 2012-07-06 13:26:51.664814277 +0900
+@@ -1 +1,2 @@
+-test text
++overwrite text
++new line
+
+
+grep コマンドは、ファイルの中からデータを検索します
+書式
+grep [オプション] 検索パターン[指定ファイル]
+		オプション
+				-e 文字列を検索パターンとして扱う。
+				-i 検索パターンと入力ファイルの双方で、英大文字と小文字の区別を行わない。
+				-v 検索パターンとマッチしなかった行を選択する。
+
+**検索パターンには正規表現を用います。
+正規表現は、grep のみならずLinux で用いられるパターンマッチや、
+ 多くのプログラミング言語でも利用されている、非常に重要な機能です。
+
+*正規表現で使われる記号と意味
+記号意味
+^ 行頭を表す  ^a ---a で始まっている行
+$ 行末を表す　b$ ---b で終わっている行
+. 任意の一字を意味する a.b ---a とb の間に1 文字入っている
+* 直前文字の0 回以上の繰り返しを意味する
+[...] .. の中の任意の一字を意味する [ab]cd ---a もしくはb に続くab(acd,bcd)
+[^...] .. の文字が含まれないことを意味する。
+[^ab]cd ---a もしくはb で始まらない(not) で、cd が続くもの
+(例: xcd, zcd 等)
+\（曖昧ですー￥とされてるけど、USだとどうなの？）正規表現の記号をエスケープする。
+

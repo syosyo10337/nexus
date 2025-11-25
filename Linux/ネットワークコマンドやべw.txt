@@ -1,0 +1,167 @@
+**ping ターゲット
+ターゲット(ホスト名やIP アドレス) にデータを送り、返答が戻るまでの時間を表示します。
+-c オプションを付けて、ping を発行する回数を指定することもできます。
+
+
+**traceroute コマンドとtracepath コマンド
+traceroute ターゲット
+tracepath ターゲット
+
+
+**IPアドレスを確認するコマンド
+
+ip a（ddress） [インターフェース]
+ネットワークインターフェースに設定されたIP アドレスとサブネットマスクを表示します。
+ex)ip a
+（ネットワークインターフェースの情報を表示）
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1
+link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+inet 127.0.0.1/8 scope host lo
+valid_lft forever preferred_lft forever
+inet6 ::1/128 scope host
+valid_lft forever preferred_lft forever
+2: enp0s3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP qlen 1000
+link/ether 08:00:27:1c:d0:16 brd ff:ff:ff:ff:ff:ff
+inet 192.168.100.16/24 brd 192.168.100.255 scope global dynamic enp0s3
+valid_lft 258878sec preferred_lft 258878sec
+inet6 fe80::a23f:e597:2d02:2236/64 scope link
+valid_lft forever preferred_lft forever
+.
+.
+.
+loが　ループバックインターフェース(機器が正常に稼動しているか確
+認するためにデータを送って試すループバックテストなどに利用)
+enp0s3 が物理的に存在するEthernet(イーサネット）のネットワークインターフェース
+
+
+nmcli [インターフェース]　　nmはNetworkManager
+コマンドラインでネットワークの設定ができるインターフェイスです。オプション無しで実行すると、現在の
+設定を表示します。
+nmtui
+会話型でネットワークの設定ができるインターフェイスです
+
+
+***ルーティング
+**ip route コマンド/ss コマンド----これらのコマンドでデータが流れる方向(ルーティング) を調べられます。
+
+ssのオプション
+-V
+バージョン情報
+-a
+全てのソケットを表示
+-n
+サービス名に変換せずに表示
+-r
+ホスト名を名前解決
+-p
+ソケットを使用しているプロセスID を表示
+-s
+集約したソケット情報
+-4
+IPv4 のソケットのみ表示. 他のオプションと併用.
+-6
+IPv6 のソケットのみ表示. 他のオプションと併用.
+-t
+TCP のソケットのみ表示
+-u
+UDP のソケットのみ表示
+-e
+詳細なソケット情報を表示
+
+
+**ルーティングの変更をするコマンド
+ip [オプション] r[oute] {コマンド|help}
+ip route {add|del} ターゲット/サブネットvia ゲートウェイアドレスdev インタフェース
+または
+route (非推奨）
+route add [-net|-host] ターゲット[netmask サブネットマスク] [インタフェース]
+
+*route コマンドでは、add を指定するとルーティングに経路を追加します。ターゲットには、-netを指定した場合にはネットワークアドレスを、-host を指定した場合にはホストアドレスを宛先として設定します。サブネットマスクの指定を省略した場合は、ターゲットに設定したアドレスから判別されたクラスに該当するマスク値が設定されます。インタフェースを省略すると、カーネルが自動的に最適なデバイスを設定します。
+ip route コマンドではroute コマンドと違って-net, -host を指定できません。代わりにCIDR表記で指定します。ターゲット/32 だと-host と同様にホストを指定でき、ターゲット/xx(32 以外)だと-net と同様にネットワークを指定できます
+
+
+***DNSを使う
+???
+
+***FQDN--fully qualifid domain name
+nslookup ターゲット
+ターゲットにドメイン名をいれるとIP アドレス
+IPアドレスと入れるとドメイン名を返します。
+
+
+***firewallid(ファイアウォール）の設定
+firewalld では、ゾーンと呼ばれる単位ごとに設定が可能です。
+**firewallLdの状態を確認するには、
+firewall-cmd コマンドまたはsystemctl コマンド
+
+ex)
+# firewall-cmd --state
+（ファイアウォールの状態を表示）
+running
+systemctl でfirewalld の状態と設定を確認してみましょう。
+# systemctl status firewalld.service
+（ファイアウォールの設定を表示します。active つまり実行中であることと、enabled であることがわかり
+ます。）
+● firewalld.service - firewalld - dynamic firewall daemon
+Loaded: loaded (/usr/lib/systemd/system/firewalld.service; enabled; vendor preset: enabled)
+Active: active (running) since 水2017-03-01 12:18:30 JST; 6h ago
+Docs: man:firewalld(1)
+Main PID: 732 (firewalld)
+CGroup: /system.slice/firewalld.service
+└─ 732 /usr/bin/python -Es /usr/sbin/firewalld --nofork --nopid
+3 月01 12:18:28 localhost.localdomain systemd[1]: Starting firewalld - dyna...
+3 月01 12:18:30 localhost.localdomain systemd[1]: Started firewalld - dynam...
+Hint: Some lines were ellipsized, use -l to show in full.
+
+次に、firewalld の設定を確認してみましょう。このコマンドはroot またはsudo で実行してくだ
+さい。
+# firewall-cmd --list-all
+（ファイアウォールの設定を表示）
+public (active)
+target: default
+icmp-block-inversion: no
+interfaces: enp0s3
+sources:
+services: dhcpv6-client ssh
+ports:
+protocols:
+masquerade: no
+forward-ports:
+sourceports:
+icmp-blocks:
+rich rules:
+
+オプション
+	--permanent
+	永続的設定に使用します。このオプションを使用しない場合、実行中のfirewalld に対して処理されます。このオプションを付けて実行した設定を有効にするには、--reload オプションを使用するか、firewalld の再起動が必要です。
+	--list-all　追加、有効化されている項目をすべて表示します。
+	--list-services　追加、有効化されているサービスを表示します。
+	--add-services サービス　　サービスを有効にします。
+	--remove-services サービス　　　サービス無効にします。
+	--reload　　　permanent 設定を再読み込みします。
+	
+	
+○実習: ファイアウォールの設定変更
+ファイアウォールにApache サービスのhttp を一時的に、https を永続的に追加してみます。
+# firewall-cmd --add-service=http
+(http を一時的に設定)
+success
+# firewall-cmd --add-service=https --permanent
+(https を永続的に設定)
+success
+　http とhttps がそれぞれ追加されていることを確認してみましょう。
+# firewall-cmd --list-services
+(--permanent をつけないと、http は表示されますが、https は表示されません。つまり、今現在https は
+無効です。再起動が必要)
+dhcpv6-client http ssh
+# firewall-cmd --list-services --permanent
+(--permanent をつけると、https は表示されますが、http は表示されません。つまり、再起動するとhttp は無効になります。)
+dhcpv6-client https ssh
+https がシステム起動時に設定されることを確認するため、firewalld を再起動します。
+# systemctl restart firewalld.service
+再起動の前後でどのように変わったかを確認してみましょう。
+# firewall-cmd --list-services
+（再起動前にpermanent で設定したhttpsが、再起動後に有効になっています。）
+dhcpv6-client https ssh
+# firewall-cmd --list-services --permanent
+dhcpv6-client https ssh

@@ -1,0 +1,442 @@
+**{ローカルの起動に関するコマンド}
+#サーバーの起動
+$ mysql.server start
+#動作確認/プロンプトに入る
+$ mysql -u root
+
+#プロンプトを抜ける
+mysql>exit
+
+#サーバーを停止する
+$ mysql.server stop
+
+*クエリ（query）　データベースに送る命令.慣習的にSQLがあらかじめ用意している命令は大文字、自分で付けるテーブル名やカラム名などは小文字にすることが多い
+
+
+EXPLAIN
+
+
+--コメント
+#コメント
+/*コメント*/
+*データベースに対する操作 -CRUD(Create/Read/Update/Delete)操作。それぞれ、INSERT/SELECT?/UPDATE/DELETE文に対応している。
+
+*DDL -Data Definition Language
+*DML -Data Manipulation Language
+*DCL -Data Control Language(COMMIT/ROLLBACK)
+
+**デリミタ--クエリを終わりを表現する記号SQLでは、;または\G
+
+***[データベース、テーブル/ビューの作成,編集]================
+{データベースの操作}------------------------------------
+*SHOW databases;  --現在あるデータベース(スキーマ)の一覧をみる
+*CREATE DATABASE [db名]; --データベースの作成
+*USE [db名];  -- DB(スキーマ)の選択
+
+{テーブルの操作(DDL)}-----------------------------------
+*SHOW TABLES; --現在いるDBのテーブルを表示
+
+*DESC [テーブル名]; --テーブルの構造(列情報)が確認できる。
+**SHOW CREATE TABLE [テーブル名]\G --テーブル定義を見ることができる。
+*SHOW INDEX FROM テーブル名 --あるテーブルにあるindexを表示する
+*CREATE INDEX インデックス名 ON テーブル名(カラム名); --インデックスを作成する
+
+**CREATE TABLE --テーブルの作成。データ型には(ex:INT-整数や、VARCHAR(文字数)を指定する。) 
+tpl)CREATE TABLE [テーブル名]　([カラム名]　[データ型],  ....);
+ex)
+CREATE TABLE posts (
+	message VARC　HAR(140),
+	likes INT);
+
+**e TABLE --テーブルの削除
+exA)DROP TABLE posts;
+
+**ALTER TABLE ADD/DROP/CHANGE/RENAME --既存テーブルの編集
+tpl)
+--ALTER TABLE [テーブル名] ADD [カラム名]　[データ型] (opt:AFTER [カラム名]/FIRST);
+既存のテーブルにカラムを追加 (optで挿入位置を指定)
+--ALTER TABLE [テーブル名] DROP [カラム名];
+既存のテーブルのカラムを削除
+--ALTER TABLE [テーブル名] CHANGE [カラム名] [新カラム名]　[データ型];
+既存のテーブルのカラムを変更(名前だったり、データ型)/データを変換して保持しようと頑張るけど、エラーでるかも
+--ALTER TABLE [テーブル名] RENAME [テーブル名];
+既存のテーブルのテーブル名を変更
+ex)
+ALTER TABLE posts ADD auther VARCHAR(255);
+ALTER TABLE posts ADD auther VARCHAR(255) AFTER id;
+ALTER TABLE posts DROP auther;
+ALTER TABLE posts CHANGE likes points INT;
+ALTER TABLE posts RENAME message;
+
+**CREATE TABLE AS/LIKE --既存のテーブルの抽出結果を別テーブルに切り出す
+--CREATE TABLE [付けたいテーブル名] AS SELECT * FROM [抽出元テーブル名];
+既存のテーブルのコピーを作り出す。FROM以降に条件をして、データの抽出結果をテーブルとして作成できる。
+--CREATE TABLE [付けたいテーブル名] LIKE [元となるテーブル名];
+既存のテーブルの構造をコピーする。 
+
+**VEIWとは --抽出条件だけを保持した仮想的なテーブルのこと。実行する度に元データから再度値を抽出してくるので、元テーブルと連動する仮想的なテーブルを作ることができる。TABLEと同じように作成、削除できる。一度作成されると、SQLからするとテーブルを変わらない
+ex)CREATE VIEW posts_tokyo_view AS SELECT * FROM posts WHERE area ='Tokyo'; 
+
+
+{レコードの操作(DML)}------------------------------------
+**INSERT INTO [テーブル名]　(カラム1,カラム2..) VALUES (カラム1の値、カラム2の値...);
+--レコードを挿入する。
+ex1)
+INSERT INTO posts (message, likes) VALUES 
+	('fuckU', 3000),
+	('holycow',3);	
+ex2)
+INSERT INTO city VAULES (DEFAULT,'Ozu','JPN','Ehime',45020);
+#cityテーブルに、レコードを挿入。カラム名を指定しなくてもできるよ。ここでは、明示的にidの値をdefaultとして指定したけども、省略しても暗黙的にデフォルト値が挿入される。
+
+#Mysqlではmulti row insertと言う構文が存在し、カラムの値のセットを複数指定し、1行のクエリで複数レコードを挿入することができる。
+#(現状Oracle/Firebird以外は対応している構文)
+**UPDATE--データの更新/WHEREを指定しないとカラム内の全データが更新される
+※UPDATE後はデータを戻せないので、操作する前にselectで操作するデータを確認すること
+tpl)
+UPDATE [テーブル名] 
+SET [カラム名1]　＝　値, [カラム名2]　=　値
+WHERE  (更新したいレコードの条件);
+ex)
+UPDATE posts 
+SET likes = likes + 5,
+	message = UPPER(message)
+WHERE
+	likes >= 10;
+	
+**DELETE --データの削除./WHEREを指定しないとカラム内の全データが更新される
+tpl)
+DELETE FROM [テーブル名]
+WHERE [対象となるレコードまたはその条件式];
+*AUTO_INCREMENTとDELETEコマンド --仮にテーブル内の全てのデータを削除しても、次にINSERTされるレコードのIDは今までの連番になるように設定されるよ。もしそれが嫌ならTRUNCATEを使って、
+tpl) TRUNCATE TALBLE [テーブル名] --AUTO_INCREMENTを1からリスタート
+
+*ON UPDATE (値)  --コードが更新された時にその時点での値を自動で更新する 
+**DEFAULT NOW()/ON UPDATE NOW()を使ったカラム日時の自動更新 
+ex) createdカラムにはファイルが作成された時にデフォルトを現在時刻で作成日時とし,updatedカラムにもcreatedカラムと同じように設定した上で、更新されたタイミングでその日時を上書きする。
+CREATE TABLE posts (
+created DATETIME DEFAULT NOW(),
+updated DATETIME DEFAULT NOW() ON UPDATE NOW()
+);
+
+------------------------
+
+***[データ型]--------
+**整数 -INT(-21億~21億),-TINYINT(−128~127),-BIGINT(-922京~922京) .INT UNSIGNEDとすると符号ビットなしの値の範囲
+**実数 -DECIMAL(整数桁,　小数桁) 固定小数点,-FLOAT(DOUBLE) 浮動小数点(高精度).
+**文字列 
+--CHAR()  固定長のデータ(0~255文字)
+--VARCHAR(文字数)  可変長のデータ(0~65525文字)
+--TEXT() それ以上の文字列
+ex)
+CREATE TABLE posts (
+	message VARCHAR(140),
+	likes INT UNSIGNED,
+	mood DECIMAL(4, 2) UNSIGNED,
+	lang CHAR(2)	
+);
+
+*-ENUM()	特定の文字列から1つ。1から始まるインデックス番号でも指定可能
+ex)
+CREATE TABLE posts (
+	message VARCHAR(140),
+	likes INT UNSIGNED,
+	category ENUM('Gadget', 'Game', 'Business')	 --インデックスだと1,2,3...
+);
+/* INSERT INTO posts (message, likes, category) VALUES 
+	('fuckU', 3000, 'Gadget'),
+	('Arigato', 12, 'Game'),
+	('Assss', 12, 'Same'); */
+INSERT INTO posts (message, likes, category) VALUES 
+	('fuckU', 3000, 1),
+	('Arigato', 12, 2),
+	('Assss', 12, 3);
+	
+*-SET	特定の文字列から複数, 項目も一つ目から2^0,2^1,2^2... で管理している。
+ex)ENUM型を同じテーブルだと仮定すると
+INSERT INTO posts (message, likes, categories) VALUES 
+	('fuckU', 3000, 3), -3=>2^0 + 2^1 なのでGadget,Game
+	('Arigato', 12, 4),
+	('Assss', 12, 7);	-7=>2^0 + 2^1 + 2^2なのでGadget,Game、Business
+
+*-BOOL(TRUE/FALSE),-TINYINT(1)(1/0) 真偽値
+*--DATE 日付 -TIME 時間 -DATETIME 日時
+ex) 
+INSERT INTO posts (message, likes, is_draft, created) VALUES 
+	('fuckU', 3000, TRUE, '2020-10-11 15:32:05'),
+	('Arigato', 12,FALSE, '2020-10-12'),
+	('Assss', 12, 0, NOW());
+*-NULL カラムの値が指定されてない時の値(なにもない) NOT NULLでエラーではじける。カラムの設定時に,DEFAULT 値で既定値も設定可能。
+
+**CHECK制約 --論理演算子を用いて、A INT CHECK (A >= 0 AND A <= 100)とすると、条件を満たさない値が入力された時もエラーで弾いてくれる。
+**UNIQUE --文字列や値の重複した場合にエラーで弾いてくれる。ex) VAR(140) UNIQUE;
+**主キーの設定 --レコードには主キーが必要です。一意である必要があるため->INT NOT NULLを付けてあげて、PRIMARY KEY (カラム名)で指定してあげましょう。AUTO_INCREMENTで自動生成可能です。
+ex)
+CREATE TABLE posts (
+	id INT NOT NULL AUTO_INCREMENT,
+	message VARCHAR(140) UNIQUE,
+	likes INT CHECK (likes >= 0 AND likes <= 10),
+	PRIMARY KEY (id)
+);
+
+
+*EXPLAIN　SQL文の先頭につけることで、実行計画が見れる。
+postgresQLだと、フルレンジなのか、indexをつかっているのか？何件見ているのか等々
+
+SQLite だと　->explain query plan。
+----------------------------------------------
+
+
+***[基本書式(DML)]-------------------------------
+SELECT [カラム名],[カラム名],[カラム名],...
+FROM [テーブル]
+WHERE  (条件) --条件をつけて行を絞る
+
+*等価演算子　=イコール !=ナットイコール(<>ともらしい)
+**LIKE演算子  --文字列の部分一致を指定。WHERE カラム名　LIKE "文字列"；大/小文字を区別する時はLIKE BINARY 文字列と書く。
+*ワイルドカード--(%) 任意の文字列 (_) 任意の1文字。ワイルドカードを文字列として認識させるには\%,\_と指定する。
+ex)　WHERE name LIKE "%プリン%" -プリンを含むレコード
+-*前方一致
+LIKE "xx%" xx以降は何が来てもいい -> xxではじまる文字列を検索する。
+-*後方一致
+LIKE ”％xx”　xx以前は何が来てもいい。-> xxで終わる文字列を検索する。
+
+**NOT演算子
+NOT以降を含まないものを取得する。
+ex)
+WHERE NOT price >1000; 
+WHERE NOT name LIKE "%プリン%" --プリンを文字列、ではないもの
+
+**論理演算子
+*AND--...WHERE [カラム] 条件１ AND 条件２
+*OR-...WHERE [カラム] 条件１OR 条件２
+**BETWEEN-...WHERE [カラム] BETWEEN 値１ AND 値２ === (カラム >= 値1 AND カラム <=値2)数値の範囲指定に便利、NOT BETWEENで条件の反転も可能
+**IN --IN (A,B) === A OR B
+ex)WHERE likes NOT IN (3, 3000); --3、3000に不一致のものを指定。
+
+*IS NULL; --NULLのデータを取得する。カラム名がNULL（空のもの）を取得する。絞り込み等をした際に、NULL取りこぼす事があるので追記することがある。　ex)WHER price IS NULL;
+*IS NOT NULL; --NULLじゃないデータを取得するNULLの扱いとしてex) price = NULL~~　NOT price = NULL という表現は正しくないし、使えない
+
+-----------------------------------------
+
+**{抽出結果の並び替え/操作} ----------------
+**ORDER BY --カラムの並び替え、(,)区切りでさらに詳細に並び替えできる。ここで指定するカラムをsort keyと呼ぶ。
+tpl)ORDER BY [並び替えたいカラム名]　[並べ方:ASC(既定値)/DESC]
+ex)ORDER BY likes DESC, message DESC; -ライクの降順かつ、同値のものがあれば、メッセージを降順
+
+
+**LIMIT --データの抽出結果の制限.WHERE>ORDER BY>LIMITの順序で記述する。
+tpl) クエリの文末 LIMIT [int]; 
+(opt:OFFSET [n-1] --データの頭n件数分をn-1で付け足すことで,n件から抽出する。)
+ex1)LIMIT 5 OFFSET 2; ---5件抽出の3件目から
+ex2)LIMIT 2,3; --抽出結果の頭2件を除外し、3件表示 === ex1
+
+
+**UNION ALL --複数の抽出結果を一つの結果にまとめる。対象のクエリのカラム数とデータ型が一致している必要がある
+ex)ライク数が多い順に3件と一番小さい1件を抽出して表示。
+(SELECT * FROM posts ORDER BY likes DESC LIMIT 3)
+UNION ALL
+(SELECT * FROM posts ORDER BY likes LIMIT 1);
+-------------------------------------
+
+**AS---カラム名などに別名を定義する
+tpl)[カラム名] AS [付け替えたい名(''要らなそう)]
+
+-------------------------
+
+***[関数()]===========================================
+
+*{数値の関数}----
+*ROUND( ,n),*FLOOR()*,CEIL() --()内の結果の小数点を切り捨てたり、n桁で丸める四捨五入する。
+ex)FLOOR(likes * 500 / 3) AS floor,
+CEIL (likes * 500 / 3) AS ceil,
+ROUND(likes * 500 / 3, 2) AS round ---２桁になるように四捨五入。小数を２桁に丸める。
+FROM posts;
+
+*{文字列の関数}---
+*SUBSTRING --文字列の一部を切り出す。
+tpl)SUBRSTRING([カラム名], 整数, 桁数) 整数は正負とる。
+ex)
+SELECT message,
+ SUBSTRING(message, 3), --3文字目以降を表示
+ SUBSTRING(message, 3, 2), --3文字目以降、２桁(2文字）
+ SUBSTRING(message, -2); --後ろから２文字
+*CONCAT() --文字列の連結。結したい値をカンマ区切りで渡す。
+ex)SELECT CONCAT(message, '--', likes)
+*LENGTH([カラム名]) --文字数を抽出。日本語の場合はCHAR_LENGTH()を使うと正常に動作するよ。
+*UPPER() --全て大文字にする。
+*{日時の関数}
+*YEAR(),*MONTH(),*DAY()--'yyyy-mm-dd'のようなフォーマットの時それぞれ、年月日で抽出
+*DATE_FORMAT() --フォーマットを指定して抽出
+ex)DATE_FORMAT(created'%M %D %Y %W') --正規表現を使って、M-month,D-day,Y-year,W-曜日と表示
+*DATE_ADD() --日付の計算、いついつの何日後とか
+tpl)DATE_ADD([カラム(DATETIME)], INTERVAL n DAY) --指定した日付のn日後を表示
+*DATEDIFF() --指定した日にちとの差分を表示する
+tpl)DATEDIFF[カラム(DATETIME)], [DATETIME(ex.NOW())]) --DATETIMEから指定した日付の差分を表示
+ex)
+SELECT created,
+ DATE_ADD(created, INTERVAL 7 DAY), --createdカラムの日付の7日後
+ DATEDIFF(created, NOW());　--今日の日付から、createdカラムの日付を引いた差分(-xxなら今日のxx日前)
+
+**{集約(集合)関数}-------------------------------
+レコードを集計してひとるのレコードにするための関数。これらの関数が記述できるのは、「SELECT」「ORDER BY」「HAVING」
+AVG(price-cost)などと四則演算が併用できる(あたり前),基本的にはNULLを除いた集計になるよ
+
+*SUM() --当該カラムの値の合計を求める。
+**AVG関数() --データの平均を計算する
+*COUNT() --指定したカラムのデータの個数を数える。nullはカウントされない(NULLがあるレコードもカウントしたい時はidや(COUNT*)でカラムを指定すると良い。
+*MAX/MIN() --指定したカラムの最大/最小値を取得する。
+
+*DISTINCT [カラム名]　--重複したものを省いたカラムになる。distinct(はっきりとした,明瞭な)
+
+***GROUP BY  [カラム１], [カラム２]--"カラム"を指定して複数レコードのグループ化をする。複数指定したい時は(,)で区切る.
+この関数で指定するカラムのことを、集約キーやグループ化列と呼ぶ。
+
+*HAVING --GRIOUP BYでグループ化し、そのグループに条件をつけてレコードを絞り込む。HAVINGはグループ化された後のテーブルから検索するため、条件文で使うカラムは必ずグループ化されたテーブルのカラムを使います。
+例）日と人ごとに分けた買い物の合計を占めてしているなら、sum(price),date,nameからとかね
+*GROUP BYとWHEREの併用 --処理の順序が、WHERE　>　GROUP BY　>　集計関数　>　HAVINGとなってるため、GROUPBYの後に絞り込みをしたい時はHAVINGを使う
+ex)
+SELECT 				--エリアとlikesの合計を抽出する
+	area, 
+	SUM(likes)  
+FROM 				--postsというテーブルから
+	posts 
+WHERE 				--likesが10以上のレコードを用いて(対象にして)
+	likes > 10
+GROUP BY 			--それらをエリアごとにグループ分けして
+	area
+HAVING 
+	SUM(likes) >= 30; --	かつlikesの合計が30以上のもの
+
+
+
+*GROUP_CONCAT(カラム) --該当するカラムを横並び、カンマ区切りで表示する。つまり、文字列に対する集計を表示(Postgresだと、STRING_AGG関数)
+-------------------------------------------
+
+**{条件分岐} --IF文とCASE式?
+tpl)*IF([条件], '真の時の値', '偽の時の値')
+tpl)
+*CASE 
+	WHEN [条件1] THEN [条件1が真の時の値] 
+	WHEN [条件2] THEN [条件2が真の時の値] 
+	ELSE [条件1,2が偽の時の値]
+END
+ex)-- likeの数でチーム分けしている例
+SELECT *, IF(likes >10, 'A', 'B') AS team 
+FROM posts;
+
+SELECT *, 
+	   CASE
+	   		WHEN likes > 10 THEN 'A' 
+	   		WHEN likes > 5 THEN 'B'
+	   		ELSE 'C'
+	   END AS team
+FROM posts;
+
+***[ウィンドウ関数??]----------------
+
+
+
+==================================================
+
+**[サブクエリ]-----------------------
+クエリの中でつかうクエリ。()内にセミコロン（;）は不要。実行の順序としては、サブクエリからのメインクエリ
+ex)抽出条件としてのサブクエリ
+SELECT*   -
+FROM posts
+WHERE likes = (
+	SELECT MAX(likes) FROM posts
+	);
+
+ex)抽出元としてのサブクエリ　--サブクエリを抽出元のテーブルとして扱う。必ず名前をつけること。
+SELECT
+	AVG(n)
+FROM
+	(SELECT area, COUNT(likes) AS n
+	FROM posts
+	GROUP BY area) AS t;
+
+ex)[特定の値 AS avg]の　特定の値にサブクエリを使っている。　
+*相関サブクエリ --大本のクエリと関連付けながら、実行しているサブクエリのこと
+SELECT *, 
+	(SELECT AVG(likes) FROM posts) AS total_avg, 
+	(SELECT AVG(likes) FROM posts AS t2 WHERE t2.area = t1.area) AS area_avg
+	--エリアごとの平均値を付け加えている。
+FROM posts AS t1; 
+
+
+
+ex) 
+SELECT district, name, population 
+FROM cityjapan AS c1
+WHERE population > (
+  SELECT AVG(population)
+  FROM cityjapan AS c2
+  WHERE c1.district = c2.district
+  GROUP BY district
+);
+#district, name, population のカラムを選択
+#cityjapan　ビュー(自作した)を対象として、
+#人口が、Xより大きい条件で
+#X=> 各都道府県別の人口の平均値よりも、高い人口をもつ条件。？
+--------------------------------
+
+
+
+
+
+
+
+;
+***{複数テーブルの関連付け}
+**JOIN --で紐付けたいテーブルを指定。ONで条件を指定  from 一つでjoinを複数にして、3つ以上のテーブルを関連づけられますよ。
+ex)
+SELECT *
+FROM players
+JOIN countries
+ON  players.country_id = countries.id
+*また複数テーブルで同一のカラム名を持つとき、テーブル名.カラム名とすることで区別する。
+
+*複数テーブルを扱う際には、カラム名をテーブル名で修飾する。つまり、
+「テーブル名.カラム名」の形をとって、どのテーブルのカラムかを明記する。複数テーブルに渡って重複しないカラムの場合は省略しても良い。
+
+
+(*LEFT JOIN-通常のJOINでは、FROMで指定した外部キーを基準に他のテーブルを紐づけるため、外部keyの値がNULLのときはデータを関連づけれない。そんなときは、これ。)
+
+
+***INNER JOIN(内部結合) --ON節で指定した結合条件に一致するrecord(row)だけを2つのテーブルから持ってくる。
+tpl)
+SELECT 選択したいcolumnの羅列
+FROM 1つめのテーブル
+INNER JOIN 2つめのテーブル
+ON 結合の条件(ex: first_table.user_id = second_table.id)
+
+
+
+**OUTER JOIN(外部結合) --2つのテーブルのうち一つを基準として、
+tpl)
+SELECT 選択したいcolumnの羅列
+FROM 1つめのテーブル
+LEFT OUTER JOIN 2つめのテーブル
+ON 結合の条件(ex: first_table.user_id = second_table.id)
+
+#left outr join つまり、2つのテーブルのうち左側(前者)を基準にすべてのcolumnを表示し、もう一方のテーブルに関しては結合条件に合致するものがある場合は取得され、なければNULLが取得される。
+
+*RIGHT OUTER JOIN --2つ目の表を基準として、テーブルを紐づける
+
+
+SQL > .mode line　
+整形して出力してくれる d
+
+
+
+NOW()関数現在の日時を取得する。
+
+
+# UPSERTの実行方法
+```
+INSERT INTO users (id, name, email)
+VALUES (1, 'John Doe', 'john@example.com')
+ON DUPLICATE KEY UPDATE name = 'John Doe', email = 'john@example.com';
+
+```

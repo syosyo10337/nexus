@@ -1,0 +1,26 @@
+12_25_23 (Mon)
+10:00- 19:00 (8h)
+
+[勤怠]
+- 先日実働: h
+- 今月累計: /160h
+
+
+[tasks]
+## dev 5.5h
+- ZAS-1365 investigate 1h
+
+
+
+## mtg/release/etc 2h
+- team mtg 1h
+- UBリリース 1h
+
+## Alert Monitor .5h
+
+
+//TODO:
+- ZAS-1365 {
+	- 調査 for 見積
+	- 着手
+}

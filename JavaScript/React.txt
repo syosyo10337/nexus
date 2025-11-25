@@ -1,0 +1,2809 @@
+React学習
+
+# create-react-app
+react実行環境の雛形を簡単に生成
+
+// インストール
+$ npm i -g create-react-app
+
+// create-react-appドキュメント
+$ npm docs create-react-app
+
+// プロジェクトの作成方法
+$ create-react-app <フォルダ名>
+
+// サーバの起動 (ディレクトリ位置に注意してね)
+$ npm start 
+or
+$ yarn start 
+
+// buildで本番環境用のコードにする
+$ npm build
+
+//testコードを流すためのコマンド
+$ npm test
+
+// 隠し設定も可視化すること。config等も表示できる。
+$ eject
+
+
+// package.jsonに書かれたパッケージをインストールする
+$ npm install 
+
+
+
+
+
+# v18以降の推奨render方法(React要素をDOMとしてレンダーする)
+```
+	const appElment = document.querySelector('#app');
+	const root = ReactDOM.createRoot(appElment);
+	root.render(<h1>こんちは</h1>);
+
+```
+
+- v18以前の書き方(非推奨)
+```
+	ReactDOM.render(<h1>こんちは</h1>, appElement)
+```
+
+
+# Component
+画面の各構成要素をReactで定義したもの。JSXを構築するための場所。JSXの構築に直接関係のない処理は全て副作用として扱われる。
+
+
+## コンポーネントの定義
+- 関数コンポーネント
+JavaScriptの関数として定義する。関数コンポーネントはpropsを受け取り、JSXを返す
+e.g.)
+//関数の定義は"大文字"ではじめよ
+
+//関数宣言の時
+function Welcome() {
+	return <h1>Hello</h1>; //JSXを返す
+}
+
+//アロー関数の時
+const Example = () => {
+	return <h1>Hello Components</h1>;
+}
+	
+	
+- コンポーネントの実行（呼び出し)
+<Welcome />
+
+
+//複数行に渡る場合には、returnキーワードの性質上、改行すると undefinedが返ってくる。なので、returnの後には改行せずにreturnする値を指定すること。
+もし、JSXで複数行の記述をしたい場合にも改行があると、認識しないので
+
+e.g.)
+const Example = () => {
+	return (
+		<div>
+			<h1>Hello Components</h1>
+		</div>
+		);
+}
+
+以上のように、してreturnの直後を()で一つの塊だと、明示した上で、改行された文字列を表現すること。
+
+また、returnするだけでの場合には、returnは省略できるので、以下のように書くこともできる。
+const Example = () => (
+		<div>
+			<h1>Hello Components</h1>
+		</div>
+);
+//()で囲んで、1行の処理だから{}を省略できるって話。
+
+
+
+
+# [JSX]
+JSXとは、JavaScript内でHTMLっぽい表現をするJavascriptの拡張構文」です
+
+- class属性の付与をしたい時にはクラス宣言と予約後が重複するため、
+```
+const Example = () => {
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+```
+を利用する。
+
+
+## コンポーネントの分割方法
+1ファイルには、1コンポーネントという理念がありますので、
+基本的には名前付きのexportなどで識別する名前をつける必要がない。
+つまり、基本的には各ファイルで、default exportを使用し、パスによって読み込み分けるのが良いはずです。
+
+
+
+
+# Fragment
+JSXで返す要素は、1つのルート要素にまとまっている必要がある。
+つまり、
+<div className="component">
+	<h3>Hello Component</h3>
+</div>
+<h3>hello world</h3>
+<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut exercitationem qui suscipit et minima neque magni nam facere consequatur modi ut accusantium quo alias eaque, rerum sint numquam quia placeat.</p>
+
+以上のような場合には、div要素とh3要素とp要素が階層の最上にあるが、JSXではこのようなルート(最上位になる要素)が複数あるものを許容しないので、何もないdivだとでwrapしてあげる必要があります。
+
+## Fragment
+Reactにはfragmentというコンポーネントがあり、これは、JSXが返す要素を1つのルートからなる要素として束ねるwrapperの役割を持つ。これを活用すると不要なタグの出力しなくて済みます。//基本的には,HTMLとして出力される際にフラグメントは出力されないので、key属性というループ処理用の属性を除いて属性を付与することはできない。(<>にはkey属性すらつかないよ)
+
+### 使い方
+```
+//reactパッケージのdefaultをReactとしてインポートして
+import React from "react";
+
+//当該箇所にて
+<React.Fragment>
+	/*
+	fadf
+	fdafd
+	dfad
+	*/
+</React.Fragment>
+```
+e.g.2)//Fragmentを直接名前付きインポートしても使うことができる。
+```
+import { Fragment } from "react";
+
+<Fragment>
+</Fragment
+```
+
+e,g,3)//何もインポートせずに、フラグメント機能を使う(便利)
+<>
+</>
+
+
+
+# JSXに、JSコードを埋め込む。
+{}の中に、式(Expression)を入れることができる。
+配列が埋め込まれた場合には、区切り文字なしで、文字列に変換される。
+e.g.)
+
+const Expression = () => {
+  const title = "Expression";
+  const array = ['title', 'item2', 'item3'];
+	const hello = (arg) => `${arg} Function`
+	const bool = true;
+  return (
+    <div className={title.toLowerCase()}>
+      <h3>Hello {title}</h3>
+      <h3>{array}</h3> //配列を評価
+      <h3>{hello("Hello")}</h3> //関数呼び出し
+      <h3>{/*  コメントもJSの式として評価するので表示されません。 */}</h3>
+			{<h3>Hello JSX</h3>} 
+		//一見HTMLだが飽くまで、JSXを扱っています。
+		//HTMLをオブジェクトとして扱っている。
+		{bool} //**真偽値はJSXでは出力されません。
+    </div>
+  )
+}
+
+# 式と文の違い(expressionとstatement)
+式は、返り値を持つもの。(変数に代入できるもの)
+文は、変数宣言、for文,if/switch文など;で区切るもの //文の場合には、;でしめるよ
+
+### 式の例
+- プリミティブ型のデータ
+- 関数の呼び出された関数
+- 定義された関数自体をオブジェクトとして？
+- boolean値を返すような演算子による計算
+//注意、Rubyでは、if文も返り値を持ち変数に代入できるが、JSは違う
+
+const fn = () => "hello"; // 
+const a = fn(); // 関数の呼び出しは、返り値を持つため、変数への代入できるね-> 式
+
+### 文の例
+for文やif文はだめ。これらの文自体は戻り値を持たない。
+const a = 1; //これ全体変数宣言と、代入による初期化は文
+//if文は変数に代入できないので、❌だが、三項演算子は式になるので、JSXでも使えるし、変数への代入もできる。
+
+//アロー関数について
+const hello = () => "hello"; //この定義部は文ですね。
+関数の呼び出しは式です。評価されて戻り値を持ちますよね。
+
+const a = hello(); //hello()の部分は式
+
+### 式文とは
+e.g.)
+1; <-1は式なので、変数に代入もできるし、;をつけると、文になり、メモリスペースをとってないもしない文。とも言える。
+
+
+
+
+# propsについて
+propsはpropertiesのこと
+外部から引数を受け取ることで、コンポーネントの挙動を変えることができる仕組み。
+
+
+# 関数定義時に、
+引数を取れるようにする。
+
+```
+//propsの名前で受け取るようにしている。
+const Child = (props) => {
+  console.log(props); 
+  console.log(props.color);
+
+  return (
+    <div className="component">
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+```
+# 呼び出し時に、例えば
+```
+const Example = () => <Child  color="red"/>;
+
+```
+とすると、Childコンポのアロー関数の中では、propsオブジェクトが生成されており、そのオブジェクトは渡された属性とその値をプロパティとして持つ。
+
+```
+e.g.)先ほどの例の場合には、
+console.log(props); -> //{color: 'red'}というオブジェクト
+console.log(props.color); -> //red
+
+```
+
+
+## propsを分割代入で使う。
+propsは"オブジェクト"ですので、
+
+e.g.)
+```
+// Childコンポ関数を呼び出す時に
+<Child color="red"/>としたとすると、
+
+定義側は、propsにcolorプロパティを持つオブジェクトが渡ってくるんですよ?
+なので、単に分割代入で、{ props: {color : 値, xxx: aadfa,} }のカラープロパティだけを拾うこともできる。 
+const Child = ({ color }) => {
+console.log(color)
+  return (
+    <div className={`component ${color}`}>
+      <h3>Hello Component</h3>
+    </div>
+  );
+};
+
+このように分割代入を使うと、デフォルト値を設定することもできる。
+```
+const Child = ({ color : c = 'green'}) => {}
+//この時、colorプロパティをcプロパティという変数名に変更し代入されたい時にはは:を使う、また、デフォルト値を代入している。
+
+
+- 関数を渡すこともできる。
+```
+const Example = () => {
+  const hello = (arg) => `hello ${arg}`;
+  return (
+    <> 
+      <Child
+        num={123} 
+        fn={hello}
+        bool />
+    </>
+  )
+};
+
+```
+//propsのfnというプロパティにhelloという名前で定義した関数を渡している。
+//これはつまり、関数を渡している。
+
+- 論理値を渡す。
+boolをプロパティとして渡す時、定義側(分割代入される側)に、値が代入されない時、プロパティ名が一致しない時undefinedとなり、そのプロパティはfalsyとして扱われる。
+
+- オブジェクトを渡す
+
+const Example = () => {
+  const hello = (arg) => `hello ${arg}`;
+  return (
+    <> 
+      <Child
+        num={123} 
+        fn={hello}
+        bool
+        obj={{ name: 'Tom', age: 18 }} />
+      {/* <Child color="red"/> */}
+    </>
+  )
+};
+このように渡されるobjには、{}を忘れない。（オブジェクトリテラル）
+
+
+##オブジェクトのプロパティを一括で、propsのプロパティとして渡す。
+...(スプレッド演算子)を使って、オブジェクトを展開して渡す。
+
+const Example = () => {
+  const hello = (arg) => `hello ${arg}`;
+  const o = {
+    color: "red",
+    num: 123
+  }
+  return (
+    <> 
+      <Child  //Childコンポーネントに対して
+        {...o} //オブジェクトを展開したもの()
+        fn={hello} //関数
+        bool //真偽値渡すことができる。
+        obj={{ name: 'Tom', age: 18 }} />
+      {/* <Child color="red"/> */}
+    </>
+  )
+};
+
+//Childコンポーネントの定義側では、{color: "red", num: 123}というプロパティをプロパティの一部として持つオブジェクト(props)を受け取ることになる
+
+- コンポーネントを受け取る
+さらに、以下のchildrenプロパティをみてわかるように、propsのプロパティとして好きな値を用いて、そこにコンポーネント自体を定義し、渡すこともできる。
+
+# 特別なprops
+- children
+Containerコンポーネント呼び出し時に子要素として定義されたものを、
+Containerのpropsのchildrenプロパティで受けることができる。
+e.g.)
+const Example = () => {
+  return (
+    <div>
+      <Container title="Childrenとは？">
+        {1}  
+      </Container >
+    </div>
+  );
+};
+
+
+### 同様にして、あるコンポーネントをchildrenとしてpropsで渡すこともできる。つまり、親コンポーネントのJSXの中にコンポーネントの呼び出しを含めることができる。
+
+
+
+## Propsについて理解しておきたい項目
+
+1. propsの流れは一方通行
+親コンポーネントから呼び出し先の子コンポーネントへpropsを介して、一方通行にデータの受け渡しを行える。
+
+
+2. propsは読み取り専用。つまり書き換えはできない。
+props.nameなどpropsが持つプロパティはすべて、read-onlyつまり、再代入はできません。
+
+### 実際のプロパティの隠し設定についてみてみる。
+e.g.)
+const desc = Reflect.getOwnPropertyDescriptor(props, "name");
+console.log(desc);
+//->
+configurable: false
+enumerable: true
+value: "Tom"
+writable: false
+
+
+# JSXの深堀り
+HTMLっぽくてもJavaScriptのオブジェクトなのです。
+JSXは、babelJSによって、変換されている。
+**JSX -> JS function -> JS object(仮想DOM/React要素)**
+//オブジェクトとしての操作ができる。
+//また、コンポーネントも呼び出されることでJSXを返すため、結果的にはReact要素になる。
+//さらに、React要素(JSのオブジェクト)をReactがDOMとしてレンダーしているため、最終的にはHTMLが作成されている。
+[JSX]
+<h1 className="greeting">Hello World</h1>;
+
+[JS関数(babelによる)]
+React.createElement("h1", { 
+	className: "greeting"
+}, "Hello World");
+
+[JSのオブジェクト]
+$$typeof: Symbol(react.element)
+key: null
+props: {className: 'greeting', children: 'Hello World'} //2nd arg and 3rd arg(childrenの部分)
+ref: null
+type: "h1" //1st arg
+_owner: FiberNode {tag: 0, key: null, elementType: {…}, stateNode: null, type: ƒ, …}
+_store: {validated: false}
+_self: null
+_source: null
+[[Prototype]]: Object
+
+
+JSの関数について、
+- React.createElement("タグ名orコンポーネント","propsの値{x: y}", タグの中のtextContent);
+//書式
+
+React.createElement(
+  type, //タグの名前を指定(他にもあるけど、)
+  [props], //propsの値をオブジェクト形式で格納
+	[...children] //つまり、子ノード？DOMの構造思い出して、
+)
+
+e.g.)
+React.createElement("h1", 
+	{ 
+	className: "greeting"
+	}, 
+	"Hello World");
+
+
+
+
+# React要素であるコンポーネント
+コンポーネントを呼び出す時に、それらは、babelによってJSの関数に変換され、最終的にはJSのオブジェクトの形になる。
+
+e.g.)
+const Bye = () => {
+      return <h2>GoodBye!</h2>;
+}
+
+const Example = () => {
+  return (
+    <div>
+      <Bye/>
+    </div>
+  );
+};
+
+
+const Bye = () => {
+//react要素を作成する。h2のタグで、props属性はなし、children要素は、文字列の"Good bye!"
+  return React.createElement("h2", null, "GoodBye!");
+};
+const Example = () => {
+//この部分では、第3引数であるchildrenの部分に、Byeを呼び出すreact要素を作成する関数が入っている。
+//その関数の中では、Bye(JSXを返す)が呼び出される。Byeのコンポーネントも当然のように展開されて、JSX -> -> JSオブジェクトになる。(再帰的な構造を持つ。)
+//参考、Byeの中身は前述されてます。
+  return React.createElement("div", null, 	React.createElement(Bye, null));
+};
+
+
+# React要素がレンダーされる仕組み(v18)
+すでに述べたある通り、JSXが、JSの関数を経て、オブジェクトになったものがどのようにレンダーされるのか。
+e.g.)
+```
+<body>
+	<div id="app"></div>
+</body>
+
+const element = <h1>Hello!</h1> //JSX
+//ルートを作成
+const root = ReactDOM.createRoot(document.getElementById('app'));
+//renderメソッドでJSXをマウントする。
+root.render(element)
+
+- [用語]React要素のツリー、コンポーネントツリー
+React要素の実態は何度も言うようにJSのオブジェクトである。また、それをもとにReactが実際にDOMをレンダーするために、仮想DOMとも呼ばれている。
+このReact要素をもとにしたツリー構造をReact要素のツリーと呼び、また、その中でもReactのコンポーネントだけを切り出したものを特に、コンポーネントツリーを読んでいる。
+
+
+# [stateとイベント]
+
+- 初めてのイベント
+const Example = () => {
+  const clickHandler = () => {
+    alert('ボタンがクリックされました。');
+  }
+  const clickHandler2 = () => {
+    console.log('ボタンがクリックされました。');
+  }
+  return (
+	<>
+	//関数のハンドラーの呼び出し。
+	//()をつけて、関数を渡さないで、つけちゃうと即時実行されて、実行結果を渡すことになる。
+	//あくまでイベントリスナーに対して、関数を渡していて、リスナーの発火で呼び出さレル。
+      <button onClick={clickHandler}>クリックしてね</button>
+      <button onClick={clickHandler2}>クリックしてね</button>
+    </>
+  );
+};
+
+もしくは、
+//直接、インラインイベントハンドラープロパティ属性？に対して、ハンドラーを直書きで登録する。(非推奨)
+	<button onClick={() => {
+    console.log('ボタンがクリックされました。');
+}}>クリックしてね</button>
+
+
+# イベントタイプについて
+React的にみると、propsのプロパティの一つ/JS的にみると？イベントハンドラー属性かな?
+//JSのイベントハンドラープロパティと異なる点は、lowerCamelを使う点。
+- onClick
+- onChange //JSでいうoninput。つまり、入力値が変更された時点で発火する。
+- onMouserEnter
+- onMouseLeave
+- onBlur
+- onFocus
+
+
+
+
+
+
+
+
+# useState(React Hooksの一つ)
+Reactの関数の一つ。ユーザの入力値に応じて、リアルタイムで出力の値を再生成することができる。
+
+- このメソッドの返り値は、2つ要素を持つ配列となっています。
+その中身について
+	- [0]には、参照用の値が格納されています。(useState()呼び出し時の引数に初期値を取ると、初期値が最初格納されます。)。//Reactの内部に状態を保持してもらうお願いしている。
+	- [1]には、値の更新関数が格納されています。この関数に更新したい値を渡す形で,[0]の値を更新することができる。
+//より内部的な話をすると、React側で、useState[0]の状態を保持してくれていて、useState[1]を介して、更新もできる。また更新した際には、自身のコンポーネントの中身を再実行(render)もしてくれる。
+// このようにReact内部に保持されるコンポーネントに紐づいた値をstateと呼ぶ。
+
+e.g.)//分割代入も駆使してuseStateを使う例
+```
+//Reactライブラリから取ってきて、
+import { useState } from "react";
+
+
+const Example = () => {
+  let [value, setValue] = useState();
+  return (
+    <>
+      <input 
+      type="text"
+      onChange={(e) => {
+        setValue(e.target.value) //setVauleはuseState[1]の部分。引数にとった値に、[0]の値を更新する。
+      }} /> = {value} //valueはuseState[0]の部分、参照用の値
+    </>
+  );
+};
+
+
+```
+
+
+# State(ステートについて)
+もし、画面が再renderされるような場合にも、何かしらの値を保持していたい時に、保持できる性質を広義に"状態を持つ(stateful)"を言う。
+- Reactにおいて、stateはコンポーネント単位に保持、更新される。
+
+まず、うまく行かなかった方法を見て、そこから学んでいこうと思う。
+e.g.)
+```
+let displayValue;
+onChange={(e) => {
+        displayValue = e.target.value;
+}} /> = {displayValue}
+```
+
+//これは、イベントリスナーによって、変数displayValueの値が更新されている。がしかし、実際にコードが実行された部分は、イベントハンドラのコールバック関数部分である。
+つまり、displayValueの参照先は異なる訳ではなく、イベントリスナーの外部分は、イベント発火によって、再render(実行)されてないので、古い参照結果を表示させ続けることになっている。
+//これを再度実行しようとするたびに、e.target.valueの値は保持されない。つまり、状態を持たないので、永遠に変更を反映できず、初期化され続ける。
+
+# Stateとrendering(ステートとレンダリング)
+前述もしてあるけれども、Stateを使うことによって、コンポーネント自体のサイレンダーしてくれる。not only the part of EventLister
+
+# Stateを使う際に注意すべき点
+1. 呼び出す位置について
+useStateとは基本的に、**コンポーネントのトップレベル**もしくは、カスタムフック内でのみ呼び出すことができます。(即ち{}の部分 ifやfor文中には書けない。)
+//<- これは、Reactの各コンポーネントにおけるstateの保持の仕方によるもの。
+あるコンポーネントで、3つstateを作った時、それら3つは1,2,3番目と順番を持って(List?)管理される。if文などの条件分岐によって1個目がない？！みたいなことになると、エラーが発生するから。
+
+2. 即時更新ではない!?
+更新関数で、React内部に保持されている値を更新します。この時、更新関数からstateの保持している値を更新するように依頼はしているが、即時実行ではない。
+/*ただ、これは非同期に処理される */ cf) 05_state_and_event/050_prev_state
+
+```
+const Example = () => {
+  const [count ,setCount] = useState(0);
+  const countUp = () => {
+    setCount(count + 1);
+    console.log(count); //countの値は初期値のままで、再レンダーまで更新されない。
+  };
+  const countDown = () => {
+    setCount(count - 1);
+  };
+  return (
+    <>
+      <p>現在のカウント数: {count}</p>
+      <button onClick={ countUp }>+</button>
+      <button onClick={ countDown }>-</button>
+    </>
+  )
+};
+
+```
+
+useState[1]の更新関数は、非同期に処理されるが、再renderされる前の現在の状態におけるstateを更新したい場合には、引数にコールバック関数を取ることができる。
+
+```
+const countUp = () => {
+    setCount(count + 1); --①
+	setCount(prev => prev + 1); --②
+};
+
+```
+//コールバック関数の引数に渡ってくる部分(今だとprev)は,直前に更新依頼されたstateの値を参照できる。
+即ち、上の例だと、実際にイベントが発火した際には、
+
+①は state = 1;
+②は, state = func(state); 
+
+という時系列で処理が行われる。
+
+# オブジェクト型のステートを扱う
+1. オブジェクトをuseStateで扱う際には、分割代入で{/*オブジェクト */}を受け取っているので、更新関数を用いる際に引数に渡すべきはオブジェクトですよ。
+//各プロパティを設定するの忘れないようにしましょう。
+
+const Example = () => {
+  const personObj = { name: "Tom", age: 18 };
+  const [person, setPerson] = useState(personObj);
+  const changeName = (e) => {
+    setPerson({ name: e.target.value, age: person.age })
+  }
+  return(
+    <>
+      <h3>Name: {person.name}</h3>
+      <h3>Age: {person.age}</h3>
+      <input type="text" onChange={changeName} />
+      {/* <input type="number" onChange={changeName} /> */}
+    </>
+  )
+};
+
+2. Stateのオブジェクトを更新する際には、/*新しいオブジェクトを({}リテラルを用いて)生成してあげる必要があります。*/。さらに、プロパティの値も更新してあげる必要があります。
+
+//問題点
+プロパティを10個もつオブジェクトの、1つのプロパティを更新するだけでも列挙する必要があるのか？
+//答え
+No.	スプレッド演算子と{}を使って、既存のオブジェクトを展開する時、新たにメモリ領域が確保され、プロパティの値に関わらず別のオブジェクトとして扱われる。
+変更したいプロパティだけ、後書きすると上書きが適応される。
+e.g.)//オブジェクトを分割代入をつかって上書きする例。
+//nameだけeventを使って、ユーザの入力値を受け取っている。
+    setPerson({ ...person, name: e.target.value })
+
+
+- useStateの更新関数に対して、コールバック関数を設定(渡す時)
+```
+
+//オブジェクトを、useStateへ渡してそれぞれ、orderとsetOrderで分割代入する。
+const orderObj = { item: 'apple', count: 10 };
+const [order, setOrder] = useState(orderObj);
+
+//仮に、buttonをonClickでorder.countを+1したい時に,
+//更新関数を用いて、以下のように記述できる。
+
+const countUp = () => { 
+    setOrder(order =>(
+      { ...order, count: order.count + 1 }));
+};
+
+//この時、setOrderの中で定義しているコールバックにあたるアロー関数は、
+// () => {}の形に対して
+// () => ({})と括弧で囲む必要があります。
+//なぜなら、今回の場合はオブジェクトをreturnするので、オブジェクトリテラルなのか、アロー関数のブロックかを明らかにする必要があるからです。
+//オブジェクトを返り値に持つ時のアロー関数は()で囲むこと。
+const countUp = () => { 
+    setOrder((order) =>(
+      { ...order, count: order.count + 1 }));
+};
+
+
+cf) 05_state_and_event/068_practice_obj_state
+
+
+## 配列のステートを扱う注意点。
+配列もオブジェクトになる?ので、ステートを更新する際には、別のオブジェクトとして用意してあげる必要があります。//というのもオブジェクトも配列も変数が表すメモリアドレスであって、実際の参照ではない。つまり、
+const new = current;としても、currentが示す配列へのアドレスをnewに格納しているだけ。
+
+
+# Stateとコンポーネントの関係
+ステートはコンポーネント毎に保持される。言い換えると、Reactはreact要素によって成り立つツリー構造の位置に基づいて、stateの識別をしている。なので、同名のコンポーネントがツリー構造内に複数存在したとしても、ツリー構造の位置での識別が行えるため、別々にstateを持つことができます。
+//よって、例えば真偽値によって、同種の2つのコンポーネントをツリー内での同じ位置に置き換えるような場合には、stateが区別されない。<-属性(プロパティだけ変更したい時)を出しわけたい時に良い。(stateは共有される。)
+{ユースケース別}
+	1. stateを共有して属性を切り替えたい->同一ツリー位置に条件分岐で置き換える。
+	2. stateを独立させて、stateは切り替え毎に初期化 -> key属性をつけて、一意に識別
+	3. stateを独立させつつ、stateも保持し続けたい。 -> 親コンポにstateをそれぞれ用意。propsを使って、子コンポへstateをわたす。
+
+
+1.
+```
+const Example = () => {
+  const [toggle, setToggle]  = useState(true);
+  const toggleComponent = () => {
+    setToggle(prev =>  !prev);
+  }
+  return (
+    <>
+    <button onClick={toggleComponent}>切り替え</button>
+    { toggle ? <Count title="A"/> : <Count title="B"/>}
+    </>
+  )
+  
+}
+const Count = ({title}) => {
+  const [count, setCount] = useState(0);
+  const countUp = () => {
+    setCount((prevstate) => prevstate + 1);
+  };
+  const countDown = () => {
+    setCount(count - 1);
+  };
+  return (
+    <>
+      <h3>{title}: {count}</h3>
+      <button onClick={countUp}>+</button>
+      <button onClick={countDown}>-</button>
+    </>
+  );
+};
+
+export default Example;
+```
+
+2. 
+- 上のような同じツリー位置に、同種のコンポーネントを配置した上で、切り替えなど出しわけをしたい。かつ、"状態も独立させたい時"には、key属性を使う。
+//keyプロパティによって、コンポーネントを一意に識別できる。
+ただし、このままだと、切り替えた時に、値が初期化されてしまう。
+//コンポーネントが消滅するため、stateの値が消滅する。
+
+3.
+- propsをつかって、stateを渡す。
+こうすることで、親コンポーネントで定義したstateを子コンポーネントに渡すことができるようになるので、
+以下のような場合に用いられる。
+	1. コンポーネントが消滅する可能性がある場合に(toggleでの切り替えなど)
+	2. 特定のstateを複数の子コンポーネントで共有したい時。
+
+//さらに、親コンポーネントで2つstateを用意して、子コンポーネントに割り振るようにprop経由で、stateを渡すと、子コンポーネントが消滅するような場合にも、状態を保持し続けることができる。
+
+```
+e.g.)
+import { useState } from "react";
+
+const Example = () => {
+  const [ toggle, setToggle ] = useState(true);
+  const [countA, setCountA] = useState(0); //Count(子コンポ)用のstate
+  const [countB, setCountB] = useState(0); //Count(子コンポ)用のstate
+  const toggleComponent = () => {
+    setToggle(prev => !prev);
+  }
+  return (
+    <>
+    <button onClick={toggleComponent}>toggle</button>
+    { toggle ?
+    <Count key="A" title="A" count={countA} setCount={setCountA}/>  //propsとして、Countコンポへ渡している。
+    : <Count key="B" title="B" count={countB} setCount={setCountB}/>
+    }
+    </>
+  )
+}    
+//これによって、Countコンポの中では、 setCountというと、setCountBやら、SetCountAなどの事前に親コンポで設定されたuseStateの更新関数を指すようになる。
+const Count = ({ title, count, setCount }) => { 
+  const countUp = () => {
+    setCount((prevstate) => prevstate + 1);
+  };
+  const countDown = () => {
+    setCount(count - 1);
+  };
+  return (
+    <>
+      <h3>{title}: {count}</h3>
+      <button onClick={countUp}>+</button>
+      <button onClick={countDown}>-</button>
+    </>
+  );
+};
+
+```
+
+
+
+
+
+## Reactにおける配列操作
+- 配列の要素をliとして、表示する工夫
+1. for..of..を使う。(あんまやらん) 
+表示したい値とliなども含めたreact要素を配列として、保持して、{}で展開する。
+const animals = ["Dog", "Cat", "Rat"];
+
+const Example = () => {
+
+  const animalList = [];
+  for (const animal of animals) {
+    animalList.push(<li>{animal}</li>);
+  } 
+
+  return (
+    <>
+      <h3>配列の操作</h3>
+      <ul>
+        {animalList} //animalListは、react要素(JSオブジェクト)を各要素として持つ配列になる。　
+      </ul>
+    </>
+  );
+};
+//ちなみに、JSX内にfor文を書くことはできない。<- JSXで評価するものは式である必要がある。
+
+2. mapを使った書き方(推奨)
+```
+e.g)
+//こちらは配列のメソッドを使った式(評価され、戻り値を持つので,JSX内に直接記述できます。
+const helloAnimals = animals.map( animal => <li>Hello, {animal}</li>);
+
+```
+
+## JSX内で配列を使用する際の注意
+// Warning: Each child in a list should have a unique "key" prop.
+//これは、list(ul/ol)の親から見て、子が識別する必要があるので、親から見た子要素のところにつけるべき？
+### つまり、li要素がそれぞれkey属性(プロパティ)が必要です。
+//なぜか？
+- そもそも、Reactは、Fiberツリー(h1などのHTMl要素とReact要素からなるツリー)の差分検出によって、本物のDOMを書き換えている。
+- 書き換えの際に、親nodeから見た末尾の要素が追加された場合には、子要素をそれぞれ比較し、新たに追加された要素を実際のDOMに反映する。
+- しかし、親nodeから見た先頭の要素が追加された場合を考えると、実際には先頭に追加されただけでも、Reactは/*子要素をツリー構造の位置をもとにした子要素の中身*/で比較し、今までのツリー上の位置のものが全て変わったと認識する。それによって、すべての子要素を洗いがえることになる。(配列として比較されるイメージ)
+
+- そこで、keyプロパティをつける。
+この時Reactの処理は、子要素の位置と中身での比較ではなく、keyによる変化前後の紐付けをしているため、新たなkeyの値を持つ要素が追加された、もしくは削除された？かをもとに更新する。
+(つまり、同じkeyを持つ要素で中身が同じならば更新しない。)
+(連想配列を作るイメージ、つまり、keyによって要素の増減を見て？同一keyのものの中で変化があるかもみる。なければそのまま)
+それによって、実際の差分だけを更新することができるようになります。
+
+## {key}をつける際の注意
+- keyはuniqueであること。(兄弟要素の中で、重複しないこと。) 
+- keyに設定した値は変更しない。(比較の基準を失うので、洗い替えの可能性が上がるよね？)
+- 配列のインデックスをなるべく使わないこと。
+//特にユーザから受け取った入力値()が、配列のindexに紐づいてしまう。(stateで管理していない部分)
+key={index}を使用すると、どうなるか?
+
+```
+<div>
+	<strong>{`key={index}`}</strong>
+	<ul>
+		{inputs.map((input, index) => (
+			<li key={index}>
+				{input.key}: {input.value}
+			</li>
+		))}
+	</ul>
+</div>
+```
+//先ほども挙げたように、子要素ではなく、keyを識別子としてFiberツリーの差分を比較し、最終的にDOMをレンダーしますよ。ユニークなものをkeyとする時、key=1だったものが、ツリーの２番目の要素になった！！などと、同じkeyが新旧のツリー構造にあるのか？をまず、判断し、同名keyの中でchildrenプロパティの値に差異があれば適応する。
+//なければ、新しい要素だと判断し、子要素の中身を追加、削除する。
+
+よって、
+配列のインデックスでkey={}を設定してしまうと、端的に言えば、インクリメンタルなkeyとそのkeyに対応づけられる値が変わり続けることになる。
+//さらに致命的なのは、ユーザからの入力値などの値は配列としてこちらで管理していないので、keyの値だけを頼りに紐づき続ける。
+先ほどまで、配列の最初にあった要素が、以下のようだとすると
+<li key={0}>0で,A</li>
+
+新たに先頭に追加(unshift)した時、
+
+<li key={0}>1で,B</li>
+<li key={1}>0で,A</li>
+以下のようなツリー構造の変化が見える。
+
+Reactはkeyがある時に、keyをもとに、変化を識別するので、
+① key={0}が同じ位置にあって、key={1}が新たに追加された！と認識する。
+② key={0}の中身を書き換える。
+③ key={1}の要素を新規に追加する
+などと、常に全て洗い変えするようになる。
+//繰り返しになるが、inputタグの入力値などの、直接管理していない値については、keyで紐づいてしまうため、予期せぬ挙動になります。
+
+### 三項演算子と論理積
+if文ほど冗長に書きたくないときにぜひ使ってください。
+ReactのJSXの中では、{}で囲んだ範囲で真偽値が帰る時に、何も表示しない特性があるので、
+論理積の評価を利用して、trueの時のみ、何かを追加して表示したいという機能を追加することができる。
+A && "B" //Aがfalseの時,式全体はfalseを返す
+				 //Aがtrueの時、式の評価は"B"まで進み、文字列"B"が評価されて、その値が戻り値となる。
+e.g.)//animalsという配列がある時に、"Dog"に対してのみ星付きで解答したい。
+
+<ul>
+	{animals
+		.filter((animal) => {
+			const isMatch = animal.indexOf(filterVal) !== -1;
+			console.log(animal.indexOf(filterVal));
+			return isMatch;
+		})
+		.map((animal) => {
+			return  <li key={animal}> 
+			{animal}{animal === "Dog" && "☆"} //論理積(short circuit ver)
+			// 三項演算子ver
+				{/* {animal === "Dog" 
+				//   ? animal + "☆" 
+				//   : animal */}
+				</li>;
+			})}
+</ul>
+
+
+
+
+
+
+# form要素の使い方(JSX流に)
+## input要素とtextarea要素
+- input/textareaの場合にはtype="text"でそれぞれタグっぽいreact要素を記述する。
+
+- textareaよく使うのは、valueとonChangeにstateを対応させる記法。
+e.g.)
+<div>
+      <label htmlFor="123">ラベル</label> 
+      <div>
+        <input
+          id="123"
+          type="text"
+          placeholder="こんちは" //場所取りさん。HTML
+          value={val}
+          onChange={ (e) => setVal(e.target.value)}
+        />
+      </div>
+    </div>
+</div>
+
+- textarea要素
+textarea要素、JSXの際には、HTMLとは異なり<textarea>タグで囲まないこと。中身の値はvalueプロパティに含める。
+
+
+{属性(プロパティ)}
+- htmlFor
+HTMLのlabel要素のfor属性の記述が可能
+- id
+for属性と紐づけることで、ラベルのクリックでもfocusするようになります。
+- placeholder
+初期値をとれるHTMLの機能
+- value
+HTMLのvalue属性と紐づけている。useState[0]の値を紐づけないと、画面上はユーザの入力が残るものの、こちら側で制御することができない。
+
+
+## ラジオボタン
+- checkedプロパティの値が真の時に、チェックが入る
+/*なので、useStateで参照するvalueを等価演算子で比較すると良い。*/
+- valueプロパティの設定も忘れずに、
+{RADIO_COLLECTION.map(item => {
+        return (
+          <label key={item}> //keyの設定も忘れずに
+            <input  
+            type="radio"
+            value={item}
+            checked={fruit === item} //ここでは、mapで対象になっている配列要素と、useStateで管理されているstateとの値を比較している。
+						onChange={onChange} 
+			//プロパティの定義を直接書いてもいいけど、mapで回さない時には、重複するので、returnの前に定義するとDRY            />
+            {item}
+          </label>
+        );
+})};
+
+e.g.2)
+import { useState } from "react";
+import "./Example.css";
+
+const Example = () => {
+  const [theme, setTheme] = useState('light')
+  
+  const changeTheme = (e) => setTheme(e.target.value)
+  
+  const THEMES = ['light', 'dark', 'red'];
+
+  return (
+    <>
+      <header className={`content-${theme}`}>
+        {THEMES.map(_theme => {
+          return (
+            <label key={_theme}>
+              <input 
+                type="radio"
+                value={_theme}
+                checked={ theme === _theme}
+                onChange={changeTheme}/>
+              {theme}
+            </label>
+          )
+        })}
+      </header>
+      <main className={`content-${theme}`}>
+        <h1>テーマの切り替え</h1>
+      </main>
+    </>
+  );
+};
+
+
+
+
+## チェックボックス要素
+
+- トグルについての関数が肝かな。useStateのprevstateを切り替えるって処理を忘れないこと。
+
+e.g.)
+import { useState } from "react";
+
+const Example = () => {
+  const [isChecked, setIsChecked] = useState(true);
+
+  const toggleChecked = () => {
+    setIsChecked((prevState) => !prevState);
+  };
+
+  return (
+    <div>
+      <label htmlFor="my-checkbox">
+        チェックチェック:
+      </label>
+      <input
+        type="checkbox"
+        id="my-checkbox"
+        checked={isChecked}
+        onChange={ toggleChecked } 
+      />
+      <div>{isChecked ? "ON!" : "OFF!"}</div>
+    </div>
+  );
+};
+
+## マルチセレクトボックス
+-  HTMLの場合には、checked属性自体が付与されているがどうか。によって判断される。しかしJSXにおいては、それぞれのエレメントのcheckedプロパティの真偽値によって判定される。
+import { useState } from "react";
+
+const Example = () => {
+  const [fruits, setFruits] = useState([
+    { label: "Apple", value: 100, checked: false },
+    { label: "Banana", value: 200, checked: false },
+    { label: "Cherry", value: 300, checked: false },
+  ]);
+
+  const [sum, setSum] = useState(0);
+
+  const handleChange = (e) => {
+    const newFruits = fruits.map(fruit => {
+      const newFruit = { ...fruit};
+      if( newFruit.label === e.target.value) {
+        newFruit.checked = !fruit.checked;
+      }
+      return newFruit;
+    })
+
+      setFruits(newFruits);
+
+      //俺の回答&&を使ったショートサーキット
+      let sumVal = 0;
+      newFruits.forEach(fruit => {
+        fruit.checked && (sumVal += fruit.value);
+      });
+      //Plainな記法
+      // newFruits.forEach(fruit => {
+      //   if(fruit.checked) {
+      //     sumVal += fruit.value;
+      //   }
+      // });
+      //filterで配列を置換してから、forEachでvalueの値を回す。
+      // newFruits
+      //   .filter(fruit => fruit.checked)
+      //   .forEach(fruit => (sumVal += fruit.value));
+      setSum(sumVal);
+    };
+
+  return (
+    <div>
+      {fruits.map(fruit => {
+        return (
+            <div key={fruit.label}>
+              <input 
+                id={fruit.label}
+                type="checkbox"
+                value={fruit.label}
+                checked={fruit.checked}
+                onChange={handleChange} 
+              />
+              <label htmlFor={fruit.label}>
+                {fruit.label}:{fruit.value}
+              </label>
+            </div>
+        );
+      })}
+      <div>合計：{sum}</div>
+    </div>
+  );
+};
+
+export default Example;
+
+
+## プルダウンメニューの作成
+-選択されている要素は、HTMLの場合には、選択されているoption要素に対して、selected属性自体が付与されているかで評価されるが、JSXの場合には、select要素自体のvalueプロパティに選択したいoption要素のvalue属性を格納する形にしてあげる。
+
+e.g.)
+return (
+    <>
+      <select
+        value={selected}
+        onChange={(e) => setSelected(e.target.value)}
+      >
+        <option value="Apple">Apple</option>
+        <option value="Banana">Banana</option>
+        <option value="Cherry">Cherry</option>
+      </select>
+      <div>選択されたくだもの: {selected}</div>
+    </>
+)
+
+# formタグで全体を囲むと、Enterキーでもbuttoクリックと同様にイベントを発火できる。
+ただし、同時にページ遷移もしてしまうため、入力値が保持されない。。。
+<form onSubmit={/*ここ*/}>ここで発火するイベントハンドラーに対して、
+
+const theEvent = (e) => {
+	e.preventDeafult();
+};
+//として、デフォルト動作をキャンセルする必要があります。
+
+
+
+# スタイリングの手法
+- インラインスタイル
+- 外部のスタイルシートを読み込む
+
+
+
+
+
+## {インラインスタイル}
+styleプロパティにオブジェクト(ここではstyle)プロパティを渡すことで、成立させる。
+//まるでCSSプロパティの記述をしているように、記述でき、反映させてくれる。
+//ただし、プロパティ名に当たる部分はlowerCamelで書くこと。
+const style = {
+        width: 120, //単位を省略でき、その場合にはpxとして認識される。
+        height: 60,
+        display: "block",
+        fontWeight: "bold",
+        borderRadius: 9999,
+        cursor: "pointer",
+        border: "none",
+        margin: "auto",
+				background: isSelected ? "pink" : "", 
+				//あくまでJSのオブジェクトなので、三項演算子を使って
+				//また、""の場合には、そのCSSプロパティの値がないと評価されます。
+};
+	return (
+			<>
+				<button onClick={clickHandler} 
+								style={style}>ボタン
+				</button>
+				//propsのプロパティstyleに対して直接オブジェクトを渡す際には、{}を二重にする。
+				<div style={{ textAlign: "center"}}>
+					{isSelected && "クリックされました。"}
+				</div>
+			</>
+	)
+
+### インラインスタイルの欠点
+1. コードの再利用性が悪くなる。
+2. CSSの擬似要素(::before)や擬似セレクター(::hover)を使用することができない。
+3. メディアクエリ @media (min-witdh: 600px){} を使うことができない。
+4. パフォーマンスの観点からもあまりよくありません。
+
+->本番環境では使わない。とりあえずスタイルつけられるだけ。
+
+
+
+## {外部CSSファイルを読み込む}
+importの記述に続いて、外部ファイルにCSSを記述すること。また、classNameプロパティを用いてクラスの付与によって、実現させる。さらに、JSX内で条件分岐させることで、クラスの付け外しもできる。
+
+e.g.)
+
+import "./Example.css";
+
+<button>
+	className={`btn ${isSelected ? "selected" : ""}`} 
+	onClick={clickHandler}>
+		ボタン
+</button>
+
+//またテンプレートリテラルを使って必要に応じて式展開付きの文字列を作流こともできる。この場合には外側の{}がJSXの記述を認識させる記述で、``に囲まれた${}の部分はテンプレートリテラルの表記であることも忘れずに
+
+### 外部CSSファイルの読み込みの欠点
+- コンポーネントごとにスタイルを当てることができない。
+//最後に読み込まれたCSSファイルが上書きされるので、コンポーネントの読み込まれる順番でCSSのスタイルも考えなければならない。
+画面全体にlayoutとしたい場合には、外部ファイルで適応させるのは良いが、
+コンポーネント毎にスタイルを当てたい場合には得策ではない。　
+
+
+
+## {CSSモジュール}
+将来的に廃止になるかも、非推奨
+- 外部にCSSファイルを持ちながらも、importの記述を変更する
+
+e.g.)
+import styles from "./Example.module.css";
+
+- CSSモジュール側は、CSSファイルになっていて /*クラスセレクターや、IDセレクタ*/でスタイルが羅列させる。
+//これを、styles(import部の記述)のプロパティのようにする
+
+e.g.)
+<button 
+	className={`${styles.btn} ${isSelected ? styles.selected : "" }`}
+id={style.attr} //あんまり使わないけどね。
+	onClick={clickHandler}>
+	ボタン
+</button>
+
+
+
+## CSS in JS
+基本的には、ライブラリを使う。有名なのは"styled-components"自前で用意する時は、インストールする必要がある。
+
+- タグ付きテンプレート
+styled.button``; ()のように関数の呼び出しを意味する。これは、${}テンプレートリテラル内で関数を解析できる。
+
+e.g.)
+``の中で${}に対して、propsのプロパティを受け取りながら、動的にスタイルを書き換える。
+const StyledButton = styled.button`
+	margin: auto;
+	border-radius: 9999px;
+	border: none;
+	display: block;
+	width: 120px;
+	height: 60px;
+	font-weight: bold;
+	cursor: pointer;
+	//${}の中に、(props) => の形で関数を利用できる。
+	background: ${({isSelected}) => isSelected.isSelected ? 'pink' : ''}
+`; 
+
+## スタイルの継承
+
+新たにコンポーネントを作成しながら、styled(/*継承したいクラスを記述*/)
+その後続いて、``にて、オーバーライドしていきたい。プロパティを記述する。
+
+const OrangeButton = styled(StyledButton)`
+  background-color: orange;
+  :hover {
+    color: red;
+  }
+`;
+
+//同様にして、@mediaクエリ等も使用することができる。
+//さらにネスト記法でScssっぽくなるを適用することもできる。
+//自動で一意にクラスが適応されるため、影響がされなくて良い。
+
+# ChakraUI
+1. npm installとかで導入する
+2. import { ChakraProvider } from "@chakra-ui/react"; 
+3. タグで囲む
+e.g.)
+
+<ChakraProvider>
+	<Todo />
+</ChakraProvider>
+
+
+
+## 
+- { VStack }
+vertical stack
+縦並びのコンポーネントを設定する。
+- { StackDivider }
+
+
+- { HStack }
+horizontal stack 
+
+
+
+
+
+#[DOMに関するReactの機能]
+
+useRefなどでDOMを直接触ることもできる。
+
+import { createPortal } from "react-dom";
+
+## Portal
+ポータルの子要素を、直接の親要素ではなく別のDOM要素にマウントすることができる。//例えばモーダル。モーダルを発火されるはずのbtn要素の親に対して、直接親の要素をマウントできたりする
+コンポーネントのように扱うことができる。
+
+- createPortal(子,DOM要素)
+第一引数: Reactの子要素としてレンダー可能なもの(要素、文字列、フラグメント、このポーネント)
+第二引数: レンダー先のDOM要素
+
+e.g.)
+const ModalPortal = ({ children }) => {
+  const target = document.querySelector('.container.start');
+  return createPortal(children, target)
+} 
+
+//children呼び出し時に子要素になるものをpropsの分割代入で受け取っている。
+//第二引数のtargetはレンダー先にしたい。親となる要素を取得している。
+
+## ポータルにおけるBubblingについての注意点。
+- そもそもbubblingとは、イベントが子要素から親要素に伝播していくこと。
+ポータルを使った際には、バブリングが発生した際には、/*元々*/の親に紐づいたクリックイベントが伝播していく(つまり、実際のDOMツリー上での親関係に伝播するのではなく、React要素として親要素に伝播していく。)
+
+
+# useRef
+##useRefとは？？
+再レンダリングを発生させずに値を保持する方法
+const ref = useRef(initialValue)
+
+- useRefはrefオブジェクトを返す。
+- currentプロパティに値が設定される
+- ref.currentで値にアクセスでき、読み書きが可能
+
+
+
+```
+import { useRef } from "react";
+1. useRefを使ってrefオブジェクトを生成する
+e.g.)
+  const inputRef = useRef();
+//この時refオブジェクトにはcurrentプロパティが設定されている。
+
+2. 操作したい対象のDOM要素のrefプロパティに対して、refオブジェクトを渡す。
+//そのrefオブジェクトが持つcurrentプロパティに対して、
+//ref={refオブジェクト}を渡されたDOMについて
+//の値を保持することができる。
+2.<input ref={inputRef} />
+
+
+
+e.g.)
+<input	type="text" 
+				ref={inputRef}
+				value={value} 
+				onChange={(e) => setValue(e.target.value)} 
+/>
+//この時inputRef.currentというのは、input
+<button onClick={() => inputRef.current.focus()}>
+	インプット要素をフォーカスする
+</button>
+
+
+
+## useRefの具体的なユースケースについて、
+
+-動画のあるDOM要素への参照をuseRefによって参照できるようにして、
+buttonのイベントによって、再停止すること。
+
+e.g.)
+const Case2 = () => {
+
+  const [playing, setPlaying] = useState(false);
+  const videoRef = useRef();
+  return (
+    <div>
+      <h2>ユースケース２</h2>
+      <video style={{maxWidth: "100%"}} ref={videoRef}>
+        <source src="./sample.mp4"/>
+      </video>
+      <button onClick={() => {
+        if(playing) {
+          videoRef.current.pause();
+        } else {
+          videoRef.current.play();
+        }
+        
+        setPlaying(prev => !prev);
+      }}>
+        { playing ? "Stop" : "Play" }
+
+      </button>
+    </div>
+  )};
+
+
+
+## StateとRefの違い
+- Refは再レンダリング（画面更新がされても値が保持される）
+- refの値を変更しても、再レンダリングがトリガーされない。Stateは更新関数で、再レンダリングがトリガーされる。
+- refオブジェクトをJSXのref属性に渡すことで、そのDOM要素自体のメソッドを他の要素の中で、refオブジェクト.current.method()で操作することができる。
+
+
+## Refのコンポーネント間での受け渡し
+他のコンポーネントのDOMにアクセスする方法。
+ref属性をpropsで渡すことはできない。
+
+//ただし、コンポーネント間での依存関係が強くなるので、あまり頻繁に使うべきではない。
+対策
+1. 別名で渡す e.g.)customRef
+
+const Input = ({ customRef }) => {
+  return <input type="text" ref={customRef} />
+};
+const Example = () => {
+  const ref = useRef();
+  return (
+    <>
+      <Input type="text" customRef={ref} />
+      <button onClick={() => ref.current.focus()}>
+        インプット要素をフォーカスする
+      </button>
+    </>
+  );
+};
+
+2. forwardRefという関数を使用する。
+```
+使い方 forwardRef()の第一引数に、コンポーネントを渡す。
+そして、普段は使うことのないcomponentsの第二引数としてrefを渡すと使用できる。
+普段は分割代入しがちだが、、形としては
+e.g.)
+const Input = forwardRef((props, ref) => {
+  return <input type="text" ref={ref} />
+});
+
+```
+
+
+
+# useImperativeHandle
+refを使った操作を限定する。先ほどの操作だけだと、input要素を使ってどんな作業もできてしまう。
+
+
+e.g.)
+const Input = forwardRef((props, ref) => {
+  const inputRef = useRef();
+  
+  useImperativeHandle(ref, () => ({
+    myfocus() {
+      inputRef.current.focus();
+    }
+  }));
+  return <input type="text" ref={inputRef} />;
+});
+
+//第一引数でもらったrefオブジェクトが使えるメソッドを限定する。定義したものだけを使用できるようになる。
+
+
+## forwardRefやuseImperativeHandleは多用するべきではない。
+Stateで対処できるならそっちの方が良い。なぜならこちらを使うと、双方向でのバインドになっていき、コンポーネント間の結合度が高くなり、コードも煩雑になっていく。
+
+e.g.)
+import { useState, useRef, forwardRef, useImperativeHandle } from "react";
+
+const Video = forwardRef(({ path }, ref) => {
+  const videoRef = useRef();
+  useImperativeHandle(ref, () => ({
+    myPlay() {
+      videoRef.current.play();
+    },
+    myPause() {
+      videoRef.current.pause();
+    }
+  }));
+
+  return (
+    <video style={{ maxWidth: "100%" }} ref={videoRef}>
+      <source src={path}></source>
+    </video>
+  );
+});
+
+const Example = () => {
+  const [playing, setPlaying] = useState(false);
+
+  const ref = useRef();
+
+  return (
+    <div>
+      <Video ref={ref} path="./sample.mp4" />
+      <button
+        onClick={() => { //親から受けたrefが使えるメソッドを定義していく。
+          if(playing) {
+            ref.current.myPause();
+          } else {
+            ref.current.myPlay();
+          }
+          setPlaying((prev) => !prev);
+        }}
+      >
+        {playing ? "Stop" : "Play"}
+      </button>
+    </div>
+  );
+};
+
+
+
+# 関数型プログラミングの理解(Functional Programming)
+関数を最大限利用することでコードを整理するプログラム手法のこと。オブジェクト指向に対比される。
+
+## 手続き型(命令)プログラミング
+ブラウザなどへ命令を手順通りに記述していく手法。
+
+- 関数型プログラミングとは、なるべく手続き型の制御を関数に分離(隠蔽)し、やりたいことに集中できるようにするプログラミング手法。
+
+e.g.)
+let nums = [1,2,3];
+let doubleNums = nums.map(num => num * 2);
+ループ制御:->mapメソッドに担当させる。
+やりたいこと: ->関数で定義。(開発者が担当)
+
+# 関数型プログラミングのメリット
+1. コードの可読性の向上
+2. 拡張性/再利用性の向上
+3. テスト性の向上
+4. モジュール化の向上
+5. Tree Shakingの向上(本番用に無駄なコードを削除する機能)
+
+# 関数型プログラミングにおけるキーワード
+- *(値の)状態管理と処理を分離する
+- *純粋関数（副作用を排除する）
+	特定の入力には特定の出力を返す。
+- *不変性(immutability)
+  1度設定した値は書き換えない。
+
+
+## オブジェクト指向と関数型を比較する。
+- オブジェクト指向型
+  // "状態（データ）と処理を対で管理"
+	// obj.method(); -> 結果
+e.g.)
+const numObj = {
+	nums: [1,2,3,],
+	sum() {
+		const nums = this.nums;
+		let sumValue = 0;
+		for(let i = 0; i < nums.length; i++) {
+			sumValue += nums[i];
+		}
+		return sumValue;
+	}
+};
+
+- 関数型プログラミング
+  // "(値の）状態と処理を分離して管理"
+	// A(data) -> B(data) -> C(data) -> 結果
+この場合には、dataが状態で、A、B、Cが関数(処理)
+
+e.g.)
+const nums = [4,5,6];
+//厳密にsum関数の中身は手続き型の処理になっている。
+const sum = (array) => {
+	let sumValue = 0;
+	for(let i = 0; i < array.length; i++) {
+		sumValue += array[i];
+	}
+	return sumValue;
+};
+
+
+# 純粋関数(pure_function)
+- fn(決まった引数) -> 決まった戻り値
+//戻り値が引数にのみ依存している。
+- 関数外の状態(データ)は参照、変更しない。
+//外部スコープで定義された変数を、引数を通さずに使用しない！
+- 関数外に影響を及ぼさない。
+//
+- "引数で渡された値を変更しない。(Immutabilityの保持)"
+//mutableなものでもを変更しないで！！
+//だから、関数内で別途変数を定義し直して、そこに格納すると良いらしい。
+e.g.)
+const sum = () => {
+	let newSum = 0;
+  const newObj = { ...oldObj};
+//これらと同一。
+上記の要件を満たさない操作を"副作用(side effect)"と呼ぶ。
+
+
+### immutabilityの保持
+関数の中で、mutableな値をimmutableのように扱う。コピーして新しく定義する。
+e.g.)
+let val = [1,2]
+val = [..val, 3]
+//valが参照する先が、新しくなっている。ただ、元々valに参照されていた値に変更うぁ加えていない。
+cf）JSのノートを見て下さい。
+
+
+
+
+# Reactと純粋関数
+- 関数コンポーネントは、純粋関数でなければならない。つまり、propsを受け取り、JSXを返さなければならない。
+- 副作用を保つ。つまり、純粋関数でない場合の例　
+1. コンソールへのログ出力
+2. DOM操作
+3. サーバとの通信
+4. タイマー処理
+5. ランダムな値の生成
+-->>useEffectやイベントハンドラ内に記述すべき。
+
+- 実際に、グローバルスコープの変数をコンポーネントで使用した場合には、呼び出しの場所や、呼び出し方によって引数が同じでも異なる値を返してしまう。
+e.g.)
+let value = 0;
+const Child = () => {
+  value++;
+  return <div>{value}</div>
+};
+
+//純粋関数の場合
+const ChildPure = ({ value }) => {
+  return <div>{value}</div>
+}
+
+const Example = () => {
+  let value = 0;
+  return (
+    <>
+      <Child />
+      <Child />
+      <Child />
+      <ChildPure value={++value}/>
+      <ChildPure value={++value}/>
+      <ChildPure value={++value}/>
+    </>
+  );
+};
+
+//どちらの場合にも1,2,3というように返すが、ChildPureの方は状態を持たない。
+
+## Reactにおける状態と処理の分離(data and procedure)
+useStateを使用して、Reactに状態を持たせることでComponentは状態を管理している。そのため、Reactの関数コンポーネントは厳密な意味での純粋関数ではない。
+
+厳密な定義を行えば、渡されるpropsとuseStateには影響される純粋関数のような関数である。と言える。
+//現実問題としては、適宜、適当なコンポーネントに対してstateを持たせること。
+
+# Reactにおけるimmutabilityとは
+コンポーネントの引数として渡された、props自体を変更しない。
+
+
+
+
+
+# useReducerとuserContext
+## useReducerとは
+	useStateの書き換えに使用する。
+
+### 書き換え方
+```
+const [rstate, dispatch] = useReducer((prev, action) => {}, defaultValue);
+//この時actionには、dispatchを呼び出した時の引数が渡されるので、それによって処理を変えると良い。一般に渡されるのはオブジェクトである。
+
+e.g.)
+import { useState, useReducer } from "react";
+const Example = () => {
+  const [state, setState] = useState(0);
+  const [rstate, dispatch] = useReducer((prev, { type })=> {
+    switch(type) {
+      case "+":
+        return ++prev;
+      case "-":
+        return --prev;
+      default:
+        throw new Error("Invalid action");
+    }
+  }, 0);
+  const rcountUp = () => {
+    dispatch({type: '+'});
+  }
+  const rcountDown = () => {
+    dispatch({type: '-'});
+  }
+
+  return (
+    <>
+    <div>
+      <h3>{rstate}</h3>
+      <button onClick={rcountUp}>add</button>
+      <button onClick={rcountDown}>minus</button>
+    </div>
+    </>
+  );
+};
+
+```
+e.g.)
+import { useState, useReducer } from "react";
+
+const Example = () => {
+//useStateの場合
+  const [state, setState] = useState(0);
+  const countUp = () => {
+    return setState(prev => ++prev);
+	};
+//useReducerの場合
+  const [rstate, dispatch] = useReducer(prev => ++prev, 0);
+	const rcountUp = () => {
+    return dispatch();
+  }
+
+  return (
+    <>
+    <div>
+      <h3>{state}</h3>
+      <button onClick={countUp}>add</button>
+    </div>
+    <div>
+      <h3>{rstate}</h3>
+      <button onClick={rcountUp}>add</button>
+    </div>
+    </>
+  );
+};
+
+
+# useReducerの利点/useStateの違い
+//そもそもuseReducerは,Reduxのreducerに強く影響を受けている。
+- useStateは状態の更新の仕方を利用側に託す。
+- useReducerは状態の更新の仕方も状態(定義)側で担当する。
+
+大規模かつ複雑な場合には、定義側で仕様が決められているほうが安全/管理しやすい
+
+### 関数型プログラミングの観点から見るuseState/useReducer
+- useStateコンポーネントで更新用の処理を保持する
+- useReducer stateと一緒に更新用の処理を保持する(Reactに任せるって感じ)
+
+### 純粋性(どれくらい純粋関数か？)
+- useReducerのほうが良さそう。
+//純粋関数でなければテストコードが書けないのよ。
+
+
+e.g.)
+reducerを使った四則演算を行うプログラム
+
+import { useReducer } from "react";
+
+const CALC_OPTIONS = ["add", "minus", "divide", "multiply"];
+
+const reducer = (state, {type, payload}) => {
+  switch (type) {
+    case "change":
+      const {name, value} = payload;
+      return { ...state, [name]: value};
+    case "add":
+      return { ...state, result: state.a + state.b }
+    case "minus":
+      return { ...state, result: state.a - state.b }
+    case "multiply":
+      return { ...state, result: state.a * state.b }
+    case "divide":
+      return { ...state, result: state.a / state.b }
+    default:
+      throw new Error("Unknown type");
+  };
+};
+
+const Example = () => {
+  const initState = {
+    a: 1,
+    b: 2,
+    result: 3,
+  };
+
+  const [state, dispatch] = useReducer(reducer, initState);
+
+  const calculate = (e) => {
+    dispatch({type: e.target.value}) //ちなみに、todo: todoみたいな場合には省略できるらしいよ。
+  };
+//payloadを使うことで、eのイベントの発生した要素の別のプロパティを
+  const numChangeHandler = (e) => {
+    dispatch({type: "change", payload: {name: e.target.name, value: parseInt(e.target.value)}})
+  }
+
+  return (
+    <>
+      <div>
+        a:
+        <input
+          type="number"
+          name="a"
+          value={state.a}
+          onChange={numChangeHandler}
+        />
+      </div>
+      <div>
+        b:
+        <input
+          type="number"
+          name="b"
+          value={state.b}
+          onChange={numChangeHandler}
+        />
+      </div>
+      <select value={state.type} onChange={calculate}>
+        {CALC_OPTIONS.map(calc => {
+          return (
+          <option key={calc} value={calc}>
+            {calc}
+          </option>
+          )
+        })};
+      </select>
+      <h1>結果：{state.result}</h1>
+    </>
+  );
+};
+
+export default Example;
+
+
+
+# useContext
+
+propsのバケツリレー(親-> 子供-> 孫コンポーネントへのpropsの受け渡し)を解決してくれる。
+```コンテキストの作成
+
+import { createContext } from "react";
+//定義
+export const MyContext = createContext('hello');
+
+
+//別ファイルにて、名前付きインポート
+//useContextの引数として、インポートしてきたコンテキストを使用できる。
+import { useContext } from "react";
+import { MyContext } from "../Example";
+
+const value = useContext(MyContext);
+
+return (
+	<div>
+		{value}
+	</div>
+);
+
+export default GrandChild;
+
+
+# stateと組み合わせたContextの使用法。
+app全体で使用したいようなステートを持つ場合には、useContextでアプリをラップしてあげることになるらしい。
+
+
+## ある子コンポーネントでuseContextを使用した時の挙動。親要素に対して作成されたContextのProviderを探しにいく。
+また、Providerがない時には、createContext(/*初期値*/)に設定された初期値を取得する。
+
+e.g.)
+const Example = () => {
+  const [ state, setState ] = useState(0);
+
+  return (
+    <MyContext.Provider value={[state, setState]}>
+      <Child />
+      <OtherChild />
+    </MyContext.Provider>
+  );
+};
+
+//Childやその子要素のGrandChild、もしくはOtherChildでは、
+import { useContext } from "react";
+import { MyContext } from "../Example";
+
+const [someValue, someSetValue] = useContext(MyContext);
+
+この形をとることによって、囲んでくれた要素にあたるMyContext.Providerのvalueプロパティの値を受け取eることができる。
+cf.ch11 050 context_file
+
+
+
+
+## プラクティスとしてのContext
+別ディレクトリとして、Contextディレクトリを定義して、useContextに関する記述を切り出す。
+
+
+e.g.) //コンテキストに関係する部分だけを切り出した例
+//必要な関数をreactから引いてくる。
+import { useState, createContext, useContext} from "react";
+//Contextの作成(初期値も設定)
+const ThemeColorContext = createContext("light");
+//外部ファイルで参照できるように,プロバイダーのコンポーネントを作成
+//(当該要素で囲まれる他の要素の配置も考慮してchildrenプロップスは受け取る)
+export const ThemeColorProvider = ({children}) => {
+  const [theme, setTheme] = useState('light');
+  const THEMES = ['light', 'dark', 'red'];
+
+	return (
+	//以下のvalueで渡している値を、useContext(コンテキスト名)で呼び出した時に利用できる。
+    <ThemeColorContext.Provider value={[theme, setTheme, THEMES]}>
+      {children}
+    </ThemeColorContext.Provider>
+  )
+};
+
+
+//毎度毎度useContextのimportやら設定したコンテキストの利用と、
+//クリエイトされたコンテキストcreateContext()の2つのインポートを宣言するのも面倒なので、
+export const useTheme = () => useContext(ThemeColorContext);
+
+//上のようにすることで、useTheme()を他のファイルでimportできる。
+もしくは
+export {useTheme,...} //名前付きエクスポートもよし。
+
+# useContextを使用する上での注意点
+- useContextを使用してあるstateを更新した場合には、当該のstateを使用している全てのコンポーネントにおいて再レンダーされる。ということ。
+言い換えると、useContextでは、共通しているstateが更新関数なのか、変更を反映したい値なのか？ということについては感知しないため、紐づいている部分全てで、自動的に再レンダーが発生する。
+
+### すべてのcontextで再レンダーをさせない工夫
+渡された側で実際に使うかは別として、Providerの値にuseState[0]などと含まれていると、すべてのuseContextに渡されるので、一箇所での変更は、すべてコンポーネントを再レンダーの対象として伝播する。
+//そのため,useStateの更新用関数と値を別々のProviderによって、定義すると、ぱフォーマンスの向上が見込める。
+
+
+## userReducerをプロバイダーの外に置くのか、中に置くのか？
+- プロバイダーコンポーネントが呼ばれるたびに、順次再読み込みされる。
+- トップレベルにおいた場合には,context用のJSファイルが読み込まれたタイミングに一度だけ、読み込まれる。つまり、どこで読み込まれる際にも、トップレベルに指定したJSファイルが一度読み込まれる。(初期値を入れた配列等であれば、トップレベルで良さそう。)
+
+
+参考)
+TodoアプリをuseReducerと、useContextを活用して作成する。
+udemy教材のch11/080_practiceのstartを参照してね。
+
+
+
+
+
+# [useEffect]
+コンポーネント内で、一度だけ呼び出したい機能に対して使用する。
+Effectは、"side effect"から来ています。
+第一引数には、コールバック関数をとって、第二引数には、[]を取る必要があります。
+//基本書式
+```
+useEffect(() => {}, [/*empty*/])
+
+```
+
+- このhooksは必ず、ブラウザ上で実行されるため、NextのSSR実行環境上でwindowオブジェクトなどブラウザ固有のオブジェクトを扱いたい時などには、使用するといい。
+
+e.g.)タイマー機能を考える
+//この時コンポーネント内のsetIntervalが呼ばれて、stateの更新関数が呼ばれます。
+//これによってstateは更新され、再度、コンポーネントをレンダーします。
+同時にsetIntervalやstateも呼ばれ、結果的に、再起的にいくらでも、更新関数を呼び出してしまいます。
+import { useState } from "react";
+
+const Example = () => {
+  const [time, setTime] = useState(0);
+  
+  setInterval(()=> {
+    setTime(prev => ++prev);
+  }, 1000);
+
+  return (
+    <h3>
+      <time>{time}</time>
+      <span>秒経過</span>
+    </h3>
+  );
+};
+
+export default Example;
+
+## useEffectの第二引数について
+useEffectの第二引数に当たる配列は、依存配列と呼ばれる。この依存配列には、コールバック関数の実行タイミングを制御する依存データが入る。
+例えば、なにかしらのStateをこの配列に入れた時、これは、Stateの更新のタイミングに応じて、コールバック関数を再度呼び出す。
+つまり、再実行させる必要がない時には、[]再実行の制御は不要で、逆に1秒ごとに更新させたいのであれば、一秒ごとに更新する値を用意するが吉。若しくは[]ではなく、一度だけ呼び出す関数側で制御するのもアリ。
+
+### 注意点
+useEffectのコールバック関数内で、依存配列と依存性のある関数を呼んだ場合には[]、再帰呼び出しが発生しますので、やめてください。
+
+## useEffectの第一引数にわたるコールバック関数の戻り値。//依存配列が空の場合
+この戻り値は、useEffectが呼び出されたコンポーネントが消滅した際に、一度だけ呼び出される関数に当たる。
+これによって、指定されたコンポーネントが消滅した際の挙動も制御できる。
+e.g.)
+  useEffect(() => {
+    console.log('init');
+    window.setInterval(() => {
+      setTime(prev => prev + 1);
+    }, 1000);
+    return () => {
+      console.log("done");
+    }
+}, [])
+
+## useEffectの第一引数にわたるコールバック関数の戻り値。//依存配列に定期更新される何かが入っている場合
+この時コールバック関数の挙動としては、まず一度、第一引数のコールバック関数が呼ばれる。その後、依存配列の制御のともなって、再実行される時に、return以後の戻りに指定された処理も実行されるので、
+callback --> return/callback => return/callbackの順で、依存配列の制御に倣ってよびださられる。
+
+e.g.)
+  useEffect(() => {
+    console.log('updated')
+    document.title = 'counter:' + time;
+    window.localStorage.setItem('time-key-end', time)
+
+    return () => {
+      
+      console.log("update end")
+    }
+  }, [time]);
+
+
+
+
+## useEffectのクリーンナップ処理
+依存配列が設定されていない場合に、一度useEffectに呼び出された、コールバック関数は再度実行されることはない。
+しかし、clearIntervalなどで定時実行させるものを停止したい場合には、return 以降に、clearIntervalを仕込んで、コンポーネントの消滅にトリガーしてreturnが実行。その中に記述されたclearIntervalによって、クリーンナップできるという設定に使える。
+
+
+## useEffectの実行されるタイミングについて
+1-[依存配列が空の時]
+e.g.)
+useEffect(() => {
+ //callback処理
+	return () => {
+	//cleanup処理
+  }
+}, []);
+
+1. コンポーネントがMountedされた時に、callback処理が呼び出されて、
+2. UnmountedされたタイミングでcleanUp処理が実行される。
+
+
+2-[依存配列に値がある時]
+useEffect(() => {
+	//callback処理
+	return () => {
+	//cleanup処理
+  }
+}, [/*依存値*/]);
+
+1. コンポーネントがMountedされた時に、callback処理が呼び出されて、
+2. stateの更新などによって、コンポーネントがUpdated(再レンダー&DOM更新)され、依存値に指定していた値が更新されていれば、
+	a. cleanup処理が実行され
+	b. callback処理が実行される
+3. 2の操作がUpdatedの都度実行されて、
+4. UnmountedされたタイミングでcleanUp処理が実行される。
+
+3-[依存配列が省略されている時]
+2-のケースとの違いは、stateの更新などによるコンポーネントのupdated(再レンダー)が起きた際に、依存値がないため、依存値の更新にかかわらず。(つまり、Updatedされるたびに)cleanup処理とcallback処理が呼び出される。
+
+
+
+## useLayoutEffectについて
+- useLayoutEffectは、useEffectよりも先に実行される。
+よって、
+const _time = parseInt(window.localStorage.getItem('time-key'));
+のような処理を記述することで、ブラウザのストレージに対して、保持されていた値を、useEffectが再度マウントされる際（今回はExample >TimerコンポーネントのExampleコンポに含まれるtimeというstateによって、毎秒再レンダリングされている。)、useEffectに先んじて、ストレージにsetされていた値をとりに行くことで、状態の保持を有効にしている。
+
+- 画面上での表示stateなどによって、更新がかかった際には、実際のレンダーよりも先んじて処理を実行する。
+例えば以下のような例。
+
+import { useLayoutEffect, useEffect, useState, useRef } from "react";
+
+const Random = () => {
+  const [state, setState] = useState(0);
+
+  useLayoutEffect(() => {
+    if (state === 0) {
+      setState(Math.floor(Math.random() * 300));
+    }
+  }, [state]);
+
+  return (
+    <button
+      className="effect-btn"
+      onClick={() => setState(0)}
+      style={{ fontSize: "2.5em" }}
+    >
+      state: {state}
+    </button>
+  );
+};
+export default Random;
+
+1. 初回のレンダー時には、useLayoutEffectが実行されて、state===0によって、ランダムが数字がセット。
+表示される。
+
+2. onClickイベントとしてStateをゼロに変更するようになっているので、この時、まず、stateの値に変更依頼が予約される。
+3. 再レンダーが行われる時に、
+4.この時通常のuseEffectであれば、依存配列にstateが指定されるため、非同期的にsetState更新関数で、ランダムな値を設定し直し始める。その更新の前後差によって、実際にレンダーされる値が、新たなランダムな値であったり、0が見え隠れしたりする。
+
+//この時にuseLayoutEffectを使用すると、stateの更新による再レンダーに先んじて、内部のコールバック関数を実行する。
+
+
+
+# Custom Hook
+useStateなどのReact Hookを内部で使用した関数(フック)のこと。
+関数名はuse〇〇とすること。
+// Reactの設定として、
+// use〇〇の場合には内部的にstateを持たせることができるため、コンポーネントトップレベル以外でも、状態を保つことができる。
+
+- 関数に切り出すことで再利用できる。
+
+
+
+/*
+オブジェクト渡しの省略機能
+関数の戻り値return に対して
+
+return {
+	toggle: toggle,
+	reset: reset
+}
+とすると、前述されている関数と同名のキーを持つオブジェクトの値として、返すことができるが、これを単にtoggleと省略することができる。
+*/
+
+e.g.) 
+//Timerの機能を保つコンポーネントの一部分を切り出してuseTimerという関数に切り出す。
+import { useState, useEffect, useLayoutEffect } from 'react';
+const useTimer = () => {
+  const [time, setTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+
+  useEffect(() => {
+    // console.log('init');
+    let intervalId = null;
+
+    if(isRunning) {
+      // console.log('timer start');
+
+      intervalId = window.setInterval(() => {
+        // console.log('interval running');
+        setTime(prev => prev + 1);
+      }, 1000);
+    }
+    
+    return () => {
+      window.clearInterval(intervalId)
+      // console.log('end');
+    }
+  }, [isRunning])
+  
+  useEffect(() => {
+    // // console.log('updated');
+    
+    document.title = 'counter:' + time;
+    window.localStorage.setItem('time-key', time);
+
+    return () => {
+      // debugger
+      // // console.log('updated end');
+    }
+  }, [time]);
+
+  useLayoutEffect(() => {
+    const _time = parseInt(window.localStorage.getItem('time-key'));
+    if(!isNaN(_time)) {
+      setTime(_time);
+    }
+  }, [])
+
+  const toggle = () => {
+    setIsRunning(prev => !prev);
+  }
+
+  const reset = () => {
+    setTime(0);
+    setIsRunning(false);
+  }
+//帰り値に、定義済みで、他のコンポーネントで受け取りたい値について設定しておき。
+  return {
+    toggle,
+    reset,
+    isRunning,
+    time,
+  }
+};
+
+export default useTimer;
+
+//呼び出し側のファイルにて
+import useTimer from "./useTimer.js";
+
+const { 
+    toggle,
+    reset,
+    isRunning,
+    time,
+} = useTimer();
+などとして分割代入で、ファイル間の受け取りを行う。
+これによって、関数として切り出された要素をコンポーネント内で利用できるようになる。
+
+
+
+# 関数型プログラミングから見たuseEffect
+コンポーネントがJSXを返すことに集中させるために、副作用が出るような操作に対しては、useEffectを使用し、切り出すことが必要である。
+
+e.g.)
+  document.title = 'counter:' + time;
+//例えばこのようなもの。ブラウザ上のタブのタイトルを変更する操作だが、これは関数の外に影響を与えるので、functional programming的ではないので❌-> useEffect内に書くべき。
+
+
+
+# Redux （??）
+Javascriptのライブラリの一つで状態管理を行うためのもの
+よくReactと併用される(react-redux)。
+これによって、アプリケーション全体の状態を効率的に管理できる。グローバルステートを使う場合には、使うことが推奨される。
+
+## 概要
+Redux Toolkitを使うことが公式によって推奨されています。
+- Immer
+- redux-thunk
+などの依存性があるものに対しても一括でインストールできるため。
+
+
+## Reduxによる状態管理
+- ReactでいうStateの代わりにStoreという状態を管理するものが1つだけある。
+- Reducerによってのみ、Stateを更新することができる。
+- イベントハンドラからActionという名前でオブジェクトがDispatchされる
+- このActionによって、使用されるReducerが識別される。
+e.g.)
+//useDispatchでディスパッチする関数を代入して、add(step)を引数に代入している。
+```
+const dispatch = useDispatch();
+dispatch(add(step));
+```
+
+- MiddlewareをStoreの前段に噛ませることで、副作用のある処理を円滑できるようにする。(具体的にはRedux thunkやcustomMiddlewareに当たる)
+
+
+Providerで囲まれた要素では、渡されたStoreが使える。
+機能で言うと、useContextとuseReducerのコンボって感じ。
+(パフォーマンスについてはこちらの方が優れている。)
+
+# 改めて状態について
+- グローバルステート
+アプリ全体で共有されるステート
+e.g)useContext/Redux
+
+- ローカルステート
+特定のコンポーネント内でのみ使用されるステート
+
+
+## 素のReduxを使ってみる。
+import { Provider } from "react-redux";
+import store from "./store";
+
+//storeディレクトリを作成する。この中にindex.jsを指定しておけばそのファイルを読み込んでくれる。
+# index.jsにて
+import { createStore } from "redux";
+//tool kit を使うべきなので、素のリダックスのcreateStoreは非推奨
+
+
+- createStoreで、Reduxが保持するただ1つのグローバルステートを定義する。
+- その中では、reducerという更新用関数をいくつか保持させてそのコールバック関数の第一引数にstateがわたるイメージ。
+e.g.)
+import { createStore } from "redux";
+
+const initialState = 0;
+const reducer = (state = initialState, { type, step }) => {
+  switch (type) {
+    case "+":
+      return state + step;
+    case "-":
+      return state - step;
+    default:
+      return state;
+  }
+};
+
+export default createStore(
+  reducer
+)
+
+
+
+//Providerのstoreの値にstore/ディレクトリ階下にある(index.js)を読み込む。
+ ->useSelectorや、useDispatchを用いて、stateの参照や、値の更新ができるようになる
+- useDispatchをすることで、dispatchする関数をとってくる。
+- この関数の定義部については、createstoreに登録したreducerを参照するとよく、具体的には、type,actionを引数に取る関数が使えるようになると思えば良い。
+e.g) dispatch = useDispatch();
+	 	 dispatch({ type: calcType, step });
+
+- useSelectorを使用することで、Reduxに唯一存在するstateを参照できる。
+useSelector関数は引数にコールバック関数をとり、その引数には、stateが渡ってくる。
+
+
+
+//Example.js
+import { Provider } from "react-redux";
+import store from "./store";
+
+const Example = () => {
+  return (
+    <Provider store={store}>
+      <Counter />
+    </Provider>
+  );
+};
+
+export default Example;
+
+
+
+//index.jsにて
+//Reduxのステイトの用意と、更新関数の用意をする。
+import { createStore } from "redux";
+
+const initialState = 0;
+const reducer = (state = initialState, { type, step }) => {
+  switch (type) {
+    case "+":
+      return state + step;
+    case "-":
+      return state - step;
+    default:
+      return state;
+  }
+};
+
+export default createStore(
+  reducer
+)
+
+また、初期値を含めて定義したReduxが保つ、ただ一つのstateを拾いたい時には、
+
+
+
+//Reduxのプロパティとは、reducersとした時に、reducerごとに保持される値を識別する物。
+state.プロパティ名でreducerに紐づいたstateも出し分けることができる。
+
+
+## Action Creator
+recuderの第二引数に当たるactionを作成するための関数のこと。
+
+
+
+# [Redux Toolkitを使う。]
+//1. Storeを定義する
+import { configureStore } from "@reduxjs/toolkit";
+
+export default configureStore({
+		reducer: {
+			counter: reducer //couterというプロパティにモジュールからimportしてきたreducerを設定。
+		}
+})
+
+
+//2. reducerを定義する。処理を記述していく。
+e.g.)
+//オブジェクトのメソッドという形で関数を定義する。reducerの定義をすることができる。
+//Actionも同時に自動で生成してくれる。
+
+import { createSlice } from "@reduxjs/toolkit";
+
+createSlice({
+  name: 'counter', //reducerの名前
+  initialState: '0',
+	reducers: {
+		//メソッドごとにリデューサーを定義する。
+    add(state,{ payload }) {
+      return state + payload;
+    },
+    minus(state, { payload }) {
+      return state - payload;
+    }
+  }
+})
+
+## Redux Toolkitにおけるimmutableな変更(immerの功績)
+Toolkitを使った場合には、mutableな値の変更が、immutablityが保持にも扱われる。
+
+e.g.)
+add(state, { type, payload }) {
+	state.count = state.count + payload;
+	// const newState = { ...state} ;
+	// newState.count = state.count + payload
+	// return newState;
+},
+
+//コメントアウトした部分は、関数を純粋関数たらしめるために、受けとったmutableな値を変更しないための工夫だが、reduxjsのToolkitを使う際には、これらの操作は省略することが許可されている。
+//mutableな変更を加えた場合には、return書いてはいけません。
+
+
+## Immerの仕組み。
+
+- mutableな値の例は、Objectや配列などのこと。
+mutableということは、変数の参照先の場所が値を再代入した際に変更されず、元の参照先の値自体が変更されるということ。
+
+### Immerの仕組み
+- produce関数()第一引数に、元となるオブジェクトをとり、第二引数にコールバック関数を設定する。
+
+e.g.)
+const obj = {
+  name: "Tom",
+  hobbies: ["tennis", "soccer"]
+}
+
+produce(obj, draft => {
+  console.log(draft);
+});
+
+Proxyの効果によって、第二引数に取られたコールバックによる処理を受けても、immutabilityを保持するように働いてくれる。
+素晴らしい。元のオブジェクトに変更を破壊的に行わない。
+上の例に挙げられているようなhobbies配列の中身、つまりネストされたmutableなオブジェクトについても、immutabilityが保持される。
+Immerを使う場合には、関数の機能として、immutabilityを保持した上で返り値も設定してくれるので、ユーザ側でreturnを書くべきではない。
+
+
+# Redux Thunk ??
+Reduxでの非同期処理を実装するためのライブラリ。サーバーとの通信などの副作用については、ミドルウェアを使用する。->ここでは、Redux Thunkがミドルウェアにある。Reduxのreducerは純粋関数に保つというのがポイント。
+e.g.)// redux-thunkの定義
+const thunkFunction = (payload) => {
+  return (dispatch, getState) => {
+    副作用処理  
+  }
+}
+
+
+const addAsyncWithStatus = createAsyncThunk(
+  'counter/asyncCount', //typeを一意に指定する
+  async (payload)  => { //第二引数で非同期処理で定義する。
+    const response = await asyncCount(payload);
+    return response.data;
+  
+  }
+)
+
+
+# Redux Middlewareについて
+カスタムmiddleware定義できる。
+e.g.)
+// Redux Middleware
+const reduxMiddleware = (store) => {
+  return (next) => {
+    return (action) => {
+      // 全てのdispatchで行われる処理
+      // storeはaction前の状態
+      // （store.getState()でステートを取得）
+      next(action);
+      // storeはaction後の状態
+    };
+  }
+};
+
+//内側の関数では、外側の変数を使用できる。
+
+
+# パフォーマンスについて
+
+# rendering(レンダリング)の最適化
+- トリガー: レンダリングを予約すること
+- レンダリング: コンポーネントを実行すること
+- コミット: DOMの更新を行うこと
+
+
+## レンダリングがトリガーされるタイミングについて
+1. 初回レンダリング
+ルートコンポーネントをHTML(DOM)にマウントした時
+<div id="app"></app> <-- root.render(<App />)
+
+2. "state"の値が変更された時
+コンポーネントのstateの値が変更された時。
+この時に、再レンダリング行われる。再レンダリングが行われる際には、それ以降の子要素すべてに対してもツリー構造上行われる。
+//基本的には, stateの前後の値に差が生じた際にレンダリングがスケジュールされる。
+
+### stateの比較(トリガーがされるきっかけ)
+更新用関数に渡された値と保持している値を比較し、差異があればレンダリングがスケジュールされる。(値が同一でも、reactの仕様上レンダリングがされることもある。)
+
+
+### コミットについて
+レンダリングのトリガーが行われ、レンダリングをした後には、React要素が更新される。その後、実際のDOMツリーに対しても変更が適応される。
+
+
+### Object.is(val1, val2)がtrueになる時、それらの変数名は同一のオブジェクトを参照している。つまり同一のオブジェクトを指し示しているため、再レンダーは行われない。
+
+オブジェクトを変数に格納する際には、ミュータブルゆえに一見すると同じ値を代入したとしても、それは異なる場所に、同一の値を持ったオブジェクトが2つ存在し、それぞれに対しての参照として変数名がついているということ。
+e.g.)
+const A = {val: 1}
+const B = {val: 1}
+const C = { ...A }
+const D = A
+Object.is(A, B) //->>false
+Object.is(A, C) //->> false
+Object.is(A, D) //->> true
+
+
+数値や文字列などのプリミティブな型のものについては、同一の操作をしたときも、メモリ上では同一の値を自動で参照する？らしい
+e.g.)
+const A = 1;
+const B = 2;
+Object.is(A, B) // ->> true
+
+
+
+## Strict Modeについて
+React検証用にが一度、コードを空回しを行うことで、潜在的なバグについて対処できる。そのため、console.logなどが２度実行されることがある。
+
+###
+import { StrictMode } from "react"; //importして
+return (
+	<StrictMode>
+		<Example />
+	</StrictMode>
+)
+//囲んであげる。
+
+ただし、一般的には、root要素のレンダーの際に、囲むようになっている。(create-react-appのデフォルトでこれ。)
+
+e.g.)
+root.render(
+  <React.StrictMode>
+    <App lectures={lectures} />
+  </React.StrictMode>
+);
+
+
+# パフォーマンス向上のための関数(再レンダリングを防ぐための関数)
+- React.memo()
+- useCallback()
+- useMemo()
+
+## 再レンダリングによる子コンポーネントへの影響
+親コンポーネントだけのstateを更新した際も、そのコンポーネントがchildren要素として持つ、子コンポーネント自体も自動的に再レンダリングしてしまう。
+
+
+
+//子コンポーネントを使用しない時に、再レンダーを避ける方法
+# React.memo
+受け取ったpropsの値が同じであれば再レンダリングをスキップする関数。
+値の同一性に関してはオブジェクトとして同一かどうか？
+
+e.g.)
+import { memo } from "react";
+//memo()という関数の第一引数に、コンポーネントを指定すると、propsで受け取るstateやuseContext経由で受け取ったstateが更新された時にのみ、再レンダリングされるようになる。
+//親の影響を受けたくない子コンポーネントに対して使う。　
+
+const Child = memo(({ countB }) => {
+  console.log("%cChild render", "color: red");
+  return (
+    <div className="child">
+      <h3>子コンポーネント領域</h3>
+      <p>ボタンBクリック回数:{countB}</p>
+    </div>
+  )
+});
+
+
+### memo()の第二引数について
+第一引数には、親の影響を受けたくない子コンポーネントを受け取ることで、無駄な再レンダーを防止する。
+
+
+
+
+
+# useCallback(React Hooks)
+関数のメモ化する。
+先ほどのmemoでのオブジェクトとしての同一性を用いて、変更があるのかを判定する際に、propsが関数だった際には、再レンダーのたびに同値的なオブジェクト(関数)が再生成されているため、何度も変更があったとして再レンダリングの対象になってしまうう。このことを防ぐための関数。
+
+子コンポーネントに、渡される親コンポーネント内に定義された関数を第一引数に取る形で利用する。
+
+useCallbackの第一引数には、コールバック関数を設定し、第二引数に依存配列をとる。
+e.g.)
+  const clickHandler = useCallback(() => {
+      setCountB((pre) => pre + 1);
+    }, [])
+//第一引数に渡される関数は、React内部に保持される値となる。再レンダリングの際には、保持された値を返すという制御になる。これによって、子コンポーネント側でmemo()とすると、同一オブジェクトが渡ってくるように設定できる。
+
+## useCallbackの依存配列の使い方
+第一引数のコールバック関数内にstateを用いる際には、そのstateの値を依存配列[]に入れると良い。これによって、stateの更新と同時に、React側で保持される関数も更新されるため。
+
+e.g.)//この例では、countBが更新される度、更新関数の値もstateも依存関係を持って更新したい。そうでなければ呼び出されるたびにcountB = 1 + 1 ->> 1になるから。
+const clickHandler = useCallback(() => {
+		setCountB(countB + 1);
+}, [countB])
+
+
+# useMemo(React Hooks)
+あらゆる値をメモ化できる。 メモというのはキャッシュかだと思ってくれて大丈夫。
+//ただし、useMemo自体の処理にもコストがかかるため、むやみに使用するのは避けるべき
+### React.memoとの相違点
+- React.memo: コンポーネントのみをメモ化
+- useMemo: あらゆる値をメモ化可能.
+
+
+//基本書式
+useMemo(() => {},[])
+第一引数にとった値をメモ化し、[]に含まれた値が更新された時に、中身を再度実行することになる。[]が更新されなければキャッシュされたそれを返す。
+
+
+
+
+
+# Concurrent Mode(React 18の試験的実装された機能)
+同時性モード？
+処理の優先順位づけを行うことで、より快適にレスポンスシブな画面を作成するための機能。
+
+
+## useTransition
+パフォーマンスの最適化を行った上でも、処理が重い場合に、優先順位づけをする目的で使用すること。
+e.g.)
+const [isPending, startTransition] = useTransition();
+// 第二引数にとったstartTransitionのコールバック関数に、実行の優先順位を下げたい処理を記述する。
+  const changeHandler = (e) => {
+    startTransition(() => {
+      setFilterVal(e.target.value);
+    })
+  };
+
+- isPendingは、startTransitionの処理が終了前であればtrue、でなければfalseを返す。
+
+
+
+## useDeferredValue
+こちらも、先ほどのものと同様に遅延処理されることで、更新させるものの優先順位を設定することができる。
+
+こちらの場合には、引数に遅延処理させたいものをそのまま囲む。
+e.g.)
+
+  const filterdItems = dummyItems
+  .filter((item) => {
+    if (filterVal === "") return true;
+    return item.includes(filterVal);
+  })
+  .map((item) => (
+    <li key={item}>{item}</li>
+  ));
+
+  const deferredItems = useDeferredValue(filterdItems);
+  
+  return (
+    <>
+      <input type="text" onChange={changeHandler} />
+      {/* {isPending && <div>Loading...</div>} */}
+      <ul>
+        {deferredItems}
+      </ul>
+    </>
+  );
+};
+
+
+
+
+
+# REST APIを使ったサーバーとの連携　
+
+RESTという思想に基づいてサーバーとデータのやり取りをする。
+現在のwebにおいてかなり一般的に普及した方法。
+
+RESTについての特徴をまとめると、
+- リソースごとにURLを定義しておく。
+- それに対してHTTPメソッド(get,post,delete,putなど)によってリソースに対する処理を定義する。
+- JSONを用いてデータのやり取りをする。
+
+## APIサーバーのモックを作成して、APIとのJSONを使ったやりとりを学ぶ。
+
+
+## Axios
+- getリクエストを行う。
+e.g.)
+//この時にPromiseオブジェクトが返ってくるので、その時のためにthenかawaitで非同期処理に対応する必要がある。
+import { useEffect } from "react";
+import axios from "axios";
+
+const Example = () => {
+  useEffect(()=> {
+    axios.get("http://localhost:3003/user").then((res) => {
+			console.log(res);
+			console.log(res.data);
+
+  })
+  return <></>;
+};
+
+	export default Example;
+	
+};
+
+async awaitについても、useEffect内では、直接関数をasyncにすることはできないので、以下のように書く。
+
+e.g.)
+
+const Example = () => {
+  useEffect( ()=> {
+    const getUser = async () => {
+      const res = await axios.get("http://localhost:3003/user")
+      console.log(res.data);
+    }
+    getUser();
+    });
+};
+
+
+
+### axiosをつかって、JSONデータを取得し、それを表示する。
+//Reactでは非同期に取得してきたものに関しては、stateで管理する。
+e.g.)
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+
+const Example = () => {
+  //stateの初期値を[]しないと、undefinedとなり、mapメソッド持たないためにエラーが発生する。
+  const [ users, setUsers] = useState([]);
+  useEffect(() => {
+    const getUser = async () => {
+      const res = await axios.get("http://localhost:3003/user")
+      // console.log(res.data)
+      setUsers(res.data);
+
+    }
+    getUser();
+  }, []);
+  
+  return (
+    <div>
+        {users.map(user => {
+          return (
+            <div key={user.id}>
+              <h3>{user.username}</h3>
+              <p>age: {user.age}</p>
+              <p>hobby: {user.hobbies.join(",")}</p>
+            </div>
+          )
+        })}
+    </div>
+  )
+};
+
+export default Example;
+
+
+## axiosを使って、POSTでデータを取得する。
+
+axios.post("ENDPOINT_URL", data)
+
+
+## Dynamicインポート(JSの機能)
+importキーワードでimportする時、staticインポートとも呼ばれる。
+importの関数を使用し、引数にパスとなる文字列を渡すことで成立する。
+//引数の文字列を変更することで、importするものを変更できるので、Dynamic(動的インポートと呼ばれている。)
+e.g.)
+const Example = () => {
+//非同期関数を定義しasync,awaitでPromiseオブジェクトを扱う例。
+  const dynamicImport = async () => {
+    const module = await import("./add")
+    console.log(module);
+  };
+  dynamicImport();
+//thenを使って、importした返り値であるPromiseオブジェクトを扱う例。
+  import("./add").then(module => {
+    console.log(module);
+  })
+};
+
+## ReactでDynamicインポートを使用する方法。
+インポートしたいコンポーネントのパスをlazy()関数に渡して、
+その戻り値として、何かしらの変数に代入すること。
+
+e.g.)
+import { useState, lazy } from "react";
+
+const LazyComponentA = lazy(() => import("./components/ComponentA"));
+console.log(LazyComponentA)
+const Example = () => {
+  const [compA, setCompA] = useState(false);
+
+  return (
+    <>
+      <button onClick={() => setCompA((prev) => !prev)}>ComponentA</button>
+      {compA && <LazyComponentA />}
+    </>
+  );
+};
+
+
+
+## Suspenseコンポーネントを使って、loadingを表示させる。
+Suspenseコンポーネントで、ローディングに時間のかかる要素に対して、待機画面を表示させる。
+中に表示させておきたい内容はfallbackのpropsに対して渡す。
+e.g.)
+
+ return (
+    <>
+      <button onClick={() => setCompA((prev) => !prev)}>ComponentA</button>
+      <Suspense fallback={<div>now loading</div>}>
+        {compA && <LazyComponentA />}  
+      </Suspense>
+    </>
+  );
+
+
+##startTransition
+ダイナミックインポートを非同期にバックグラウンドで取得するまで、その直前の画面を表示し続けてくれる。
+<button onClick={() => {
+        startTransition(() => {
+          setCompA((prev) => !prev)}
+        )}
+      }
+>
+//onClickの時に無名のコールバック関数が呼ばれて、その中の処理として、
+//startTransition()を呼び出しテイル。
+//startTransitionの引数に取られた、コールバック関数内に記述された関数処理が、終了するまで、非同期に画面を更新しないでくれるってことですね。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

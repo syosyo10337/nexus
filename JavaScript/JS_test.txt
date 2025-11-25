@@ -1,0 +1,374 @@
+# テストコードの書き方
+## テストの種類
+- 単体テスト(ユニットテスト)
+	関数やコンポーネント単位で行うテスト
+	e.g.) Jest, @testing-library
+
+- 結合テスト(e2eテスト)
+	e.g.)Selenium、Cypress
+etc
+
+
+# @testing-library
+さまざまなテストライブラリを含むパッケージです。
+```
+- @testing-library/react
+Reactのコンポーネントのレンダリングなどに使用
+- @testing-library/dom
+DOMのテストに使用
+- @testing-library/jest-dom
+JestのDOMのテストで使用
+- @testing-library/user-event
+UIイベントの実行に使用
+```
+
+# Jestとは
+複雑な設定の必要がないテストフレームワークのこと。
+- 初期設定不要
+- テスト用関数が利用可能
+	(e.g.test, expect, toBe)
+- 非同期処理のテスト
+- 外部APIのmock化
+などができる。
+
+
+## Jestの命名規則
+<コンポーネント名>.test.jsとすること。
+もしくは、spec.tsで終わるものにすること。
+
+###test()関数の使い方
+基本書式
+test("テスト名", () =>{
+})
+
+# テストの実行
+yarn jest
+
+
+### reactの関数コンポーネントが正しくレンダーされるかを調べる。
+e.g.)
+//render関数を使う
+
+import { render } from '@testing-library/react';
+
+
+###簡単なテストケースを書いてみる。
+e.g.)
+
+import { render, screen } from '@testing-library/react';
+import Greet from "./Greet";
+//もしくはit関数を使う。どちらでも挙動は同一
+test('h1が存在するかどうか', () => {
+
+	//擬似的にテストしたいコンポーネントの描画する。
+	render(<Greet />);
+	//screenのメソッドで当該テキストを含むエレメントを取得してみる。
+	const h1EL = screen.getByText("こんにちは");
+	//検証内容。取得したエレメントがドキュメントのツリーに存在すると期待している。
+  expect(h1EL).toBeInTheDocument();
+})
+
+## test Suitesはファイル単位でのテスト結果をあらわす。
+
+## debugメソッドを使う。
+renderしたDOMが持つメソッドの一つなので、
+//使い方１
+const { debug } = render(<当該コンポ />);
+debug(<当該要素>)
+//これで当該要素をテスト実行時に表示させる。
+
+//使い方2
+screen.debug(<当該要素>)
+
+screen. ()//引数なしの場合には、renderされた全ての要素を取得する。
+
+
+
+# 要素の取得方法
+//roleのチートシート
+https://www.w3.org/TR/html-aria/#docconformance
+
+//要素取得メソッドの使用優先度
+https://testing-library.com/docs/queries/about/#priority
+
+
+- screen.getByRole(role, option)
+//roleって？
+その要素が何をするか？どんな役割なのか？によって各HTML要素に付与される属性のこと
+一番最初に該当するroleを持つ要素を取得する。
+- screen.getAllByRole(role, option)
+当該の全ての要素を取得する。
+
+e.g.)
+//input type="radio"の場合
+screen.getByRole('radio');
+//画像の場合
+const imgEl = screen.getByRole('img')
+//alt属性から取得する
+const imgEL = screen.getByAltText('React Logo')
+//h1-h6の要素を取得する
+  const headingEL = screen.getByRole('heading')
+
+- screen.getByAltText
+alt属性の値から取得する。
+
+
+似たような要素があるときの対処法
+1.中身のテキストが違う時
+  const headingEL = screen.getByRole('heading', {name: "こんにちは"})
+//第二引数のnameプロパティの値に当該のtextを指定する。
+
+2. 中身の文字列も同一の場合
+- containerを利用する。
+render(<コンポーネント名 />)の返り値として、containerと
+いうプロパティが返ってくる。その中身は、レンダーしたDOM要素等になるので、そのコンテイナーに対してquerySelector('h2')とすると、必要な要素を取得することができる。
+e.g.)
+	const { debug, container } = render(<Greet />);
+  const h2El = container.querySelector('h2');
+debug(h2El);
+
+## labelを使って要素を取得する。
+- screen.getByLabelText('氏名')
+//ここで取得できるのはlabel要素ではなく、
+//指定したlabelテキストのfor(htmlfor)属性に紐づく,
+//id属性を持ったinput要素。
+
+# input要素のplaceholder属性を元に取得する。
+
+const elByPlaceholder = screen.getByPlaceholderText('氏名')
+debug(elByPlaceholder);
+
+//querySelectorなどは、推奨されていない。
+
+
+
+# テストコードの基本
+-----
+Arrage:  準備(テストデータ、条件、環境の設定).
+Act: 実行(ロジックの実行、関数の実行).
+Assertion: 結果の確認(実行結果と期待する結果の比較).
+-----
+
+
+
+e.g.)//カウントアップするボタンのテスト
+
+import { render, screen, fireEvent } from "@testing-library/react";
+import Counter from "./Counter";
+
+
+test('if countUp_+1 works properly', () => {
+  // Arrange
+	render( <Counter originCount={0} />);
+	
+	// 更新前
+const spanElBeforeUpdate = screen.getByText('現在のカウント:0')
+expect(spanElBeforeUpdate).toBeInTheDocument();
+
+  // Act
+  const btn = screen.getByRole('button', {name: 'カウントアップ'})
+  fireEvent.click(btn);
+
+  // Assertion
+  const spanEl = screen.getByText('現在のカウント:1')
+  expect(spanEl).toBeInTheDocument();
+});
+
+
+
+### fireEvent関数
+この関数のメソッド(e.g. click()など)を使用すると、その要素に設定されたイベントを発火させることができる。
+
+e.g.)
+//カウントアップというテキストの入ったbtnが持つonClickイベントを発火させている例。
+const btn = screen.getAllByRole('button', {name: 'カウントアップ'})
+fireEvent.click(btn)
+
+
+## テストケースをまとめる。
+- describe関数を使う
+describeはネストできる。構造だけ取ると、
+e.g.)
+describe('Counterコンポーネントの動作確認', () => {
+
+  describe('初期表示の正常確認', () => {
+    test('現在のカウントが0かどうか', () => {
+      render(<Counter originCount={0} />);
+  
+      const spanElBeforeUpdate = screen.getByText('現在のカウント:0')
+      expect(spanElBeforeUpdate).toBeInTheDocument();
+    });
+
+    test('現在のカウントが1かどうか', () => {
+      render(<Counter originCount={1} />);
+  
+      const spanElBeforeUpdate = screen.getByText('現在のカウント:1')
+      expect(spanElBeforeUpdate).toBeInTheDocument();
+    })
+  }); 
+
+  describe('ボタン制御の確認', () => {
+    test('「カウントアップ」押下で「現在のカウント」が+1されるか', () => {
+      render(<Counter originCount={0} />);
+      
+      const spanElBeforeUpdate = screen.getByText('現在のカウント:0')
+      expect(spanElBeforeUpdate).toBeInTheDocument();
+    
+      const btn = screen.getByRole('button', { name: 'カウントアップ'});
+      fireEvent.click(btn);
+    
+      const spanEl = screen.getByText('現在のカウント:1')
+      expect(spanEl).toBeInTheDocument();
+    })
+  
+    test('「カウントダウン」押下で「現在のカウント」が-1されるか', () => {
+      render(<Counter originCount={0} />);
+      
+      const spanElBeforeUpdate = screen.getByText('現在のカウント:0')
+      expect(spanElBeforeUpdate).toBeInTheDocument();
+    
+      const btn = screen.getByRole('button', { name: 'カウントダウン'});
+      fireEvent.click(btn);
+    
+      const spanEl = screen.getByText('現在のカウント:-1')
+      expect(spanEl).toBeInTheDocument();
+    })
+  
+    test('「クリア」押下で「現在のカウント」が0になるか', () => {
+      render(<Counter originCount={2} />);
+      
+      const spanElBeforeUpdate = screen.getByText('現在のカウント:2')
+      expect(spanElBeforeUpdate).toBeInTheDocument();
+    
+      const btn = screen.getByRole('button', { name: 'クリア'});
+      fireEvent.click(btn);
+    
+      const spanEl = screen.getByText('現在のカウント:0')
+      expect(spanEl).toBeInTheDocument();
+    }) 
+  });
+});
+
+
+## テストケースの明細度
+- 初期表示と
+- 正常動作するものを少なくとも書くこと。
+
+
+
+
+# 関数自体をテストする。
+(userReducerを例として、”更新関数”自体をテストすることもできる)
+
+## .toEqual()
+オブジェクトや配列を比較する際に用いる。
+//primitive値を比較する時には、toBe()を用いる。
+toBeは同一性について言及する。
+
+
+# userEventを使う。
+script(コード上で)、ユーザの操作を擬似的に表現する時に使用する。
+//fireEvent(dispatchEventを使用している。)に似ている.
+userEventの方がより、純粋にユーザの画面操作を再現することになる。
+
+
+//基本書式。準備
+import userEvent from "@testing-library/user-event";
+
+const user = userEvent.setup();
+
+e.g.)
+import { render, screen } from "@testing-library/react";
+import Message from "./Message";
+import userEvent from "@testing-library/user-event";
+
+describe("Messageコンポーネントの動作確認", () => {
+  describe("初期表示の正常性確認", () => {
+    test('入力された文字が画面上に存在', () => {
+      render(<Message />);
+      const h2El = screen.getByRole("heading", {name: "入力された文字:" })
+      expect(h2El).toBeInTheDocument();
+    });
+  });
+
+  describe("画面操作正常性確認",  () => {
+    test('入力値変更 -> 送信ボタン押下', async () => {
+      const user = userEvent.setup();
+      render(<Message />);
+      const inputEl = screen.getByRole('textbox');
+      const btnEl = screen.getByRole('button');
+      const h2El = screen.getByRole("heading", {name: "入力された文字:" })
+      //初期状態を確認
+        //ボタンが非活性であることを主張
+      expect(btnEl).toBeDisabled();
+        //input要素が空であることを主張
+      expect(inputEl.value).toBe("");
+
+      await user.type(inputEl, "こんにちは");
+      expect(btnEl).not.toBeDisabled();
+      
+      await user.click(btnEl);
+      expect(h2El.textContent).toBe("入力された文字:こんにちは")
+
+    });
+  });
+})
+
+
+##  非同期処理のテストを行う
+
+-screen.findByRole()
+非同期処理のメソッド。一致する要素が見つかるまで待機する。
+
+e.g.)
+//asyncをつけて非同期処理として、
+awaitを利用しながら、findByRoleという非同期な処理を待っている。
+test('外部データ取得後の表示',  async () => {
+    render(<GetUserData url={ENDPOINT_URL}/>);
+    const h2El = await screen.findByRole('heading', { name: "プロフィール"})
+    expect(h2El).toBeInTheDocument();
+
+    const itemEls = await screen.findAllByRole('listitem')
+    expect(itemEls[0].textContent).toBe("ID: 1");
+    expect(itemEls[1].textContent).toBe("Name: CodeMafia");
+});
+
+
+## 非同期処理のMock化
+e.g.)
+import axios from "axios";
+
+//モック化したいライブラリを指定
+jest.mock('axios')
+
+axios.get.mockResolvedValue({/*擬似的に返却したい値を入力*/})
+
+cf)070_function_mock
+
+
+
+// subjectを使う。
+lazyを用いることで、何度も同じ記述をする必要がない。
+```
+describe('コンポーネント作成処理', () => {
+subject(() =>
+lazy('component')
+		)
+	}
+}
+｀｀｀
+
+subjectを使って、その引数にとった値をテスト対象にする。
+
+二度目に、subject関数を呼び出すことで、そのテスト対象として定義した部分を実行することができる。
+```
+subject();
+```
+
+
+## vueインスタンスを使用する。
+ここでの vm は Vue.js のコンポーネントインスタンスを指しています。Vue.js では、コンポーネントインスタンスを "ViewModel" と呼びます。(これは Model-View-ViewModel（MVVM）パターンに由来します。)
+
+Vue.js の公式ドキュメントによれば、vm は "a shorthand for ViewModel"（ViewModelの略語）です。Vue.js では、コンポーネントインスタンスはデータ、メソッド、コンピューテッドプロパティ、ウォッチャーなど、コンポーネントの全ての振る舞いと状態を管理します。
+
+したがって、このコードでは lazy('component').vm.getArrivalLabel(1) は、ProductSearchLink コンポーネントインスタンスの getArrivalLabel メソッドを呼び出しています。このメソッドは恐らく、特定の数値（この場合は 1）に対応するラベルを返す役割を持っているでしょう。

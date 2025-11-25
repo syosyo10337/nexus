@@ -1,0 +1,378 @@
+***シェル---カーネルが提供する機能を操作する際に、OS と対話的に操作する必要があります。シェルはOS の、特にカーネル部分を包み込んでいることからその名があり、対話機能を提供するものです
+
+***プログラムの主要４要素
+• 順次実行
+• 条件分岐
+• 繰り返し
+• サブルーチン
+
+***シェルスクリプトの作成--テキストで記述します。(viエディタ等を使う)
+
+ex)
+#!/bin/bash --１行目でシェルの指定を行う。　
+ls　----　２行目以降に実行するコマンドを記述する
+date
+
+
+$ chmod u+x lsdate.sh
+$ ls -l lsdate.sh
+-rwxrw-r--. 1 linuxtext linuxtext 21 Jun 6 09:51 lsdate.sh
+上のようにシェルスクリプトを実行する権限xがあることを確認します。（必要に応じてchmodで権限付与）
+
+**実行例
+$ ./lsdate.sh
+Desktop diff2 ls-l-output ls-usr-bin touched-file
+cat-output hosts.bak ls-l-output-second lsdate.sh uniq-sample
+diff1 hosts.new2 ls-output score （ls の実行結果）
+Fri Jun 6 09:55:05 JST 2008 　（date の実行結果）
+./はパス指定、カレントディレクトリ(.)にある(lsdate.shを実行せよ) 
+
+
+***echoコマンド　--引数で与えた文字列を標準出力に出力する
+echo [オプション] 文字列
+		オプション-n 改行を抑制します。通常の出力は改行されますが、このオプションがあると改行されません。
+		
+***変数　変数の代入は「=」,参照は「＄」をつけて行う
+ex)
+$ abc=123　-- シェル関数の作成　スペースを開けずに記入すると良いでしょう(コマン	ドとして受け取られた)
+$ echo $abc
+123
+（abc の内容を表示する）
+
+bashでは１次元の配列変数が使えます。
+＄　abc[0]=123 （インデックス0に１２３を代入）
+配列変数の内容を表示するときは、
+${abc[1]}と波括弧で配列変数を囲みます
+
+
+***シェル変数と環境変数***
+
+***環境変数の作成　--　exportコマンドを使う
+ex)$ export abc
+（シェル変数abc を環境変数abc にする）
+$ export xyz=234
+（環境変数xyz を作成し234 を代入する）
+
+***read コマンドread −--標準入力からデータを読み込みます。すでに変数にデータが入っていた場合、新しいデータに上書きされます。
+
+read 変数名(参照してるのを訳が違うから、＄いらんよ）
+ex)$ echo $abc
+123
+（シェル変数abc の中身が表示されます）
+$ read abc
+aaabbbccc
+（何か入力します）
+$ echo $abc
+aaabbbccc
+（シェル変数abc の中身が入れ替わっています）
+
+**set --シェル変数の一覧を表示（パイプラインでgrepと繋いで、絞り込むと探しやすいぞ）
+**unset  変数名--変数を削除（シェルも環境もいける）
+**env --現在の環境変数の一覧を表示
+
+引用符（クォートの種類）
+シングルクォーテーションは、囲んだ範囲を文字列として認識する。
+ダブルコーテーションは、囲んだ範囲の＄付き変数を変数として認識し、変数を展開する。
+バッククォートで囲まれた範囲は、コマンドとして解釈される。
+ex)
+$ XYZ=!date!;
+$ echo "It is $XYZ now."
+It is Thu Mar 20 06:08:14 JST 2017 now.
+（$XYZ にdate コマンドの実行結果が入っている）
+$ echo "It is !date! now."
+It is Thu Mar 20 06:08:14 JST 2017 now.
+（ダブルクォートで全体の文字列を囲み、バッククォートで囲んだdate コマンドを挿入して、変数XYZ への代入を省略）
+
+
+***引数、、実行時にオプションを引数として参照することができます。引数は$1, $2…
+など$の後に引数の番号を指定することで参照できます。($0 は実行コマンド名、$#は、引数の数を示す)
+
+$ cat args.sh
+#!/bin/bash
+echo "$1:" $1;
+echo "$2:" $2;
+echo "$3:" $3;
+echo "$0:" $0;
+echo "$#:" $#;
+$ ./args.sh aaa bbb ccc
+$1: aaa
+$2: bbb
+$3: ccc
+$0: ./args.sh
+$#: 3
+（$1-$3 は引数、$0 は実行コマンド名、$#は、引数の数を示す）
+
+**shift文--- 引数の順序をずらします
+
+ex)
+$ cat argsshift.sh
+#!/bin/bash
+echo "$1:" $1;
+echo "$2:" $2;
+echo "$3:" $3;
+shift
+echo "$1:" $1;
+echo "$2:" $2;
+作成したスクリプトに対して、変数を渡してみます。
+$ ./argsshift.sh aaa bbb ccc
+$1: aaa
+$2: bbb
+$3: ccc
+$1: bbb
+（$1 がbbb に変わった）
+$2: ccc
+（$2 がccc に変わった）
+
+ つまり、　bbbを＄２が受け取ってたけど、$1で受け取るようになって、
+cccは＄３が受け取っていたが、　＄２で受け取るようになった
+aaa-$1,bbb-$2,ccc-$3
+aaa-$2,ccc-$3
+
+
+** エスケープ文字
+シェルスクリプトでは、￥（usだと\バックスラッシュ）はエスケープ文字と呼ばれ、直後の１文字の扱いを変更します.改行コードにも有効です。Y（バックスラッシュ）を
+行末に付与することで、文字列の途中で折り返すことができます。適切に改行を入れることでコマンドの視認性を向上できます。
+ex)$ echo "I am a cat. As yet I have no name."
+I am a cat. As yet I have no name.
+$ echo "I am a cat.\ 
+> As yet I have no name."
+I am a cat. As yet I have no name.
+（途中でバックスラッシュを入れても改行は無視され同じ結果となる）
+
+*エスケープ文字と、引用符の応用
+echo コマンドで、「Valueof ABC is "123".」のように"(ダブルクォート) を出力する方法
+
+①$ echo 'Value of ABC is "$ABC".'
+Value of ABC is "123".
+(この例のように、文字列全体を"(シングルクォート) で囲むことでも"(ダブルクォート) を表示できます)
+②$ echo "Value of ABC is Y$ABC."
+Value of ABC is $ABC.
+（ダブルクォートで囲んだ文字列内で「$」をそのまま表示したい場合にも直前の「Y」で可能です）
+
+**Escape squence \nで改行できる　\041は！になる。
+ex)
+$ echo -e "I am a cat. YnAs yet I have no nameY041"
+I am a cat.
+As yet I have no name!
+（Yn は改行に変わり、Y041 は!になりました。）
+
+
+**sourceコマンド
+bash などのシェルの内部コマンドで、指定されたファイルを読み込んでシェル環境を設定します。ファイル内容はシェルコマンドと解釈して実行します。
+一般的な用途としては、シェルの環境設定ファイルである"
+.bashrc"や".bash_profile"などを設定変更後、ログインしなおさずに設定を現在のシェル上で有効にする場合に使われます。
+ex)
+$ cat set.sh
+（set.sh の内容確認）
+#!/bin/bash
+abc=xyz
+echo $abc
+
+$ echo $abc
+（$abc には何も格納されてないため、何も表示されない）
+
+$ ./set.sh
+xyz
+（スクリプト内で設定された変数abc の値がecho で出力された）
+set.sh にはecho 文が記述されているため、その値が出力される。
+
+
+$ echo $abc
+（変数abc への値の設定はスクリプト内でしか有効でないので、何も表示されない）
+
+$ source set.sh
+xyz
+（スクリプト内で設定された変数abc の値がecho で出力された）
+ 
+$ echo $abc
+xyz
+(source コマンドで読み込んだことにより、set.sh の終了後も変数abc に値が格納されたまま)
+
+***条件分岐
+
+**if文
+if [ 条件 ]; then 
+	... 
+（elif 条件式2 
+	... 
+else ...） 
+fi   （）部分は省略可能
+
+
+シェルスクリプトにおける演算子
+
+*文字列比較を行なう演算子
+
+a == b a とb が等しければ真
+a != b a とb が等しくなければ真
+
+*数値比較を行なう演算子
+
+a -eq b 　a とb が等しい（equal to）ければ真
+a -ne b 　a とb が等しくなければ（not equal to）真
+a -ge b 　a がb 以上（greater than or equal to）であれば真
+a -le b 　a がb 以下（less than or equal to）であれば真
+a -gt b 　a がb より大きい（greater than）値であれば真
+a -lt b 　a がb 未満（less than）であれば真
+
+**ファイル属性の確認 testコマンドの実行
+if test　条件節 ; then.....　ex)if test -d パス; then.....
+if [ 条件節]; then ...
+
+ファイル属性の確認を行なう演算子
+
+-f ファイル名	通常ファイルなら真
+-d ファイル名	ディレクトリなら真
+-e ファイル名	ファイルが存在すれば真
+-L ファイル名	シンボリックリンクなら真
+-r ファイル名	読み取り可能ファイルなら真
+-w ファイル名	書き込み可能ファイルなら真
+-x ファイル名	ファイルが存在して、実行権限があれば真
+-s ファイル名	サイズが0 より大きければ真
+
+**論理積AND　（-aと＆＆の使い分けは[]の内外）
+[条件A -a 条件B -a 条件C ] ....
+[条件A] && [条件B] && [条件C] ...
+
+**論理和OR
+[条件A -o 条件B -o 条件C ] ....
+[条件A] || [条件B] || [条件C] ...
+
+**case文
+case 変数　in
+	値A)　　　　--- (値はパイプ記号（|）で区切って複数指定することができます)	
+			処理1;;
+	値B)
+			処理2;;
+	*)
+			どの値ともマッチしなかった時の処理
+esac
+
+変数の値が　Aの時処理1が実行、Bの時処理２が実行といったようになるよ
+
+***繰り返し処理***
+
+**for文
+for 変数in 値のリスト
+do
+処理
+done
+
+ex)実行例
+$ for i in a b c d
+> do
+> echo $i
+> done
+結果）
+a
+b
+c
+d
+値のリストとしてコマンドの実行結果を使うことができ、以下の
+ようにi にls の実行結果を代入してループが実行されます。
+for i in `ls`
+
+**while/until文
+while 文は、条件が成立している間ループを繰り返す（条件が成立しなくなったら終了）until 文は、条件が成立してない間ループを繰り返す（条件が成立したら処理を終了
+*while 条件式
+do
+処理
+done
+
+*until 条件式
+do
+処理
+done
+
+**select文　ユーザに対し数値の入力を促す
+select 変数　in リスト
+do
+	処理
+done
+
+ex)
+実行例
+select name in "apple" "banana" "orange"
+do
+echo "You selected $name";
+done
+
+動作は、、、
+1) apple
+2) banana
+3) orange
+$? 1
+You selected apple
+（「Ctrl」C で中止）
+
+
+**繰り返しの制御（breaやcontinue）
+ex)
+$ cat ./sample.sh
+while true
+do
+	echo "Continue? (y/n)"
+	read input
+	case $input in
+		n) break
+			;;
+		y) continue
+			;;
+		*) echo "Please input y or n."
+			;;
+	esac
+done
+	
+これを実行すると、
+$ ./sample.sh
+Continue? (y/n)
+y
+（y を入力）
+Continue? (y/n)
+（繰り返しの先頭に戻る）
+a
+（y,n 以外を入力）
+Please input y or n.
+Continue? (y/n)
+n
+（n を入力）
+$
+（繰り返しを終了する）
+
+***サブルーチン-- 一連の処理をまとめて、再利用できるようにしたものシェルスクリプトでいう関数
+
+書き方
+function 関数名
+{
+		処理
+}　もしくは
+
+関数名()
+{
+		処理
+}
+
+戻り値を受け取るにはreturn を使いますよ。
+
+
+デバッグするツールshコマンド
+sh 自身はシェルを起動するコマンドですが、-x オプションを付けて引数にシェルスクリプトを指定すると、コマンドや変数の中身を表示しながらスクリプトを実行します。繰り返しの項で使用したsample.sh をsh コマンドにて実行してみましょう。
+実行例
+$ sh -x ./sample.sh
++ true
++ echo "Continue? (y/n)"
+Continue? (y/n)
++ read input
+y
+（y を入力）
++ case $input in
++ continue
++ true
++ echo "Continue? (y/n)"
+Continue? (y/n)
++ read input
+n
+（n を入力）
++ case $input in
++ break
+linuc.

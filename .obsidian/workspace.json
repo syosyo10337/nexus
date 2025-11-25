@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "c177c9d9c9452055",
+        "id": "9aafe10b616e9502",
         "type": "tabs",
         "children": [
           {
-            "id": "24370c8b7afbfb6f",
+            "id": "f4b84a5c00a8b936",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Welcome.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Welcome"
+              "title": "New tab"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Welcome.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Welcome"
+              "title": "Backlinks"
             }
           },
           {
@@ -169,8 +164,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -184,8 +178,31 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "24370c8b7afbfb6f",
+  "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
-    "Welcome.md"
+    "SQL/各クエリの実行順序.png",
+    "SQL/SQL.txt",
+    "SQL/4つの構文.png",
+    "Ruby/ハッシュの書き方まとめ.png",
+    "Ruby/メソッド内で引数を使用する.png",
+    "Ruby/インスタンスメソッドとクラスメソッド.png",
+    "Ruby/Ruby.rb",
+    "Ruby/オーバーライドの仕組み.png",
+    "Ruby/Screen Shot 2022-08-02 at 4.21.32 PM.png",
+    "Ruby/Super.png",
+    "Ruby/複数のreturnを条件分岐で活用する.png",
+    "Ruby/チェリー本例題.txt",
+    "Ruby/Ruby 見直しシート .rb",
+    "Rails/Rails_Tutorial.txt",
+    "Rails/Rails progate.txt",
+    "Rails/MVCの説明.png",
+    "Rails/heroku_troubleshoot.txt",
+    "Rails/Screen Shot 2022-08-14 at 23.10.14.png",
+    "Rails/RSpec.rb",
+    "Rails/具体的な機能実装に関して.txt",
+    "Python/Python.py",
+    "Welcome.md",
+    "2025-11-26.md",
+    "Untitled.canvas"
   ]
 }

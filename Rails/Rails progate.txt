@@ -1,0 +1,382 @@
+
+*画像の保管場所assetじゃないん？？
+publicフォルダに配置しておくと、「<img src="/画像名" >」や「background-image: url("/画像名");」のように、画像名を指定するだけで、他のファイルで簡単に参照できるようになります。(/を忘れない)
+
+**postとget ---
+getはデータベースを変更しないアクションへ繋ぐ。
+postは,1.データベースを変更するアクションへroutingする時に使う。(投稿情報のアップデートとか).2.sessionの値を変更する時
+
+
+
+**link_toはデフォルトでgetのルーティングを探し、form_withはデフォルトでpostのルーティングを探す
+*link_to はgetへ向かってしまうので、postに飛ばしたい時は第三引数として{method: "post"}と指定する。
+
+
+
+
+
+	
+
+
+
+モデル(クラス)をいじってデータベースに反映させるイメージ？
+***投稿の編集 updated_atがRailsの仕様でデータがb post.content = "xxxx"と更新された時に自動で値を入れ直してくれる。
+
+
+**投稿の削除 _destroyメソッドを使う。
+ex)#ポストのcontrollerでのdestroyアクション
+def destroy
+	@post = Post.find_by(id: params[:id])  #routeで指定された:idの値を持つデータを引き込む
+	@post.destroy #その(インスタンス)変数を削除する。
+	redirect_to("/posts/index")
+end
+
+
+**コントローラで作った変数@xxxは、viewで参照できる。もちろんコントローラ内でも使える。
+viewや、routeから渡されたパラメータ:xxは、コントーラ内ではparams[:xx]で参照する。
+
+
+
+
+
+
+**投稿の編集に失敗した時に、下書きを残したい！
+使ったメソッド --renderメソッド。(別のアクションを経由せず)表示させたいviewファイルを指定して表示する。
+下書きが残せない理由は、
+①updateアクションを失敗した時に、redirect_toでeditアクションに転送。
+②editアクションでは、下書き前の保存されているデータを参照していて
+③それをeditのviewでは表示するようになっている。
+
+対応方法
+①編集画面のtextareaに入力されていた値name="ここ",:ここ属性を参照すれば、データベースには保存されてない下書きを取得できる。
+②renderメソッドを使って、editアクションの経由せずに、edit.html.erbを表示される。
+
+
+
+
+
+
+**新規作成の時の注意点。renderでnew（新規投稿ページにいくと、new内のhtmlでの@変数は、クリエイトのアクションからきているので、値を持っている。つまり、@post.contentなどとすると、validateを通過できなかったコンテンツの内容をレンダー時にも保持できる。）
+*ここで注意したいのは、newアクション経由で、newのviewにきた時にアクション内で＠変数について言及されてないのでエラーとなる。対処法として空の変数を作る。(<-viewないでも、内容が空なので表示されない。)
+
+
+
+**エラーメッセージの取得
+saveメソッドでfalse(validateにひっかかれる)と、Railsでは自動的にエラーメッセージが生成。@post.errors.full_messagesの中に、エラー内容が配列で入る。複数の原因でエラーが出た時を全て表示できるようにeach文で、エラーメッセージの配列を吐き出すようにしている。
+
+
+
+
+***ユーザの作成
+{新規登録機能を作る。}
+
+validationによって、登録が失敗した時を作る。
+① フォームを表示する  #ページを戻らせる。
+② エラー文を表示する #バリデーション引っかかっていることを伝える。
+③ フォームに初期値を入れる #登録する時の下書きを表示してあげる。
+
+<input>タグでは、value属性の値が初期値になります。<%= %>を用いて「value="値"」の「" "」の中にRubyのコードを埋め込みます
+
+
+{編集機能を作る}
+①ユーザー編集ページの作成
+-「localhost:3000/users/1/edit」のように,編集するユーザーのidを含め、ユーザー編集フォームには初期値を設定.ユーザー詳細ページに編集ページへのリンクを用意
+②: 変更の保存（updateアクション）
+③ サクセス・エラーメッセージの表示
+
+
+
+
+
+
+***ユーザ画像を表示する。-----------------------
+
+
+
+
+
+app/public/user_imagesに初期画像を置いておいて、、、
+
+ユーザ新規登録の際に、デフォルト画像が設定されるようにアクション内に既定値としてのファイル名を追加。これで
+ex)
+@user = User.new(		#Userクラスからインスタンスを作成し、
+name: params[:name],　
+email: params[:email],
+image_name: "default_user.jpg" #ハッシュの形で既定値を設定。)
+
+@user.save #設定した値(画像ファイルのファイル名も含む)をデータベースに保存する。
+
+画像をerbで埋め込む。
+ex)  <img src="<%= "/user_images/'#'{@user.image_name}" %>"> #便宜上(#)をシングルクォートで囲んだが、本来はいらない。また画像のパスの指定だが、(public)/user_images/default_user.jpgと今回はなっている点に留意
+
+
+**画像の入力を受け取る。
+1.viewを作る。--<input>タグに「type="file"」を追加することで、画像ファイルを選択するボタンを表示することが出来ます。
+*画像の送信は特殊なので、form_tagに{multipart: true}を追加する必要があります。
+詳しく理解する必要はないので、「画像を送信したいときには{multipart: true}をつける必要がある」ということだけ覚えておきましょう。
+
+2.updateアクションで次の2つの操作をする。
+-①ファイル名をデータベースに保存。②画像をpublic/user_imagesに作成
+
+①@user.image_nameに対して、ユーザーのid.jpgというファイル名という形で代入することでデータベースへの保存を実現する。
+
+②ユーザから送られる画像を、inputのname属性と紐付け、params[:値]と形でデータを受け取る。
+それをもとに画像ファイルをbinwriteで作成。
+*Rubyでファイルを作成する時はFileクラスのwriteメソッドを用いる。
+tpl)「File.binwrite(ファイルの場所, ファイルの中身)」 #ファイルの場所は”public/..でpublicに指定している。
+ex)
+def update
+	.
+	.
+	.
+	if params[:image] #変数に値が格納されている時(画像が送信された時)
+		@user.image_name = "#{@user.id}.jpg" #データベースでのimage_nameカラムの値を、ユーザのID.jpgという形で保存する。
+		image = params[:image] #image変数を定義し、送信された画像データを代入。
+		File.binwrite("public/user_images/#{@user.image_name}", image.read)
+		#画像ファイルを作成/public階層下に、/DBに保存されたものと同じ名称で。 変数imageに対してreadメソッドを用いて受け取った画像データを取得
+	end
+	
+end
+**画像が入力されていない時には、updateアクションでの操作をしないように条件分岐も忘れずに、
+**なんか一回編集したあとアプリサーバ内の同名ファイル上書きできない？から画像更新できないかも
+
+
+
+
+
+
+***ログイン機能の実装
+
+1.ログインのページを作成する。 <input type="password">でパスワードの用のフォームができる。
+2.dbにパスワードカラムに追加する。
+3.loginのフォームでのloginアクションを作る。
+4.ユーザを特定し、その特定したユーザでログインする。
+ユーザ認証のエラーメッセージ、validationのエラーメッセージ@インスタンス.errors.full_messagesではなく、データベースとの照合結果としてのエラーなので,自ら作成します。ex)@error_message = "メールアドレスまたはパスワードが間違っています"
+ex)  
+def login
+	@user = User.find_by(email: params[:email], password: params[:password])
+	if @user #もし@userがあったら、つまりユーザの入力値と一致するユーザがデータベースにあったら
+		flash[:notice] = "ログインしました"
+		redirect_to("/posts/index")
+	else
+		@error_message = "メールアドレスまたはパスワードが間違っています"
+		@email = params[:email] #この変数をviewで使うじゃん？ getリクエスト経由で来た時Undefined variableにならんのなんで？ --@が定義されてない->nilだと仮定すると、valueは任意の値なので無視できる？
+		@password = params[:password]
+		render("users/login_form")
+	end
+end
+
+
+4.ログイン状態の保持-セッションによる状態保持
+sessionメソッドを使い、その値をブラウザに保存させる
+ex)session[:user_id] = @user.id #sessionメソッドを使って、user_idというキーと、その値として、ユーザーのidを代入し、セッションを保持する。(これをSessionsHelper(モジュール)の中のlog_inメソッドとして実装しタイ。)
+ブラウザにはハッシュ化したsession[:user_id]をクッキーで送りつけている？よな
+
+
+
+
+
+
+
+5.ログアウト --sessionの削除 session[:user_id] =nilでsessionを削除する。
+6.ヘッダーメニューの表示切り替え session[:user_id]の値の有無で条件分岐
+
+7.ユーザ登録時に、ログイン状態にする。 createのアクションでsession[:user_id] = @user.idを入れる。
+
+
+
+
+**application.html.erbは全アクションから呼び出され、それぞれの対応するviewファイルをyieldの部分に入れて表示している。そのためlayoutで使いたい変数をアクション側で定義するには、全てのアクションに変数を定義する必要がある。
+
+回避法としての --before action
+コントローラの全アクションで共通する処理がある場合には、before_action使う。before_actionを用いることで、アクションが呼び出される際に必ずbefore_actionの処理が実行されます。ex)before_action :定義したメソッド　以下にメソッドを定義したり
+
+また、全てのコントローラで共通する処理はapplicationコントローラにまとめることができます。ログイン中のユーザーを取得するset_current_userメソッドを定義し、before_actionに指定しましょう。これで、全コントローラの全アクションで@current_userを定義することができます
+
+ex)#app/controllers/application_controllers.rbにて
+class ApplicationController < ActionController::Base
+	# before_actionにset_current_userメソッドを指定してください
+	before_action :set_current_user
+	
+	def set_current_user
+		@current_user = User.find_by(id: session[:user_id])   
+	end
+	
+end
+
+
+アクセス制限(強制ブラウズを避ける）
+onlyを用いて各コントローラでbefore_actionを使うことで、指定したアクションでのみそのメソッドを実行することができます。各コントローラは、applicationコントローラを継承しているので、継承元のメソッドを使うことができます
+
+@current_userがauthenticate_userメソッドの中でも使用されていることに注目しましょう。@変数で定義した変数は同じクラスの異なるメソッド間で共通して使用することが可能です。(クラス変数だから、クラス内がスコープ。クラスメソッド内だけではないってこと？)
+
+ex)
+class UsersController < ApplicationController
+	before_action :authenticate_user, {only: [:index, :show, :edit, :update]}
+end
+
+
+
+
+ログイン中のユーザがアクセスできないページを作る
+Application Controllerでメソッドを定義して、before_actionで適応したいアクションを設定する。
+authenticate_userのようなセッションによる識別ができるメソッドでログインしていないユーザのアクセスを制限して、forbid_login_userのようなメソッドを作ってログインしているユーザにも不要なページを表示しないようにしよう。
+ex)#/app/controller/application_controller
+def forbid_login_user
+	if @current_user
+	flash[:notice] = "すでにログインしています"
+	redirect_to("/posts/index")
+end
+end
+
+ユーザの編集を制限する。
+1.view側での制限
+表示させているユーザのページがsessionの値と一致しない場合は、編集できないようにする。
+<% if @user.id == @current_user.id %>
+<%= link_to("編集", "/users/#{@user.id}/edit") %>
+<% end %>
+
+2.強制ブラウズを避けるためにaction側でも制限をかける
+params[:id]で取得できる値は文字列であり、数値である@current_user.idと比較してもfalseとなります。to_iメソッドを用いる。だってURLって文字列に入ってたやん？
+
+
+
+ユーザと投稿の紐付け
+
+
+**Railsではモデル内にインスタンスメソッドを定義することができます
+ex)app/models/postにて
+def user
+	return User.find_by(id: self.user_id)
+end
+
+
+ユーザとそのユーザのした投稿(複数)を結びつける。
+Post.find_by(user_id: @user.id)のようにしてポストテーブルから探したいが、find_byだと一件のみの取得となる。そこで、ある条件に合致する「複数の」データを取得するには、whereメソッドを用いる
+
+whereメソッドを用いてuserモデルで、postsメソッド(ユーザインスタンスと同じuser_idの投稿を全て取得するメソッド）などを作ると良い。<-取得した要素を配列として持つ
+
+投稿詳細ページでのアクセス制限を考える(投稿者のみがアクセスできるように）
+view側での制限とaction側での制限を考える。 具体的には、viewの条件分岐とaction側では、edit画面へのアクション,updateのアクション、destoryのアクションをいじる
+
+sessionとの相違を調べるbefore_actionしたいメソッドの定義しているとこr
+def ensure_correct_user
+	@post = Post.find_by(id: params[:id])  #ここでのparams[:id]はroutingからもらっているパラメータで、ありそれぞれのパラメータは投稿を区別するために割り振られているものです。
+	if @post.user_id != @current_user.id
+		flash[:notice] = "権限がありません"
+		redirect_to("/posts/index")
+	end
+end
+
+
+
+**いいね機能の実装
+likeテーブルを作る カラムは二つで、userのidとpostのidで紐づける
+誰が、どの投稿にいいねしましたか？ということを記録する。
+E-R図的に表現すると
+
+投稿(1) -> ユーザ(1)
+ユーザ(1) ->投稿(many)
+
+投稿詳細ページで、「ログインしているユーザーがその投稿にいいねしたデータが存在する」という条件を満たす場合、「いいね！済み」と表示するようにしよう。
+ex) <% if Like.find_by(user_id: @current_user.id, post_id: @post.id%><%end%>
+#今ログインしているユーザ。(セッション中のユーザ)が当該のポストにライクしているか？の判定
+
+like機能を処理するコントローラを作る。
+rails g controller」コマンドで自動生成できるが、コマンドを用いるとビューファイルなども自動生成される。今回はそれらのビューファイルが必要ないので、コントローラを手動で作る
+新たにLikeデータを作成するためのcreateアクションを用意しましょう。createはデータベースにデータを作成するアクションですので、ルーティングには「post」を用います。
+
+likeコントローラのcreate機能でユーザからの入力値をデータベースに保存する。->@like = Like.newというようにlikeモデルからインスタンスを作り出して、@like.saveというように保存する。
+
+いいねの取り消し同様で、指定のアクションで@like.destoryのようにデータベースを操作し、redirect。view側でもlink_to ....{method: "post"} <-で作成したアクションへとルーティング
+
+
+HTML要素(fa FontAwesomeとか画像？)に対してのrubyメソッド(link_to等)の使い方\
+
+#Instead 
+<%= link_to("表示したいもの", "URL") %>
+#do this
+<%= link_to("/likes/#{@post.id}/destroy", {method: "post"}) do %>
+<span class="fa fa-heart liked-btn"></span>
+<% end %>
+
+
+[Rails Modelでのデータベースの操作をするメソッド]
+*count -データの件数をカウントする。ex)Like.where(post_id: 1).count #likesテーブルのpost_id１のデータの個数をカウントする。本来は配列の個数をカウントするメソッドらしいが使えるんだって
+
+*ポストのコントーラでLikeモデルを使ってlikesテーブルから当該ポストのライク数をcount して、変数に代入(@likes.countとか)それをviewに埋め込む。
+
+
+
+
+
+
+***bcryptを導入した時のログイン処理
+フォームに入力されたメールアドレス(ユーザID)に一致するユーザを取得し、入力されたパスワードをハッシュ化(authenticateメソッドを用いて)した値と、そのデータベース上で該当したユーザのパスワード_digestの値が一致するかを調べる。
+
+has_secure_passwordメソッドを有効にすると、authenticateメソッドを使えるようになり,
+authenticateメソッドは渡された引数をハッシュ化し、メソッドをつかったオブジェクトのもつpassword_digestの値と一致するかどうかを判定してくれます。
+
+
+def login
+	@user = User.find_by(email: params[:email])
+	if @user && @user.authenticate(params[:password])
+		session[:user_id] = @user.id
+		flash[:notice] = "ログインしました"
+		redirect_to("/posts/index")
+	else
+		@error_message = "メールアドレスまたはパスワードが間違っています"
+		@email = params[:email]
+		@password = params[:password]
+		render("users/login_form")
+	end
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+[Rails tutorial]
+**railsの省略記法(selfの省略@model)
+self.email = self.email.downcaseは
+省略して
+self.email = email.donwcaseに省略できるよ。
+
+*データベースのカラムにインデックスをつける理由
+①find_by等で検索する可能性がある時、全表スキャン（Full-table Scan）を避けて、データへのアクセス効率を高めるため。
+②データベース側での一意性の確保
+
+
+
+**クラス作成の一例()
+class User
+	attr_accessor :first_name, :last_name. :email, #アクセサーによって、@first_nameと@last_name,@emailに対して、getter/setterメソッドが使えるようになった。
+	
+	def initialize(attributes = {}) #引数にデフォルト値として空のハッシュをしてしているので、emailがないユーザーもemail =nilとして作成できる
+		@first_name = attributes[:first_name]
+		#インスタンスメソッドは、viewでも使えるし、クラス内でもスコープは有効(インスタンス変数がまた定義されていない場合は戻り値にnil)
+		@last_name = attributes[:last_name]
+		@email = attributes[:email]
+	end
+	
+	def full_name
+		"#{@first_name} #{@last_name}"
+	end
+	
+	def formatted_email
+		"#{full_name} <#{@email}>"
+	end
+end
+

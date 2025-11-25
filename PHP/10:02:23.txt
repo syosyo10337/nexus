@@ -1,0 +1,32 @@
+10_02_23 (Mon)
+10:00 - 19:00 (8h)
+
+[勤怠]
+- 先日実働: 9h
+- 今月累計: 0/168h
+
+
+[tasks]
+## dev 2h
+- UB-5412 review
+- TT-1250 review
+
+## mtg/release/etc 4.5h
+- team mtg 1.5h
+- 振り返り mtg 1.5h
+- 研修課題 1.5h
+
+## アラート対応 1h
+
+
+//TODO
+
+- 研修課題
+- (TT-1250) 
+https://upgarage.atlassian.net/browse/TT-1250?focusedCommentId=177158&page=com.atlassian.jira.plugin.system.issuetabpanels%3Acomment-tabpanel#comment-177158
+
+- ZAS-1169
+サービス名変更はスキップ
+
+
+目標について目を通してもらう。
