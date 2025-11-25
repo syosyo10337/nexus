@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "9aafe10b616e9502",
+        "id": "35adbc0a491b1ab9",
         "type": "tabs",
         "children": [
           {
-            "id": "f4b84a5c00a8b936",
+            "id": "59abc608c87ce214",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -85,35 +85,16 @@
         "type": "tabs",
         "children": [
           {
-            "id": "8c2761907915ee17",
-            "type": "leaf",
-            "state": {
-              "type": "backlink",
-              "state": {
-                "collapseAll": false,
-                "extraContext": false,
-                "sortOrder": "alphabetical",
-                "showSearch": false,
-                "searchQuery": "",
-                "backlinkCollapsed": false,
-                "unlinkedCollapsed": true
-              },
-              "icon": "links-coming-in",
-              "title": "Backlinks"
-            }
-          },
-          {
             "id": "21ffee849bb954bc",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Welcome.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Welcome"
+              "title": "Outgoing links"
             }
           },
           {
@@ -159,6 +140,24 @@
               "icon": "lucide-list",
               "title": "Outline of Welcome"
             }
+          },
+          {
+            "id": "ce72dac28a8afbd0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks"
+            }
           }
         ]
       }
@@ -178,7 +177,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "d9e8e1c46c91a7b9",
+  "active": "59abc608c87ce214",
   "lastOpenFiles": [
     "SQL/各クエリの実行順序.png",
     "SQL/SQL.txt",
