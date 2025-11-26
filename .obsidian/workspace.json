@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Linux/CS基礎.md",
+                "file": "強み、.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "CS基礎"
+              "title": "強み、"
             }
           }
         ]
@@ -94,12 +94,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Linux/CS基礎.md",
+                "file": "強み、.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from CS基礎"
+              "title": "Outgoing links from 強み、"
             }
           },
           {
@@ -137,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Linux/CS基礎.md",
+                "file": "強み、.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of CS基礎"
+              "title": "Outline of 強み、"
             }
           },
           {
@@ -185,6 +185,8 @@
   },
   "active": "3f5b4732d00f47cb",
   "lastOpenFiles": [
+    "Linux/CS基礎.md",
+    "強み、.md",
     "Linux/ 基本的なコマンド２.md",
     "CS/正規表現.md",
     "Docker/Screen Shot 2022-08-10 at 21.37.00.png",
@@ -193,7 +195,6 @@
     "Linux/プロセス管理とマウント 6.md",
     "Linux/ネットワークコマンド.md",
     "Linux/シェルスクリプト.md",
-    "Linux/CS基礎.md",
     "HTML&CSS/実際のサイトを作るときのスタイルリング例.md",
     "HTML&CSS/Sass:Bootstrap.md",
     "HTML&CSS/Sass:Bootstrap",
