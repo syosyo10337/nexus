@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a8d3e84e513a369d",
+        "id": "88ebf7b811e61f7a",
         "type": "tabs",
         "children": [
           {
-            "id": "3f5b4732d00f47cb",
+            "id": "17bd349c71b62681",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "強み、.md",
+                "file": "Python/Python.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "強み、"
+              "title": "Python"
             }
           }
         ]
@@ -94,12 +94,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "強み、.md",
+                "file": "Python/Python.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from 強み、"
+              "title": "Outgoing links from Python"
             }
           },
           {
@@ -137,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "強み、.md",
+                "file": "Python/Python.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 強み、"
+              "title": "Outline of Python"
             }
           },
           {
@@ -183,10 +183,10 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "3f5b4732d00f47cb",
+  "active": "17bd349c71b62681",
   "lastOpenFiles": [
-    "Linux/CS基礎.md",
     "強み、.md",
+    "Linux/CS基礎.md",
     "Linux/ 基本的なコマンド２.md",
     "CS/正規表現.md",
     "Docker/Screen Shot 2022-08-10 at 21.37.00.png",
