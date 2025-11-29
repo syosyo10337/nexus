@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clean Code/Tidy first?.md",
+                "file": "Clean Code/PRをわけるgit操作.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Tidy first?"
+              "title": "PRをわけるgit操作"
             }
           }
         ]
@@ -137,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clean Code/Tidy first?.md",
+                "file": "Clean Code/PRをわけるgit操作.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Tidy first?"
+              "title": "Outline of PRをわけるgit操作"
             }
           },
           {
@@ -185,9 +185,9 @@
   },
   "active": "17bd349c71b62681",
   "lastOpenFiles": [
+    "Clean Code/Tidy first?.md",
     "Clean Code/PRをわけるgit操作.md",
     "CS/DNS( Domain Name System).md",
-    "Clean Code/Tidy first?.md",
     "PHP/laravel.md",
     "Python/Python.md",
     "強み、.md",
