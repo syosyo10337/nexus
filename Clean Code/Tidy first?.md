@@ -8,6 +8,8 @@ aliases:
 created: 2025-11-29
 updated: 2025-11-29
 status: draft
+related:
+  - "[[PRをわけるgit操作]]"
 ---
 
 # Tidy First?
@@ -22,6 +24,7 @@ ch.16 p45
 振る舞いの変更と構造の変更を一つのPRにしてしない方がいい。
 理由はいくつかある。
 
+具体的なGit操作については [[PRをわけるgit操作]] を参照。
 
 
 
