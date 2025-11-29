@@ -175,11 +175,15 @@
       "templates:Insert template": false,
       "command-palette:Open command palette": false,
       "bases:Create new base": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "templater-obsidian:Templater": false
     }
   },
-  "active": "9cb8456a283e4421",
+  "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Templates/Default.md",
+    "Templates",
+    "Untitled",
     "Clean Code/Tidy first?.md",
     "Clean Code/PRをわけるgit操作.md",
     "CS/DNS( Domain Name System).md",
@@ -207,7 +211,6 @@
     "Ruby/Ruby 見直しシート .md",
     "Rails/RSpec.md",
     "Flutter:Dart/Dart.md",
-    "Linux/Package Manager.md",
     "TCP",
     "CS/network",
     "CS",
@@ -224,8 +227,6 @@
     "Ruby/複数のreturnを条件分岐で活用する.png",
     "Ruby/チェリー本例題.txt",
     "Ruby/Ruby 見直しシート .rb",
-    "Rails/Rails_Tutorial.txt",
-    "Rails/Rails progate.txt",
     "Untitled.canvas"
   ]
 }
