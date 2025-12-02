@@ -181,6 +181,9 @@
   },
   "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Test/obsidian-new-test.md",
+    "Test",
+    "2025-11-29-untitled-mik4hfsn.md",
     "Templates/Default.md",
     "Templates",
     "Untitled",
@@ -209,8 +212,6 @@
     "Docker/Docker入門.md",
     "Ruby/Ruby.md",
     "Ruby/Ruby 見直しシート .md",
-    "Rails/RSpec.md",
-    "Flutter:Dart/Dart.md",
     "TCP",
     "CS/network",
     "CS",
@@ -226,7 +227,6 @@
     "Ruby/Super.png",
     "Ruby/複数のreturnを条件分岐で活用する.png",
     "Ruby/チェリー本例題.txt",
-    "Ruby/Ruby 見直しシート .rb",
     "Untitled.canvas"
   ]
 }
