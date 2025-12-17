@@ -11,10 +11,14 @@
             "id": "3fc9cd2509f454f6",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "HTML&CSS/cssの基本.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "cssの基本"
             }
           }
         ]
@@ -133,12 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "HTML&CSS/cssの基本.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of cssの基本"
             }
           },
           {
@@ -181,6 +186,7 @@
   },
   "active": "3fc9cd2509f454f6",
   "lastOpenFiles": [
+    "HTML&CSS/flexboxのプロパティ.jpeg",
     "Clean Code/PRをわけるgit操作.md",
     "Test/obsidian-new-test.md",
     "Test",
@@ -211,7 +217,6 @@
     "Flutter:Dart/flutter_lib.md",
     "Docker/Docker入門.md",
     "Ruby/Ruby.md",
-    "Ruby/Ruby 見直しシート .md",
     "TCP",
     "CS/network",
     "CS",
