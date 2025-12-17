@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "3e0e532fca0dda05",
+        "id": "4eaf6dc2fac75e34",
         "type": "tabs",
         "children": [
           {
-            "id": "9cb8456a283e4421",
+            "id": "3fc9cd2509f454f6",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clean Code/PRをわけるgit操作.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "PRをわけるgit操作"
+              "title": "New tab"
             }
           }
         ]
@@ -137,13 +133,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clean Code/PRをわけるgit操作.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of PRをわけるgit操作"
+              "title": "Outline"
             }
           },
           {
@@ -184,8 +179,9 @@
       "templater-obsidian:Templater": false
     }
   },
-  "active": "9cb8456a283e4421",
+  "active": "3fc9cd2509f454f6",
   "lastOpenFiles": [
+    "Clean Code/PRをわけるgit操作.md",
     "Test/obsidian-new-test.md",
     "Test",
     "2025-11-29-untitled-mik4hfsn.md",
@@ -193,7 +189,6 @@
     "Templates",
     "Untitled",
     "Clean Code/Tidy first?.md",
-    "Clean Code/PRをわけるgit操作.md",
     "CS/DNS( Domain Name System).md",
     "PHP/laravel.md",
     "Python/Python.md",
