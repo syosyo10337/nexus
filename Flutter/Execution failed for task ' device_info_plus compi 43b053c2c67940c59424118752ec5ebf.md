@@ -26,6 +26,6 @@ Possibility to change the Java version · codemagic-ci-cd · Discussion #2132
 
 Use case I&#39;m using the gradle version that requires Java 17, the default version on machine is 11. There is no option to choose the java version for build on Workflow editor. The only solution ...
 
-![](fluidicon.png)https://github.com/orgs/codemagic-ci-cd/discussions/2132
+![](Flutter/Attachments%201/fluidicon.png)https://github.com/orgs/codemagic-ci-cd/discussions/2132
 
 ![](2132.png)](https://github.com/orgs/codemagic-ci-cd/discussions/2132)

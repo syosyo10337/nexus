@@ -30,7 +30,7 @@ MitoRoid -Android-暗黙的インテント
 
 暗黙的インテントは、次に遷移するアクティビティやサービスを明確に指定せず、 暗黙的に指定して、別のアクティビティやサービスに連携します。
 
-![](favicon.ico)https://mitoroid.com/category/android/android_implicit_intent.php
+![](Flutter/Attachments%201/favicon.ico)https://mitoroid.com/category/android/android_implicit_intent.php
 
 
 
