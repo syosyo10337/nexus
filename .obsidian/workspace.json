@@ -11,10 +11,14 @@
             "id": "efcd3ff3fe11a46e",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "Flutter/Dart.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "New tab"
+              "title": "Dart"
             }
           }
         ]
@@ -133,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Notion/遷移グラフへの切り替えできてない。error log aefe5c4d24d74544abb4259675d4de58.md",
+                "file": "Flutter/Dart.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of 遷移グラフへの切り替えできてない。error log aefe5c4d24d74544abb4259675d4de58"
+              "title": "Outline of Dart"
             }
           },
           {
@@ -183,6 +187,29 @@
   },
   "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Flutter/Flutter.md",
+    "Flutter/Dart.md",
+    "Flutter/flutter_lib.md",
+    "Notion/遷移グラフへの切り替えできてない。error log aefe5c4d24d74544abb4259675d4de58.md",
+    "Flutter/全てのテストが'package flutter_test src binding dart' Fai 2361228de93f4c35ad2cdafae267adb0.md",
+    "Flutter/patrol/test_bundleに見たことないmethod引数が追加されている。 10638cdd027d80b68236ea11b622f43b.md",
+    "Flutter/patrol/patrolでネイティブ画面をスワイプする。 bab55a33b8b149fdb67b6f83371aa3b3.md",
+    "Flutter/patrol/ntegration_test main_test dart 22 15 Error The met 24929f8de8d746aaac260c84739089eb.md",
+    "Flutter/Attachments/met_camille_pissarro_1896.jpg",
+    "Flutter/patrol/java lang AssertionError Dart test failed main_tes 6345715ac1cf447dbe63c564e100748a.md",
+    "Flutter/patrol/iOS emulator実行しても動作しない。 f62f4736e71a46afb7edd33e35a3f5aa.md",
+    "Flutter/adbが見つからない b59e8a79868f449bbcc8cace29465b84.md",
+    "Flutter/patrol/Gradleでつまづく 34a14b55eb90492bac4c3ff2eece335d.md",
+    "Flutter/patrol/• Building apk with entrypoint test_bundle dart cc8a678d59794fcd990f61411ea10a52.md",
+    "Flutter/Attachments/og-base-w1200-v2.png",
+    "Flutter/Attachments/icon.png",
+    "Flutter/patrol/Gradle could not start your build Cannot create se 0aa7ae474a7340b3b3cc87b3c0278635.md",
+    "Flutter/patrol/ANDROID_HOMEが設定されていない。 cea24374c45f4c83bc7554d61a140ee3.md",
+    "Flutter/Attachments/apple-touch-icon@2.png",
+    "Flutter/Attachments/apple-touch-icon.png",
+    "Flutter/Attachments",
+    "Flutter/patrol",
+    "Flutter",
     "Notion/非同期関数ないでのエラー処理 11938cdd027d8063a62af772303e8ad4.md",
     "Notion/面接対策 9a06146d53d2492da960cfa6eb13fe45.md",
     "Notion/食費 19238cdd027d80e1b35be8526f89db70.md",
@@ -194,31 +221,11 @@
     "Notion/2025年のハイライト 2d938cdd027d80b08fcee8486a14678a.md",
     "Notion/index.md",
     "Notion/Private 7bc121db1f23454ea618e0a3328db2ee.md",
-    "Notion/読書メモ 22138cdd027d803a83afc73d54090244.md",
     "Notion/Attachments/book_gray 28.svg",
-    "Notion/page lists 22138cdd027d803fabd2daf6d24fe2bc.md",
     "Notion/Attachments/book_gray 27.svg",
     "Notion/Attachments/description_gray 40.svg",
     "Notion/Attachments/arrow-northeast_gray 1.svg",
     "Notion/Attachments/font_gray 11.svg",
-    "Notion/無題 22138cdd027d8039aab8c6388a01dd71.md",
-    "Notion/Attachments/description_gray 39.svg",
-    "Notion/Attachments/book_gray 26.svg",
-    "Notion/Attachments/arrow-northeast_gray.svg",
-    "Notion/book lists 22138cdd027d8022a74df7306b607d8b.md",
-    "Notion/Attachments/star_gray.svg",
-    "Notion/Attachments/categories_gray.svg",
-    "Notion/無題 22138cdd027d80aaa985d55c2b2bb710.md",
-    "Notion/ローマの哲人 セネカの言葉 22138cdd027d8031aabed947b5cd531b.md",
-    "Notion/支出管理 14938cdd027d800f801afc99f4dcbf55.md",
-    "Notion/引越しpros cons 17238cdd027d805b8540e3e1b898398e.md",
-    "Notion/運動 19238cdd027d80439331c1f90347788b.md",
-    "Notion/貯金 19238cdd027d808aadf6e0316a023ff0.md",
-    "Notion/衣服 19238cdd027d8066b45df9d91b9e5435.md",
-    "Notion/積立NISA 17238cdd027d800aa796ee1e53cd72dd.md",
-    "Notion/日用品 19238cdd027d805a98ebca65c9e27ff6.md",
-    "Notion/散髪 19238cdd027d8077b99ac9df3bb47702.md",
-    "Notion/家賃 17138cdd027d8199be03f6c32e71ed3b.md",
     "Notion/Attachments/50de36149264b4cd1e8c8f07.png3fsha3dc7b5a09caf057ad04a030a8a2b0935fd9adb9fa5",
     "Notion/Attachments/476319afde041cb0758810ab.jpg3fsha3da82bd365d5dbbe362704258754b304c63efd2aa1",
     "Notion/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 32.ico",
@@ -226,9 +233,6 @@
     "Notion/Attachments/favicon 27.ico",
     "Notion/Attachments/favicon 26.ico",
     "Notion/Attachments/favicon 25.ico",
-    "Notion/Attachments/favicon 24.ico",
-    "Notion/Attachments/favicon 23.ico",
-    "Notion/Attachments/favicon 22.ico",
     "Untitled.canvas"
   ]
 }

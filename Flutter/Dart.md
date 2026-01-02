@@ -1,4 +1,4 @@
-# Dart 入門
+
 
 
 
@@ -325,7 +325,7 @@ double.tryParse(_amountController.text) -> String?
 
 
 
-
+```dart
 class MyClass {
   // プロパティの宣言
   final String myProperty;
@@ -335,3 +335,4 @@ class MyClass {
 
   // メソッドなど他の要素
 }
+```
