@@ -1,0 +1,63 @@
+ 
+
+# (draft)変更を戻す
+
+---
+
+[- ステージング前の変更を取り消す。](#1e214654-c47a-4ca6-ad7e-276a037c172d)
+
+[[コミットを捨てる]](#f6d5c5b7-b024-4a4c-9a2a-63f80d0c1571)
+
+[- ステージングしたものをunstageする](#e706a9da-8871-4509-8e0f-64ad485d4abc)
+
+## - ステージング前の変更を取り消す。
+
+```Bash
+$ git checkout HEAD
+```
+
+stagingすらしていないけど、untrackedなファイルを作成したり、ファイルの変更を取り消す。
+
+最新にcommitの行った状態までロールバックする。
+
+## [コミットを捨てる]
+
+## - ステージングしたものをunstageする
+
+```Bash
+$ git restore --staged <ファイル名>
+```
+
+cf)
+
+[
+
+【Git】ローカルの修正を前回のcommitまで戻す方法 - Qiita
+
+修正してaddしたり、または未addだったりの状態で、やっぱり修正必要なかったなぁって場合に前のcommit状態に戻したい。 未add(ワーキングツリーのみ存在)、add済み(ワーキングツリー&インデックス存在)に関わらずこれですべて戻すことができる。 解説 --hardオプションでインデックス、ワーキングツリー全てを戻す。 HEADは最新のcommit ...
+
+![](Notion/Attachments/production-c620d3e403342b1022967ba5e3db1aaa%2018.ico)https://qiita.com/kazu56/items/cf1ad99893ae4f172a7d
+
+![](Notion/Attachments/article-ogp-background-9f5428127621718a910c8b63951390ad%2014.png)](https://qiita.com/kazu56/items/cf1ad99893ae4f172a7d)
+
+[
+
+[git reset (--hard/--soft)]ワーキングツリー、インデックス、HEADを使いこなす方法 - Qiita
+
+ワーキングツリー[working tree]：最新のファイルの状態 インデックス[index]（ステージ[stage]）：コミットするためのファイルの状態 ローカルリポジトリ[local repository]：ファイルの変更履歴を記録（手元で管理） リモートリポジトリ[remote repository]：ファイルの変更履歴を記録（みんなで共有） add：「ワーキングツリー → インデックス」への反映 commit：「インデックス → ローカルリポジトリ」への反映 push：「ローカルリポジトリ → リモートリポジトリ」への反映 ※厳密にはもっとあります。詳しくは`git reset -h`を叩くなどして見てください。 それぞれのオプションにおいて、修正の及ぶ範囲は下記。 --hard：「HEADの位置・インデックス・ワーキングツリー」全て --mixed（or オプション無し）：「HEADの位置・インデックス」 --soft：「HEADの位置」のみ 現在のファイルの状態をYとする。 ファイルを変更したらワーキングツリーが変更 addしたらインデックスが変更 commitしたらHEAD（ = 最新のコミットのハッシュ値のエイリアス）が1つ前に進む 変更をコミットしてファイルの状態がZに移ったとする。 または、 --mixed（or オプション無し）なので、「HEADの位置・インデックス」をHEADの位置に動かす。 HEADの位置はそのまま。 従って、インデックスの変更（addした内容）のみ元に戻す。 これをやる前に、pushして置くことを強くオススメします！ reset --hardは基本的にすべて消えるので慎重に。 remoteに最新の状態を記録しておけば、ローカルは好きな所に移動しても安心。 コミットのハッシュ値はgit logで確認すればOK！ 動作確認後、最新の状態に戻るには、また、 をすれば良い。 git reset --hard ORIG_HEAD：直前のresetをなかったことにするおまじない！ git resetは未来の状態にも行ける。
+
+![](Notion/Attachments/production-c620d3e403342b1022967ba5e3db1aaa%2018.ico)https://qiita.com/shuntaro_tamura/items/db1aef9cf9d78db50ffe
+
+![](Notion/Attachments/article-ogp-background-9f5428127621718a910c8b63951390ad%2015.png)](https://qiita.com/shuntaro_tamura/items/db1aef9cf9d78db50ffe)
+
+[
+
+いろいろ戻す :: Jun Nishii
+
+Nishii's Notebook
+
+![](Notion/Attachments/favicon%201.png)https://bcl.sci.yamaguchi-u.ac.jp/~jun/notebook/git/cancel/
+
+
+
+](https://bcl.sci.yamaguchi-u.ac.jp/~jun/notebook/git/cancel/)
