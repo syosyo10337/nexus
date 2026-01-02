@@ -1,4 +1,15 @@
 
+```dart
+class MyClass {
+  // プロパティの宣言
+  final String myProperty;
+
+  // コンストラクタ
+  MyClass(this.myProperty);
+
+  // メソッドなど他の要素
+}
+```
 
 
 
@@ -324,15 +335,3 @@ https://dart.dev/language/enums
 double.tryParse(_amountController.text) -> String?
 
 
-
-```dart
-class MyClass {
-  // プロパティの宣言
-  final String myProperty;
-
-  // コンストラクタ
-  MyClass(this.myProperty);
-
-  // メソッドなど他の要素
-}
-```
