@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "CS/DNS( Domain Name System).md",
+                "file": "Git/Git.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DNS( Domain Name System)"
+              "title": "Git"
             }
           }
         ]
@@ -137,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "CS/DNS( Domain Name System).md",
+                "file": "Git/Git.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of DNS( Domain Name System)"
+              "title": "Outline of Git"
             }
           },
           {
@@ -187,8 +187,18 @@
   },
   "active": "efcd3ff3fe11a46e",
   "lastOpenFiles": [
-    "CS/正規表現.md",
+    "Ruby/Imported/文字列操作 51821755a63d4bb8b56a5c9a45142a18.md",
+    "Git/Git.md",
+    "Git/Attachments/github-original.svg",
+    "Git/Attachments/git-original.svg",
+    "Git/Attachments",
+    "Git",
+    "Ruby/Imported/OStruct 7dc17ef8a3f642ae98022e7eb24e062d.md",
+    "Ruby/Imported/eql の再定義 bc089bb2a7dc4550bd90df6fd5c1f3a1.md",
+    "Ruby/Ruby 見直しシート .md",
+    "Ruby/Screen Shot 2022-08-02 at 4.21.32 PM.png",
     "CS/DNS( Domain Name System).md",
+    "CS/正規表現.md",
     "React/co-locationパターン.md",
     "Clean Code/PRをわけるgit操作.md",
     "UML/シーケンス図.md",
@@ -203,10 +213,7 @@
     "Storybook/Attachments/icon 1.svg",
     "Storybook/Querying canvas object 28838cdd027d80dd8b24e1d8081e43a3.md",
     "Storybook/Attachments/octopus-128x128.png",
-    "Storybook/Attachments/opengraph-image.jpg",
-    "Storybook/Attachments/icon.svg",
     "Storybook/Component testって？ 28838cdd027d801fab61dfc3989b505b.md",
-    "Storybook/Attachments/Component-Testing-32-1.jpeg",
     "Storybook/Attachments",
     "Storybook",
     "UML/フローチャート 2b638cdd027d809ea80ad9e7ebf84f81.md",
@@ -218,21 +225,14 @@
     "SlackBot/Attachments/favicon.ico",
     "SlackBot/Attachments",
     "SlackBot",
-    "Slack Bolt 2cb38cdd027d8020ab2dff31ee7a6c98.html",
     "Ruby/Imported/配列関連のメソッド bc964d844e7c417c82319df8db75170c.md",
-    "Ruby/Imported/文字列操作 51821755a63d4bb8b56a5c9a45142a18.md",
     "Ruby/Imported/ルビーのイディオム 83fdd52b2c214e31ab2dab8f3da954b2.md",
     "Ruby/Imported/tr 3eec47ff3485423082d96e31b97227f5.md",
     "Ruby/Imported/tap then c7af924389c94af7888de8674f42332a.md",
-    "Ruby/Imported/Attachments/production-c620d3e403342b1022967ba5e3db1aaa.ico",
     "Ruby/Imported/size c9248162cae84bb5abb1fc7b688ad60b.md",
     "Ruby/Imported/rbenvの使い方 4daaaee12ac243839139c04b92304c2f.md",
     "Ruby/Imported/memoization 23e92b76bc5448acb168a65a39f70713.md",
     "Ruby/Imported/keyword引数の形でメソッドを定義する。 f14e49993ba5417e8ccc71cd462694f5.md",
-    "Ruby/Imported/eql の再定義 bc089bb2a7dc4550bd90df6fd5c1f3a1.md",
-    "Ruby/Imported/TImeクラス ac20b51cf09d40ada5a28a4efe82aff2.md",
-    "Ruby/Imported/OStruct 7dc17ef8a3f642ae98022e7eb24e062d.md",
-    "Ruby/Imported/Hashdig f1c74fa64edd4647b8802d19ee1b71f0.md",
     "Untitled.canvas"
   ]
 }
