@@ -1,9 +1,6 @@
 ---
-title: <% tp.file.title %>
-created: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %>
-modified: <% tp.date.now("YYYY-MM-DD HH:mm:ss") %>
 tags: []
-category: 
+created: <% tp.date.now("YYYY-MM-DD") %>
 status: draft
 ---
 
@@ -13,6 +10,4 @@ status: draft
 
 ## 内容
 
-## メモ
-
-## 参考資料
+## 参考
