@@ -187,6 +187,7 @@
   },
   "active": "382f3a9a1d6fafa9",
   "lastOpenFiles": [
+    "Linux/シェル変数.md",
     "Clippings/ようこそdotfilesの世界へ.md",
     "Clippings",
     "CS/正規表現(Regular Expression).md",
@@ -213,7 +214,6 @@
     "Design Pattern/インターフェースと依存性(Depandancy Inversion).md",
     "Golang/zpagesパターン.md",
     "JavaScript/yarn.md",
-    "CS/type-hinting and type annotation.md",
     "scripts/reorganize_import_tech.py",
     "scripts/add_frontmatter_all.py",
     "scripts/add_frontmatter_with_tags.py",
