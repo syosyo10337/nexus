@@ -2,14 +2,15 @@
 tags:
   - linux
   - command
+  - shell
 created: 2026-01-04
-status: draft
+status: active
 ---
 
 # #!/bin/bashって？
 
-シバンです。
+シバンと呼ばれているものです。
 
 スクリプトを処理するインタプリタを指定するものらしい。
-
-[https://zenn.dev/sashimi/articles/5600f63634255d](https://zenn.dev/sashimi/articles/5600f63634255d)
+### cf. 
+- https://zenn.dev/sashimi/articles/5600f63634255d

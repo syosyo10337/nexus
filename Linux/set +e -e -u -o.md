@@ -9,15 +9,6 @@ status: active
 
 # s`et +e` / -e /-u / -o
 
-[robustでdebugイージーなな記法はこちら](#2bd38cdd-027d-8029-b1c5-e0b77862e28a)
-
-[set -e](#2bd38cdd-027d-80f9-8b08-f62f7bc9e870)
-
-[set -u](#2bd38cdd-027d-8088-9b7f-e7c04cf1ec94)
-
-[set -o pipefail](#2cc38cdd-027d-8037-a5d1-e0729e315809)
-
-[参考](#2bd38cdd-027d-8019-a11c-c96b92e4a838)
 
 シェルスクリプトにおいて、直前の**`set -e`の設定を解除する**ためのコマンドです。
 
