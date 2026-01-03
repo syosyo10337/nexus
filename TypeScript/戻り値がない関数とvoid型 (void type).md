@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - typescript
+  - function
+created: 2026-01-03
+status: active
+---
 
 # **戻り値がない関数とvoid型 (void type)**
 

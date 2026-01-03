@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - view
+created: 2026-01-03
+status: active
+---
 
 # renderメソッドに対してブロックを渡す
 

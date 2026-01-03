@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - testing
+  - api
+  - architecture
+created: 2026-01-04
+status: active
+---
 
 # MVVMを本気で理解する。
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - aws
+  - ec2
+  - vpc
+  - networking
+created: 2026-01-03
+status: active
+---
 
 ![](AWS/Attachments/aws-ec2.svg)
 

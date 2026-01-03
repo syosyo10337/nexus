@@ -1,15 +1,11 @@
 ---
-title: DNS (Domain Name System)
 tags:
-  - CS
-  - ネットワーク
-  - DNS
-  - インフラ
-aliases:
-  - DNS
-  - ドメインネームシステム
-created: 2025-11-25
-updated: 2025-11-25
+  - web
+  - protocol
+  - auth
+  - api
+created: 2025-11-26
+status: active
 ---
 
 ## DNSとは

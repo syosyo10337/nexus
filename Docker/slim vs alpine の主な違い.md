@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - docker
+  - dockerfile
+  - optimization
+created: 2026-01-03
+status: active
+---
 
 # slim vs alpine の主な違い
 

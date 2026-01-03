@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - javascript
+  - syntax
+  - async
+  - dom
+created: 2026-01-03
+status: active
+---
 
 # Promise
 

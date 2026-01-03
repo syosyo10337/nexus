@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - docker
+  - dockerfile
+  - compose
+  - container
+created: 2026-01-03
+status: active
+---
 
 # Evil martians流の環境構築のメモ
 

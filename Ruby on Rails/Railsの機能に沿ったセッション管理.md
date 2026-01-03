@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - view
+  - auth
+created: 2026-01-03
+status: active
+---
 
 # Railsの機能に沿ったセッション管理
 

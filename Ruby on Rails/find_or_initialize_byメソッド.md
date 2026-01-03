@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - activerecord
+created: 2026-01-03
+status: active
+---
 
 # find_or_initialize_byメソッド
 

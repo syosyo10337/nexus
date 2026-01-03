@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - config
+created: 2026-01-03
+status: draft
+---
 
 # CircleCIを使って、デプロイをトリガーする
 

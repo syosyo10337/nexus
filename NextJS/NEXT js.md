@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - nextjs
+  - routing
+  - rendering
+  - api
+created: 2026-01-03
+status: active
+---
 
 ![](NextJS/Attachments/woodcuts_1.jpg)
 

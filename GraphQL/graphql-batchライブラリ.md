@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - graphql
+created: 2026-01-03
+status: active
+---
 
 # **graphql-batchライブラリ**
 

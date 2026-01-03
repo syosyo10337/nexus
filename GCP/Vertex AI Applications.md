@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - gcp
+  - vertex-ai
+created: 2026-01-03
+status: active
+---
 
 # Vertex AI Applications
 

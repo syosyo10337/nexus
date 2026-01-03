@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - syntax
+  - function
+  - tooling
+created: 2026-01-03
+status: active
+---
 
 # tsconfig.json
 

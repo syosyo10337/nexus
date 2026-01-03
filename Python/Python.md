@@ -1,3 +1,12 @@
+---
+tags:
+  - python
+  - syntax
+  - data
+created: 2023-01-13
+status: active
+---
+
 Pythonのノート
 
 """

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - syntax
+  - function
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # keyword 引数とOptions Objectパターン
 

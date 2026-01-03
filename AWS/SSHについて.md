@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - aws
+  - ec2
+  - vpc
+created: 2026-01-03
+status: active
+---
 
 # SSHについて
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - sql
+  - query
+  - ddl
+created: 2026-01-03
+status: active
+---
 
 ![](SQL/MySQL/Attachments/mysql-3.svg)
 

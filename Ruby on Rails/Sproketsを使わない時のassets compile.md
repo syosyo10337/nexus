@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - config
+created: 2026-01-03
+status: active
+---
 
 # Sproketsを使わない時のassets:compile
 

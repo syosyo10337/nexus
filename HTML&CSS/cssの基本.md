@@ -1,3 +1,13 @@
+---
+tags:
+  - html-css
+  - html
+  - css
+  - layout
+created: 2022-12-20
+status: active
+---
+
 [[CSSの基礎文法(Cascading Style Sheets)]]
 
 

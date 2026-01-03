@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - widget
+  - ios
+created: 2026-01-03
+status: active
+---
 
 # Error (Xcode): Cycle inside Runner; building could produce unreliable results.  
 Cycle details:

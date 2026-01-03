@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - linux
+  - command
+  - file
+  - network
+created: 2026-01-04
+status: active
+---
 
 # Ubuntuをdockerを立ち上げたサーバとして扱いつつMacからremote-sshで接続して開発する
 

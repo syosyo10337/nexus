@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - syntax
+  - function
+created: 2026-01-03
+status: active
+---
 
 # type guard function（型ガード関数）
 

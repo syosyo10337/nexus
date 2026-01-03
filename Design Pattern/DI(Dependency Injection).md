@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - design-pattern
+  - creational
+  - di
+created: 2026-01-04
+status: active
+---
+
 # **Dependency Injectionの概要**  
 
 Dependency Injectionは、オブジェクトが必要とする依存関係を外部から提供するプログラミング技法です。オブジェクト自身が依存関係を内部で生成するのではなく、外部のコード（インジェクター）から提供されることで、疎結合なコードを実現します [Stackify](https://stackify.com/dependency-injection/)[Wikipedia](https://en.wikipedia.org/wiki/Dependency_injection)。

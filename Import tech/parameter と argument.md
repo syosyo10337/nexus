@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - misc
+  - api
+created: 2026-01-04
+status: draft
+---
 
 # parameter と argument
 

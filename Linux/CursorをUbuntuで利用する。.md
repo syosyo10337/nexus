@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - linux
+  - command
+  - file
+  - package
+created: 2026-01-04
+status: active
+---
 
 # CursorをUbuntuで利用する。
 

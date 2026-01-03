@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - design-pattern
+  - creational
+  - di
+created: 2026-01-04
+status: active
+---
+
 # DI Containerとは
 
 DI Container（Dependency Injection Container）は、オブジェクトのインスタンス化と設定を担当するオブジェクトです [Nette Documentation](https://doc.nette.org/en/dependency-injection/container)[Medium](https://medium.com/@annuhuss/dependency-injection-container-a-simple-introduction-for-managing-objects-from-their-creation-to-cebbcb772694)。依存関係を持つオブジェクトを自動的に生成し、その依存関係を注入する責任を持ちます。

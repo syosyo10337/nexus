@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - computer-science
+  - algorithm
+  - data-structure
+  - oop
+created: 2026-01-04
+status: active
+---
 
 # Big O Notation
 

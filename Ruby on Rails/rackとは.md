@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - activerecord
+  - controller
+  - routing
+created: 2026-01-03
+status: active
+---
 
 # rackとは
 

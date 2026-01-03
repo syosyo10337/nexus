@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - misc
+created: 2026-01-04
+status: active
+---
 
 # Rubyを使ったcsv lineの重複削除
 

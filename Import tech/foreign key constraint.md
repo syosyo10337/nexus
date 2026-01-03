@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - misc
+created: 2026-01-04
+status: active
+---
 
 # foreign key constraint
 

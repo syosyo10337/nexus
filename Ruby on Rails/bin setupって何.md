@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - testing
+  - gem
+  - config
+created: 2026-01-03
+status: active
+---
 
 # bin/setupって何?
 

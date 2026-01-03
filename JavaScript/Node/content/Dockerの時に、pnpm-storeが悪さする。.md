@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - javascript
+  - syntax
+  - data
+created: 2026-01-03
+status: active
+---
 
 # Dockerの時に、pnpm-storeが悪さする。
 

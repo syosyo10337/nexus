@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - view
+  - routing
+created: 2026-01-03
+status: active
+---
 
 # webpackerを使ったRails6.1アプリへのReact18を導入
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - php
+  - laravel
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 # phpUnit
 

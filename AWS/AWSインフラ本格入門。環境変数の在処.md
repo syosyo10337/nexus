@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - aws
+  - s3
+  - rds
+  - iam
+created: 2026-01-03
+status: active
+---
 
 # AWSインフラ本格入門。環境変数の在処
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - security
+  - api
+  - cache
+created: 2026-01-04
+status: active
+---
 
 # CSRF (**Cross-Site-Request-Forgeries**)
 

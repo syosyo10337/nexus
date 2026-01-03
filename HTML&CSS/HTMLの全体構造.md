@@ -1,3 +1,12 @@
+---
+tags:
+  - html-css
+  - html
+  - css
+created: 2022-12-20
+status: active
+---
+
 html の全体構造
 
 *html:5 かつTABを押すと、雛形が出てくるよ

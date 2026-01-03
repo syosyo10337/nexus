@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - react
+  - component
+  - styling
+created: 2026-01-03
+status: active
+---
 
 # Props
 

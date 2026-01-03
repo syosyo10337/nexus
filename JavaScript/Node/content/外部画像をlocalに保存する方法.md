@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - javascript
+  - async
+  - data
+created: 2026-01-03
+status: active
+---
 
 # 外部画像をlocalに保存する方法
 

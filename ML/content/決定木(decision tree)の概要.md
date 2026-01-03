@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - machine-learning
+  - regression
+  - classification
+created: 2026-01-04
+status: active
+---
 
 # 決定木(decision tree)の概要
 

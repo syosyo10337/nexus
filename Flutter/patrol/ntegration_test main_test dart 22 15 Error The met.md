@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - widget
+  - testing
+created: 2026-01-03
+status: active
+---
 
 ![](Flutter/patrol/Attachments/met_camille_pissarro_1896.jpg)
 

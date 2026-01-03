@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - security
+  - api
+  - frontend
+created: 2026-01-04
+status: active
+---
 
 # 本番/Docker/gitでのSSH鍵認証
 

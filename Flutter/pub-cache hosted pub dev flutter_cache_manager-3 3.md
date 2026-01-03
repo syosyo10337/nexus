@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - ios
+created: 2026-01-03
+status: active
+---
 
 # ./../../.pub-cache/hosted/pub.dev/flutter_cache_manager-3.3.1/lib/src/web/web_helper.dart:135:42
 

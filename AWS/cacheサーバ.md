@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - aws
+  - ec2
+created: 2026-01-03
+status: active
+---
 
 ![](AWS/Attachments/aws-elastic-cache-logo-C8E8F40B2B-seeklogo.com.png)
 

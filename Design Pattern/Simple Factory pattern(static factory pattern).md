@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - design-pattern
+  - creational
+  - di
+created: 2026-01-04
+status: active
+---
 
 # Simple Factory pattern(static factory pattern)
 

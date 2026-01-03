@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - misc
+  - api
+  - architecture
+created: 2026-01-04
+status: active
+---
 
 # Ethical UI design(CX)
 

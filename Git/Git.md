@@ -1,3 +1,13 @@
+---
+tags:
+  - git
+  - branch
+  - commit
+  - history
+created: 2026-01-03
+status: active
+---
+
 # 用語    
 - index(/staging area)  
     ファイルの変更のsnapshot(ある時間における状態)を保存(store)して置く場所のこと。

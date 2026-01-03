@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - ruby
+  - syntax
+  - oop
+created: 2026-01-03
+status: active
+---
 
 # memoization
 

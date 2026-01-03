@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - auth
+  - testing
+created: 2026-01-03
+status: active
+---
 
 # deviseのsign_up/in/outのページ遷移 (1)
 

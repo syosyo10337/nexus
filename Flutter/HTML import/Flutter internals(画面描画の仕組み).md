@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - widget
+  - state
+created: 2026-01-03
+status: active
+---
 
 # Flutter internals(画面描画の仕組み)
 

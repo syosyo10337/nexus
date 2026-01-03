@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - typescript
+  - function
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # 値渡し(pass-by-value)と参照渡し(pass-by-reference)
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - syntax
+  - function
+  - async
+created: 2026-01-03
+status: active
+---
 
 # 即時実行関数式(IIFE)
 

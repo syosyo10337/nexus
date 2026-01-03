@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - gcp
+  - iam
+  - cloud-run
+  - gcs
+created: 2026-01-03
+status: active
+---
 
 ![](import/Attachments/icons8-google%E3%81%AE%E3%82%AF%E3%83%A9%E3%82%A6%E3%83%89%E3%83%97%E3%83%A9%E3%83%83%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%83%A0.svg)
 

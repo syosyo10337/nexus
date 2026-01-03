@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - aws
+  - ec2
+  - networking
+  - sns-sqs
+created: 2026-01-03
+status: active
+---
 
 # **Amazon** SNS
 

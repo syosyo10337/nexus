@@ -1,7 +1,12 @@
 ---
-category: Flutter, Dart, Programing
+tags:
+  - flutter
+  - dart
+  - widget
+  - state
+created: 2023-10-06
+status: active
 ---
-
 
 ## Question？
 - 書き心地は、JSとJavaってぽい感じ

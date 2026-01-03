@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - widget
+  - state
+  - testing
+created: 2026-01-03
+status: active
+---
 
 # State管理(Statefull/Stateless)
 

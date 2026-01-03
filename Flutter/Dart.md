@@ -1,3 +1,12 @@
+---
+tags:
+  - flutter
+  - dart
+  - widget
+  - state
+created: 2023-10-06
+status: active
+---
 
 ```dart
 class MyClass {

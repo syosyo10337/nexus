@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - react
+  - component
+  - styling
+  - server
+created: 2026-01-03
+status: active
+---
 
 # renderingってなんだ？
 

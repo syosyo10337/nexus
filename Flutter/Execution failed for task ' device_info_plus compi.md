@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - widget
+  - android
+created: 2026-01-03
+status: active
+---
 
 # Execution failed for task ':device_info_plus:compileDebugJavaWithJavac'.
 

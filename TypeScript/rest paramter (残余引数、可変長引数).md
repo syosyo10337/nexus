@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - syntax
+  - function
+  - data-structure
+created: 2026-01-03
+status: draft
+---
 
 # rest paramter (残余引数、可変長引数)
 

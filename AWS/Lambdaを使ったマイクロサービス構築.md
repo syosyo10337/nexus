@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - aws
+  - s3
+  - lambda
+created: 2026-01-03
+status: active
+---
 
 # Lambdaを使ったマイクロサービス構築
 

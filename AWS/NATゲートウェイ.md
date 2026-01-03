@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - aws
+  - networking
+created: 2026-01-03
+status: active
+---
 
 # NATゲートウェイ
 

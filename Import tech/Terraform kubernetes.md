@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - misc
+  - api
+  - cache
+created: 2026-01-04
+status: active
+---
 
 # Terraform? kubernetes?
 

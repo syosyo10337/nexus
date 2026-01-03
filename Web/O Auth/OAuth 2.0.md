@@ -1,5 +1,12 @@
-
-
+---
+tags:
+  - web
+  - protocol
+  - auth
+  - api
+created: 2026-01-04
+status: active
+---
 
 図でざっくり解説 OAuth 2.0入門
 

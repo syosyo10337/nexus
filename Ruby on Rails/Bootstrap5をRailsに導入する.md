@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - view
+  - gem
+created: 2026-01-03
+status: active
+---
 
 ![](bootstrap-original-wordmark.svg)
 

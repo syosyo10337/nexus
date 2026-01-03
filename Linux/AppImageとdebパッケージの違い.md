@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - linux
+  - package
+created: 2026-01-04
+status: active
+---
 
 # AppImageとdebパッケージの違い
 

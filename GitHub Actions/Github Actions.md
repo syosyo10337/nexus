@@ -1,3 +1,12 @@
+---
+tags:
+  - github-actions
+  - workflow
+  - ci
+  - cd
+created: 2026-01-03
+status: active
+---
 
 # 基本的な用語の理解
 

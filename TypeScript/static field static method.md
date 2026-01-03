@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - typescript
+  - class
+created: 2026-01-03
+status: active
+---
 
 # static field/static method
 

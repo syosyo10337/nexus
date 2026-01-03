@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - react
+  - component
+  - state
+created: 2026-01-03
+status: active
+---
 
 ### cf. 
 - [https://zenn.dev/ampersand/articles/9cf546795074d1](https://zenn.dev/ampersand/articles/9cf546795074d1)

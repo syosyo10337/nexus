@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - git
+  - branch
+  - commit
+  - remote
+created: 2026-01-03
+status: active
+---
 
 # git configのいじり方
 

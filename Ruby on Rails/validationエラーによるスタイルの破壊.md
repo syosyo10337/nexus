@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - view
+  - config
+created: 2026-01-03
+status: active
+---
 
 # validationエラーによるスタイルの破壊
 

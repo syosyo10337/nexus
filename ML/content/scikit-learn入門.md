@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - machine-learning
+  - regression
+  - classification
+  - data
+created: 2026-01-04
+status: active
+---
 
 # scikit-learn入門
 

@@ -1,4 +1,11 @@
-
+---
+tags:
+  - php
+  - wordpress
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 - get_header()  
     header.php()ファイルをget

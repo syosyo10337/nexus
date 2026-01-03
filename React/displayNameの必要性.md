@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - react
+  - component
+  - performance
+created: 2026-01-03
+status: active
+---
 
 # displayNameの必要性
 

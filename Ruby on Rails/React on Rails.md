@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - view
+  - gem
+created: 2026-01-03
+status: active
+---
 
 ![](Screenshot_2023-02-07_at_23.50.06.png)
 

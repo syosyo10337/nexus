@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - javascript
+  - data
+created: 2026-01-03
+status: active
+---
 
 # FileとBlobの違い
 

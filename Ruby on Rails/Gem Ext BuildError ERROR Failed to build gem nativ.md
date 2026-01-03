@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - testing
+  - gem
+created: 2026-01-03
+status: active
+---
 
 # Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
 

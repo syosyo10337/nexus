@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - widget
+  - ios
+created: 2026-01-03
+status: active
+---
 
 # [!] Can't merge user_target_xcconfig for pod targets: ["AnyManagerLine", "FBAudienceNetwork", "BarcodeScanning", "MLKitCore", "MLImage", "MLKitBarcodeScanning", "MLKitCommon", "MLKitVision", "OguryMediationGoogleMobileAds"]. Singular build setting EXCLUDED_ARCHS[sdk=iphonesimulator*] has different values.
 

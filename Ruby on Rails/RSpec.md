@@ -1,3 +1,13 @@
+---
+tags:
+  - rails
+  - activerecord
+  - controller
+  - view
+created: 2022-12-20
+status: active
+---
+
 [RSpec]===============================
 
 ***RSpec.describe "" do end --テストのグループ化を宣言。

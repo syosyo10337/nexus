@@ -1,3 +1,13 @@
+---
+tags:
+  - linux
+  - command
+  - file
+  - process
+created: 2022-12-20
+status: active
+---
+
 新しいLinuxの教科書
 
 {Linuxの概要的な話}

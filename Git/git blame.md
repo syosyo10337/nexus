@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - git
+  - history
+created: 2026-01-03
+status: draft
+---
 
 # git blame
 

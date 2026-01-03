@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - widget
+  - state
+created: 2026-01-03
+status: active
+---
 
 # java.lang.AssertionError: Dart test failed: main_test ログイン画面からログインし、すべてのタブページがエラーなく表示される  
 07-04 20:17:06.462 11606 11670 E TestRunner: null

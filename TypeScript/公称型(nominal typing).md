@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - class
+created: 2026-01-03
+status: draft
+---
 
 # 公称型(nominal typing)
 

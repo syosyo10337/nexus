@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - sql
+  - query
+created: 2026-01-03
+status: draft
+---
 
 # SQL join
 

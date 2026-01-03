@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - machine-learning
+  - data
+created: 2026-01-04
+status: active
+---
 
 # ホールドアウト法(hold-out)
 

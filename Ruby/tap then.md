@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - ruby
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 # tap/then
 

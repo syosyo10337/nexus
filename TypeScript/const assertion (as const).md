@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+created: 2026-01-03
+status: active
+---
 
 # const assertion (as const)
 

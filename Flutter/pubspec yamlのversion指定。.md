@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - flutter
+created: 2026-01-03
+status: draft
+---
 
 # pubspec yamlのversion指定。
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - golang
+  - syntax
+  - error
+  - package
+created: 2026-01-03
+status: active
+---
 
 ![](Golang/go-8.svg)
 

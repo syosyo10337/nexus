@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - function
+  - async
+created: 2026-01-03
+status: active
+---
 
 # optional parameter/default parameter
 

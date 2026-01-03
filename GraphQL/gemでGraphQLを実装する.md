@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - graphql
+  - query
+  - schema
+  - client
+created: 2026-01-03
+status: active
+---
 
 🌒
 

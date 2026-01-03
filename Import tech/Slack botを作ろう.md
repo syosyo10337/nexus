@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - security
+  - testing
+  - api
+created: 2026-01-04
+status: active
+---
 
 ![](Slack%20bot%E3%82%92%E4%BD%9C%E3%82%8D%E3%81%86/Slack_icon_2019.svg)
 

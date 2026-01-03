@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - testing
+created: 2026-01-03
+status: active
+---
 
 # graphql-flutter
 

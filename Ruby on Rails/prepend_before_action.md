@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - controller
+created: 2026-01-03
+status: draft
+---
 
 # (draft)prepend_before_action
 

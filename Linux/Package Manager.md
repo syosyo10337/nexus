@@ -1,3 +1,12 @@
+---
+tags:
+  - linux
+  - command
+  - package
+created: 2022-12-20
+status: active
+---
+
 Package  Manager(パッケージ管理システム)-----------
 
 **パッケージ --実行ファイルや設定ファイル、ライブラリなどをまとめた一つのファイル

@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - javascript
+  - data
+created: 2026-01-03
+status: active
+---
 
 偶数versionがLTSです。 prod等では極力　偶数バージョンを選びましょう。
 

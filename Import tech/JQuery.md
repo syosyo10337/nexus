@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - misc
+created: 2026-01-04
+status: draft
+---
 
 ![](Import%20tech/Attachments/jquery-original-wordmark.svg)
 

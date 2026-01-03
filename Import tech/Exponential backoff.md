@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - api
+  - tooling
+  - architecture
+created: 2026-01-04
+status: active
+---
 
 # Exponential backoff
 

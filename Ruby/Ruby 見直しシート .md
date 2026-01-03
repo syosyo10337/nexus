@@ -1,3 +1,10 @@
+---
+tags:
+  - ruby
+created: 2022-12-20
+status: active
+---
+
 require "./menu"
 
 menu1 = Menu.new(name: "ピザ", price: 800)

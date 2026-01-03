@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - flutter
+  - widget
+  - android
+created: 2026-01-03
+status: active
+---
 
 # Android のcacheが気になったときには
 

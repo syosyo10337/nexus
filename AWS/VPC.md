@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - aws
+  - vpc
+created: 2026-01-03
+status: active
+---
 
 # VPC
 

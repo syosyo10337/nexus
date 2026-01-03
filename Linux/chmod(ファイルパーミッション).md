@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - linux
+  - file
+  - network
+created: 2026-01-04
+status: active
+---
 
 # chmod(ファイルパーミッション)
 

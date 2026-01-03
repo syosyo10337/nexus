@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - aws
+  - ec2
+  - rds
+created: 2026-01-03
+status: active
+---
 
 ![](AWS/Attachments/aws-rds.svg)
 

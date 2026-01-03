@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - sql
+created: 2026-01-03
+status: active
+---
 
 # JSONの扱い
 

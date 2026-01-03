@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - rails
+  - testing
+  - config
+created: 2026-01-03
+status: active
+---
 
 # [Capistrano]SSHログインの接続設定(踏み台を含む)v3の罠
 

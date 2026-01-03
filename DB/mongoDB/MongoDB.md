@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - database
+  - mongodb
+  - sql
+created: 2026-01-04
+status: active
+---
 
 ![](DB/mongoDB/Attachments/mongodb-svgrepo-com.svg)
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - activerecord
+  - controller
+  - view
+created: 2026-01-03
+status: active
+---
 
 # (draft)form_for(devise)に書かれているをform_withに書き直す
 

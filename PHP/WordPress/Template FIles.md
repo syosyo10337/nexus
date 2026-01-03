@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - php
+  - wordpress
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 # 用語整理
 

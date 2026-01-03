@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - state
+  - testing
+created: 2026-01-03
+status: active
+---
 
 # 全てのテストが'package:flutter_test/src/binding.dart': Failed assertion: line 985 pos 14: '_pendingExceptionDetails != null':
 

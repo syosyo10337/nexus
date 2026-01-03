@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - misc
+  - security
+  - api
+  - cache
+created: 2026-01-04
+status: active
+---
 
 # XSS(Xross-Site-Scripting)
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - gcp
+  - iam
+  - vertex-ai
+  - secrets
+created: 2026-01-03
+status: active
+---
 
 ![](GCP/Attachments/met_the_unicorn_in_captivity.jpg)
 

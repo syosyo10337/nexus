@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - computer-science
+created: 2026-01-04
+status: active
+---
 
 # note ofコンピュータサイエンス入門
 

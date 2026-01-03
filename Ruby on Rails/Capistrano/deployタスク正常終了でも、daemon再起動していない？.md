@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - gem
+created: 2026-01-03
+status: active
+---
 
 # deployタスク正常終了でも、daemon再起動していない？
 

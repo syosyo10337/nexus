@@ -1,3 +1,11 @@
+---
+tags:
+  - php
+  - syntax
+created: 2026-01-03
+status: active
+---
+
 d 
 
 # artisan CLI commands

@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - golang
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 # struct（構造体）について
 

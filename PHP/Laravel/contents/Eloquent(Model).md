@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - php
+  - laravel
+created: 2026-01-03
+status: active
+---
 
 # Eloquent(Model)
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - ruby
+  - syntax
+  - collection
+created: 2026-01-03
+status: active
+---
 
 # .size
 

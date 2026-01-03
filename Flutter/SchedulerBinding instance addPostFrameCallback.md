@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - flutter
+  - state
+created: 2026-01-03
+status: active
+---
 
 # SchedulerBinding.instance.addPostFrameCallback
 

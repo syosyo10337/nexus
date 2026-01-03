@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - typescript
+  - function
+created: 2026-01-03
+status: active
+---
 
 # 変数のscope
 

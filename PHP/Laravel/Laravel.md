@@ -1,3 +1,11 @@
+---
+tags:
+  - php
+  - laravel
+  - syntax
+created: 2026-01-03
+status: active
+---
 
 - `composer.json` ← `Gemfile`のこと。in PHP  
     つまりは、パッケージマネージャ

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - function
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # Intersection type
 

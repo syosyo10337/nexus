@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - flutter
+  - widget
+created: 2026-01-03
+status: active
+---
 
 # codemagic.yaml
 

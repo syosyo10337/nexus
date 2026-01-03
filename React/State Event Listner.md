@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - react
+  - component
+  - state
+created: 2026-01-03
+status: active
+---
 
 # State/ Event Listner
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - typescript
+  - function
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # Date/RegExp from JS
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - typescript
+  - function
+  - class
+created: 2026-01-03
+status: active
+---
 
 # this parameter
 

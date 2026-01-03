@@ -180,8 +180,10 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "d9e8e1c46c91a7b9",
+  "active": "382f3a9a1d6fafa9",
   "lastOpenFiles": [
+    "scripts/reorganize_import_tech.py",
+    "scripts/add_frontmatter_all.py",
     "scripts/add_frontmatter_with_tags.py",
     "Web/ドメインとホスト名について.md",
     "Web/web3層アーキテクチャ.md",
@@ -226,8 +228,6 @@
     "Flutter/Attachments/favicon.1bfe8fa6b24e46a25edac6f7c1ca96cea5e51420ad6d0a80696d25cdaaebd2f3 1.ico",
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 2.ico",
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 3.ico",
-    "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa.ico",
-    "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 1.ico",
     "Untitled.canvas"
   ]
 }

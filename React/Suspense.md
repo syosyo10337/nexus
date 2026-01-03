@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - react
+  - component
+  - state
+  - performance
+created: 2026-01-03
+status: active
+---
 
 # <Suspense>
 

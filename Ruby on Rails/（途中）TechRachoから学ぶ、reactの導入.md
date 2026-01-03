@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - view
+  - routing
+created: 2026-01-03
+status: draft
+---
 
 # （途中）TechRachoから学ぶ、reactの導入
 

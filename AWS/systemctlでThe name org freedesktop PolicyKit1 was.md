@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - aws
+  - iam
+created: 2026-01-03
+status: active
+---
 
 # systemctlで****The name org.freedesktop.PolicyKit1 was not provided by any .service filesエラーがある時****
 

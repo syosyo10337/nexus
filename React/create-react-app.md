@@ -1,4 +1,9 @@
- 
+---
+tags:
+  - react
+created: 2026-01-03
+status: active
+---
 
 # (deprecated)create-react-app
 

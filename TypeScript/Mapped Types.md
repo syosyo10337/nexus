@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - tooling
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # Mapped Types
 

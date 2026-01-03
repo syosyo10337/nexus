@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - view
+  - auth
+created: 2026-01-03
+status: active
+---
 
 # deviseヘルパーのソースコード
 

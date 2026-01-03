@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - state
+  - ios
+  - android
+created: 2026-01-03
+status: active
+---
 
 # deeplink in Flutter
 

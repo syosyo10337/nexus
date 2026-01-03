@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - nginx
+  - config
+  - proxy
+created: 2026-01-04
+status: active
+---
 
 ### 実証環境
 

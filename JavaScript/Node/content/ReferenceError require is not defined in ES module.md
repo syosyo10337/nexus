@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - javascript
+  - async
+  - dom
+  - data
+created: 2026-01-03
+status: active
+---
 
 # ReferenceError: require is not defined in ES module scope, you can use import instead
 

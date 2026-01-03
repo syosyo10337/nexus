@@ -1,4 +1,13 @@
- 
+---
+tags:
+  - git
+  - branch
+  - commit
+  - history
+created: 2026-01-03
+status: active
+---
+
 # 1.  `git restore <file>`
 
 comitオブジェクトの状態(HEAD)までファイルの状態を戻すことができる。

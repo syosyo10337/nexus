@@ -1,3 +1,12 @@
+---
+tags:
+  - php
+  - laravel
+  - wordpress
+  - syntax
+created: 2023-03-28
+status: active
+---
 
 ```php
 <?php

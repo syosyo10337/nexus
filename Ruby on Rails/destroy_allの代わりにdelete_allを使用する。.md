@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - rails
+  - activerecord
+created: 2026-01-03
+status: active
+---
 
 # destroy_allの代わりにdelete_allを使用する。
 

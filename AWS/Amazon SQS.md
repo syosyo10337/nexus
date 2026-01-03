@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - aws
+  - sns-sqs
+created: 2026-01-03
+status: active
+---
 
 # Amazon SQS
 

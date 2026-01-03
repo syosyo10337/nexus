@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - golang
+  - concurrency
+  - error
+created: 2026-01-03
+status: active
+---
 
 # wireがうまく使えない
 

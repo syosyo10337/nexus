@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - typescript
+  - type-system
+  - data-structure
+created: 2026-01-03
+status: active
+---
 
 # `Map<K, V>` マップを作成する
 

@@ -1,3 +1,12 @@
+---
+tags:
+  - html-css
+  - html
+  - css
+created: 2022-12-20
+status: active
+---
+
 <!--コメントは,こうして入れます-->
 ***[HTMLのタグ]----------
 *<h1>,<h2>,,,,<h6>--Heading(見出し)

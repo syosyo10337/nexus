@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - misc
+  - tooling
+created: 2026-01-04
+status: draft
+---
 
 # How to Vim
 

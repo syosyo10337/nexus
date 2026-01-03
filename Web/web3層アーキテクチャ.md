@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - web
+  - protocol
+created: 2026-01-04
+status: draft
+---
 
 # web3層アーキテクチャ
 

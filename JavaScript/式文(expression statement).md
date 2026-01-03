@@ -1,4 +1,10 @@
- 
+---
+tags:
+  - javascript
+  - syntax
+created: 2026-01-03
+status: draft
+---
 
 # 式文(expression statement)
 

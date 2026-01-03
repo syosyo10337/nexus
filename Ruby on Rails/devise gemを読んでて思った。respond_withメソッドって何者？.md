@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - rails
+  - controller
+  - routing
+  - auth
+created: 2026-01-03
+status: active
+---
 
 # devise gemを読んでて思った。respond_withメソッドって何者？
 

@@ -1,4 +1,11 @@
- 
+---
+tags:
+  - html-css
+  - css
+  - layout
+created: 2026-01-04
+status: active
+---
 
 # 要素の配置(position)
 

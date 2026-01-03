@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - html-css
+  - html
+  - css
+  - layout
+created: 2026-01-04
+status: active
+---
 
 # break-words/ `overflow-wrap: break-word;`で折返しが効かない
 

@@ -1,4 +1,12 @@
- 
+---
+tags:
+  - flutter
+  - dart
+  - widget
+  - testing
+created: 2026-01-03
+status: active
+---
 
 # • Building apk with entrypoint test_bundle.dart...
 
