@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "307c18bb3793fd12",
+        "id": "bf9e0f0cc2d0d17b",
         "type": "tabs",
         "children": [
           {
-            "id": "e3610d85019cbfa9",
+            "id": "8f10114a9fb25fb5",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Clippings/basenameとdirnameコマンドでパスを操作する方法.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "basenameとdirnameコマンドでパスを操作する方法"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -137,13 +133,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Clippings/basenameとdirnameコマンドでパスを操作する方法.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of basenameとdirnameコマンドでパスを操作する方法"
+              "title": "Outline"
             }
           },
           {
@@ -185,8 +180,10 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "e3610d85019cbfa9",
+  "active": "8f10114a9fb25fb5",
   "lastOpenFiles": [
+    "2026-01-04.md",
+    "Untitled.canvas",
     "Clippings/basenameとdirnameコマンドでパスを操作する方法.md",
     "Clippings/ようこそdotfilesの世界へ.md",
     "Linux/エイリアス.md",
@@ -213,7 +210,6 @@
     "Clean Code/コード設計.md",
     "AWS/クラウドとは.md",
     "CS/キーワード引数(名前つき引数)についての所感.md",
-    "Design Pattern/インターフェースと依存性(Depandancy Inversion).md",
     "scripts/reorganize_import_tech.py",
     "scripts/add_frontmatter_all.py",
     "scripts/add_frontmatter_with_tags.py",
@@ -232,7 +228,6 @@
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 5.ico",
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 7.ico",
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 6.ico",
-    "Flutter/Attachments/favicon.1bfe8fa6b24e46a25edac6f7c1ca96cea5e51420ad6d0a80696d25cdaaebd2f3 1.ico",
-    "Untitled.canvas"
+    "Flutter/Attachments/favicon.1bfe8fa6b24e46a25edac6f7c1ca96cea5e51420ad6d0a80696d25cdaaebd2f3 1.ico"
   ]
 }
