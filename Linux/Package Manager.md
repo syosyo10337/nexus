@@ -14,7 +14,7 @@ ref)  rbenv — Rubyの複数バージョンを管理するもの
 
 
 
-**パッケージの操作(Linux/yum)-----
+## パッケージの操作(Linux/yum)
 
 #パッケージをインストールする
 $ yum install パッケージ名
@@ -33,7 +33,7 @@ $ yum info パッケージ名
 ---------
 
 
-Homebrewのコマンド一例----
+## Homebrewのコマンド一例
 #パッケージをインストール
 $ brew install <パッケージ名>
 
