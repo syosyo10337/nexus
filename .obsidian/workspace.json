@@ -11,10 +11,14 @@
             "id": "382f3a9a1d6fafa9",
             "type": "leaf",
             "state": {
-              "type": "graph",
-              "state": {},
-              "icon": "lucide-git-fork",
-              "title": "Graph view"
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/ようこそdotfilesの世界へ.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "ようこそdotfilesの世界へ"
             }
           }
         ]
@@ -133,12 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "Clippings/ようこそdotfilesの世界へ.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline"
+              "title": "Outline of ようこそdotfilesの世界へ"
             }
           },
           {
@@ -182,6 +187,8 @@
   },
   "active": "382f3a9a1d6fafa9",
   "lastOpenFiles": [
+    "Clippings/ようこそdotfilesの世界へ.md",
+    "Clippings",
     "CS/正規表現(Regular Expression).md",
     "Docker/本番 Docker gitでのSSH鍵認証.md",
     "DB/外部キー制約.md",
@@ -207,7 +214,6 @@
     "Golang/zpagesパターン.md",
     "JavaScript/yarn.md",
     "CS/type-hinting and type annotation.md",
-    "React/tRPC.md",
     "scripts/reorganize_import_tech.py",
     "scripts/add_frontmatter_all.py",
     "scripts/add_frontmatter_with_tags.py",
@@ -227,7 +233,6 @@
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 7.ico",
     "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 6.ico",
     "Flutter/Attachments/favicon.1bfe8fa6b24e46a25edac6f7c1ca96cea5e51420ad6d0a80696d25cdaaebd2f3 1.ico",
-    "Flutter/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 2.ico",
     "Untitled.canvas"
   ]
 }
