@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "9d5e73a2f1451c8c",
+        "id": "d41462ddb1cbc26d",
         "type": "tabs",
         "children": [
           {
-            "id": "efcd3ff3fe11a46e",
+            "id": "9ab8c3dd6590b87f",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Ruby on Rails/Capistrano/Capistrano.md",
+                "file": "PHP/WordPress/カスタムテーマ開発のためのWordPress理解.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Capistrano"
+              "title": "カスタムテーマ開発のためのWordPress理解"
             }
           }
         ]
@@ -137,13 +137,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Ruby on Rails/Capistrano/Capistrano.md",
+                "file": "PHP/WordPress/カスタムテーマ開発のためのWordPress理解.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Capistrano"
+              "title": "Outline of カスタムテーマ開発のためのWordPress理解"
             }
           },
           {
@@ -185,53 +185,54 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "efcd3ff3fe11a46e",
+  "active": "9ab8c3dd6590b87f",
   "lastOpenFiles": [
-    "test/Attachments/rails.png",
-    "test/Attachments/favicon.png",
-    "test/Attachments/Capistrano3がわからんので今一度イチから考えなおしてみる.png",
-    "test/Attachments/blog_ogp.jpg",
-    "test/Attachments/banner.jpg",
-    "PHP/basic/PHP.md",
-    "Ruby on Rails/Capistrano/Capistrano.md",
-    "test/Attachments",
-    "test",
-    "PHP/basic/Attachments/favicon-196x196.png",
-    "PHP/laravel.md",
-    "PHP/basic/Attachments",
-    "PHP/basic",
-    "Git/imported/(draft)Github ssh周りの話 a7db42592a124f6cbbe67415dc010586.md",
-    "Git/imported/(Draft) restoreコマンド.md",
-    "Git/Git.md",
-    "Git/imported/設定関連のコマンド 3f777deebcd643c1aaa60d5a6a543fd4.md",
-    "Git/imported/状態確認(status log diff) e9eeb155cddc4caf9391d5f9a5436d47.md",
-    "Git/imported/Attachments/article-ogp-background-9f5428127621718a910c8b63951390ad 4.png",
-    "Git/imported/Attachments/apple-touch-icon-ec5ba42a24ae923f16825592efdc356f 1.png",
-    "Git/imported/基本操作コマンド(add commit etc ) 1df7cc9b068b436589d257bcdcb3fa13.md",
-    "Git/imported/リモートのブランチを削除する 1d4c55295f984cfebed0b848f393f36c.md",
-    "Git/imported/ポインタ周りの理解(HEADとか) 099a63f18e914df1828951927879cdad.md",
-    "Git/imported/Attachments/Screenshot_2023-02-14_at_14.12.28.png",
-    "Git/imported/ブランチのリネーム・リモートブランチの削除 88f9f5b2c32e4f2e99a3ecd142ad2e07.md",
-    "Git/imported/チーム開発(remote tracking branch …) 692b202a24ce49f9b664e9880af08934.md",
-    "Git/imported/コミットの粒度について 34ae9f66e4324f9ebe28c1805c1aecb7.md",
-    "Git/imported/sub moduleについて 21638cdd027d807d87d2d220d8d3331a.md",
-    "Git/imported/squash and mergeのお話 80aa22ccb35043e3a6039b813cd7b625.md",
-    "Git/imported/gitignore 0814d84a135f4f3a9b4bcd06f2f4c1cb.md",
-    "Git/imported/Attachments/kv.png",
-    "Git/imported/git configのいじり方 23138cdd027d8070afe6c1f69bb0d6f0.md",
-    "Git/imported/git blame 1b538cdd027d80babff7c34ffd141e33.md",
-    "Git/imported/conflictが発生したら a367c80ec5af49faa90c500cd71df5c6.md",
-    "Git/imported/commitの操作(revert reset) 296083c8e0fc48bca6952f12f8c10c10.md",
-    "Git/imported/branch周りの操作(merge rebase) fb7cf3048c2d4d70a6f63949294e14c0.md",
-    "Git/imported/branchの基礎(branch checkout …) ea81c017ecbf49c0881f933443686d94.md",
-    "Git/imported/Tag付け 866565504b4642a78769818840282f5f.md",
-    "Git/imported/References 67e41f579f014386b09e5e6a62061ae5.md",
-    "Git/imported/Attachments/production-c620d3e403342b1022967ba5e3db1aaa.ico",
-    "Git/imported/Attachments",
-    "Git/imported",
-    "Git/Attachments",
-    "Git",
-    "Storybook/Attachments",
+    "PHP/Laravel/contents/CustomValidatorの実装 ece8ce955f0c40f7bfe16ed2a90145b4.md",
+    "PHP/WordPress/カスタムテーマ開発のためのWordPress理解.md",
+    "PHP/WordPress/Attachments/thumbnail-5.png",
+    "PHP/WordPress/Attachments/favicon.ico",
+    "PHP/WordPress/Attachments/wmark 2.png",
+    "PHP/WordPress/Tonik 38243765bf1b43d7b6098ee4d3ff1d5c.md",
+    "PHP/WordPress/The functions php 70e6420f3b5e495c819682eb282e5e80.md",
+    "PHP/WordPress/Template tagチートシート 5bca9b5fa3c648f994ef81d555365efa.md",
+    "PHP/WordPress/Attachments/wmark 1.png",
+    "PHP/WordPress/Template FIles 5c9b08b2719e4da5968d48a0d2076822.md",
+    "PHP/WordPress/Attachments/wmark.png",
+    "PHP/WordPress/Attachments",
+    "PHP/WordPress/Post Types(投稿タイプ) e565a612de0f4a30be8569a41f99d80a.md",
+    "PHP/WordPress",
+    "PHP/Laravel/contents/Authクラス f64e0210ad934389860ae9f0ad8e571f.md",
+    "PHP/Laravel/contents/artisan CLI commands 77571eb6709b47258c7a4e4ea615fa72.md",
+    "PHP/Laravel/contents/(draft)RepositoryとServiceそしてInterface dd698cb1f6944ed3b0b259b8c25070a2.md",
+    "PHP/Laravel/contents/APIルート fc31276dc64f49aa8d618474637b1e0e.md",
+    "PHP/Laravel/Laravel.md",
+    "PHP/Laravel/contents/‘email’ルールの中身 278309fdcd404d28a16c48db346e212b.md",
+    "PHP/Laravel/laravel 1.md",
+    "PHP/Laravel/contents/環境構築関連 c46eb40245474ee58dd5ac1b7964f9eb.md",
+    "PHP/Laravel/contents/概要(リクエストのライフサイクル) 3aff927da5d342768337360cc24d237c.md",
+    "PHP/Laravel/contents/定数の扱い方 9067a06dd9af480187aa5daefd66c3a1.md",
+    "PHP/Laravel/contents/Attachments/article-ogp-background-9f5428127621718a910c8b63951390ad 1.png",
+    "PHP/Laravel/contents/Attachments/apple-touch-icon-ec5ba42a24ae923f16825592efdc356f 1.png",
+    "PHP/Laravel/contents/リクエストパラメータのvalidation 28cde06554084a42ad9716785c0efcaa.md",
+    "PHP/Laravel/contents/Attachments/og-image.jpeg",
+    "PHP/Laravel/contents/Attachments/apple-touch-icon 2.png",
+    "PHP/Laravel/contents/phpUnit 49d0906c61834d09aa19e2f9ce8acee6.md",
+    "PHP/Laravel/contents/Requestのタイプヒント c485815cd64a4b9bafee21b1f8cded92.md",
+    "PHP/Laravel/contents/Laravelがthrowする例外クラスについて 7bfbdee8c6ac471dafa32b4c3fffea76.md",
+    "PHP/Laravel/contents/Inertia eae9ba9c75a64f929c1e0bd3a12141c4.md",
+    "PHP/Laravel/contents/Eloquent(Model) a1fe3337ae354de0b45dfe29d09dfab3.md",
+    "PHP/Laravel/contents/DB関連 5e9cef5604144a56b41bc1edb514f50d.md",
+    "PHP/Laravel/contents/クエリビルダ 09ae28c95ee94714b7c91e469de3ea7f.md",
+    "PHP/Laravel/contents/Attachments/og-base.png",
+    "PHP/Laravel/contents/Attachments/icon.png",
+    "PHP/Laravel/contents/Blade ffe5aae9653c424595ef0a53d97e86fc.md",
+    "PHP/Laravel/contents/Attachments",
+    "PHP/Laravel/contents",
+    "PHP/Laravel/Attachments/favicon.ico",
+    "PHP/Laravel/Attachments",
+    "PHP/Laravel",
+    "NextJS/Attachments 1",
+    "NextJS/contents",
     "Untitled.canvas"
   ]
 }

@@ -80,7 +80,7 @@ Learn how you can use React Server and Client Components to render parts of your
 
 ![](https://nextjs.org/favicon.ico?favicon.d29c4393.ico)https://nextjs.org/docs/app/getting-started/server-and-client-components
 
-![](docs-og%201.png)](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+![](React/Attachments/docs-og%201.png)](https://nextjs.org/docs/app/getting-started/server-and-client-components)
 
 Reactコンポーネントの変遷について
 

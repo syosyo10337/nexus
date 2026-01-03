@@ -26,4 +26,4 @@ API reference for the error.js special file.
 
 ![](https://nextjs.org/favicon.ico)https://nextjs.org/docs/app/api-reference/file-conventions/error#how-errorjs-works
 
-![](docs-og.png)](https://nextjs.org/docs/app/api-reference/file-conventions/error#how-errorjs-works)
+![](React/Attachments/docs-og.png)](https://nextjs.org/docs/app/api-reference/file-conventions/error#how-errorjs-works)

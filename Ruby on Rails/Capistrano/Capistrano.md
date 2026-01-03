@@ -460,4 +460,3 @@ Capistranoを導入してみます。前回作成した仮想マシンをター�
 
 https://www.ccbaxy.xyz/blog/2020/03/29/ruby34/#can-kao
 
-![](test/Attachments/banner.jpg)](https://www.ccbaxy.xyz/blog/2020/03/29/ruby34/#can-kao)
