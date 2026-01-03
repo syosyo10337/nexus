@@ -1,0 +1,12 @@
+# Obsidian settings
+# ワークスペース設定（開いているペインやファイル情報）
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# プラグインのローカルデータ
+.obsidian/plugins/*/data.json
+
+# その他の個人設定
+.DS_Store
+.trash/
+

@@ -11,14 +11,10 @@
             "id": "382f3a9a1d6fafa9",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Design Pattern/Micro Service/読書メモ/マイクロサービスアーキテクチャ 6d89f4d5eece4a55a71d8ba9cad1fd35.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "マイクロサービスアーキテクチャ 6d89f4d5eece4a55a71d8ba9cad1fd35"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -137,13 +133,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Design Pattern/Micro Service/読書メモ/マイクロサービスアーキテクチャ 6d89f4d5eece4a55a71d8ba9cad1fd35.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of マイクロサービスアーキテクチャ 6d89f4d5eece4a55a71d8ba9cad1fd35"
+              "title": "Outline"
             }
           },
           {
@@ -185,8 +180,26 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "d9e8e1c46c91a7b9",
+  "active": "382f3a9a1d6fafa9",
   "lastOpenFiles": [
+    "Design Pattern/Micro Service/読書メモ/マイクロサービスアーキテクチャ 6d89f4d5eece4a55a71d8ba9cad1fd35.md",
+    "CS/impoted/関数 1e764f8f7f304b4f8bf1732ba8c27983.md",
+    "CS/impoted/述語 ab41bc4f812e4e1b9ca68f556d74bc1e.md",
+    "CS/impoted/読書メモ 0456b17672f745a7acce1d92bb02a310.md",
+    "CS/impoted/変数 cf2119a5bd044e54af80172f9af1ab11.md",
+    "CS/impoted/Attachments/Screen_Shot_2022-10-31_at_14.53.20.png",
+    "CS/impoted/Attachments/Screen_Shot_2022-10-31_at_14.44.04.png",
+    "CS/impoted/Attachments/Screen_Shot_2022-10-31_at_14.33.21.png",
+    "CS/impoted/Attachments",
+    "CS/impoted/ループ処理についての知見。 601fe73a21084a7ea131e02ffc3d9a34.md",
+    "CS/impoted/プリミティブ型 18a6407f45bd4af8a720269e36616383.md",
+    "CS/impoted/オブジェクト指向の基本 e6cdc7b3488246ad82d1ca6cee1de924.md",
+    "CS/impoted/これらの問題への向き合い方 96763f23f127467c9c061a74d57ab2bc.md",
+    "CS/impoted/note ofコンピュータサイエンス入門 79b8f97436c441888e87db811ab0baf7.md",
+    "CS/impoted/計算とは何か？ 4ca40a087fae41208fc1434d2955205e.md",
+    "CS/impoted/OOP a10edcc8a1c2489dac242e7e80ddcc7e.md",
+    "CS/impoted/Big O Notation a811c377d92a48969e5dfdc1c210e302.md",
+    "CS/impoted",
     "Import tech/正規表現(Regular Expression) 280a25ec3d1d41b3a8bfff4d04b3d6ce.md",
     "Import tech/Attachments/site_preview_en_1200x630.png",
     "Import tech/Attachments/apple-touch-icon-precomposed.png",
@@ -207,32 +220,14 @@
     "Import tech/フロントエンドのエラーハンドル 11938cdd027d80ed9421f72fe9952a41.md",
     "Import tech/プロセス b0285b7c9fce41b68cdb13bc4451f17b.md",
     "Import tech/Attachments/cpu-1.png",
-    "Import tech/プロキシとリバースプロキシ aec004fe556449e8a934436fa00a1fda.md",
     "Import tech/Attachments/article-ogp-background-9f5428127621718a910c8b63951390ad 4.png",
     "Import tech/Attachments/production-c620d3e403342b1022967ba5e3db1aaa 1.ico",
-    "Import tech/Attachments/squid_proxy_logo.png",
-    "Import tech/Attachments/cropped-795316b92fc766b0181f6fef074f03fa-192x192.png",
-    "Import tech/ブランチ運用のルールについて 21c38cdd027d8079adaad902a96d3528.md",
-    "Import tech/Attachments/og-base-w1200-v2 8.png",
-    "Import tech/ドメインとホスト名 4240bde264ad4ffbbafa7726948edc50.md",
-    "Import tech/テスト戦略 28538cdd027d804fb77be6ec2374268b.md",
-    "Import tech/ディープリンクを支える技術 f20a1bd47c94459881c3190a0f953bd2.md",
-    "Import tech/コード設計 745f79c99ca7474098b5474534465364.md",
-    "Import tech/クラウドとは (1) 9667147775504b45aaac0adf8997d162.md",
-    "Import tech/キーワード引数(名前つき引数)についての所感 ce5cadb24b594b2589ff53b98d875663.md",
-    "Import tech/インターフェースと依存性(Depandancy Inversion) eb1a5fed053940389fcec9f6f0e10749.md",
-    "Import tech/zpagesパターン 20a38cdd027d805b8f1ce6abb261e345.md",
-    "Import tech/yarn 59b2c391880f42668afeb06dd91c334e.md",
-    "Import tech/type-hinting and type annotation 1af219947bfc4120836a27747b60eac0.md",
-    "Import tech/tRPC 2b538cdd027d8046af85fd80946dd235.md",
     "Import tech/Attachments/favicon 2.ico",
     "Import tech/Attachments/favicon 1.ico",
     "Import tech/Attachments/production-c620d3e403342b1022967ba5e3db1aaa.ico",
     "Import tech/Attachments/favicon.ico",
     "Import tech/Attachments",
     "Import tech",
-    "Design Pattern/Micro Service/読書メモ/Attachments",
-    "Design Pattern/Micro Service/読書メモ",
     "Untitled.canvas"
   ]
 }
