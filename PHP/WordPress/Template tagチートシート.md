@@ -1,6 +1,4 @@
- 
 
-# Template tagチートシート
 
 - get_header()  
     header.php()ファイルをget

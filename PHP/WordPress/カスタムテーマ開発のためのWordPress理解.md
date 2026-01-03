@@ -34,7 +34,6 @@ In this chapter, you'll begin learning how to build a theme. The anatomy of a t
 https://developer.wordpress.org/themes/basics/
 
 
----
 # webページの生成
 
 1. まずは、ブラウザからリクエストをもらいます。リクエストに応じてどのページを選択させるかはまた別の機会に。。
