@@ -1,8 +1,9 @@
+
+```php
 <?php
 
 # artisanコマンド集
 
-```
 //  routingを表示
 $ php artisan route:list
 
@@ -62,15 +63,15 @@ https://github.com/barryvdh/laravel-ide-helper
 ## .envファイルとenv()メソッドの使い方
 env()の第一引数に取られた値を環境変数もしくは、.envファイルを探して、参照する。
 
+```
 
-
+```php
 
 # Model
 Eloquentで表現されています。RailsでいうところのActive Record
 
 
 ### テーブル名を設定する方法
-```
 1. マイグレーションのupメソッドで作成する
 // snake_caseでcreateメソッドの第一引数として
 public function up(): void
