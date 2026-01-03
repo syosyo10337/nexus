@@ -1,10 +1,8 @@
  
 
-# co-locationパターン
-
-[https://zenn.dev/ampersand/articles/9cf546795074d1](https://zenn.dev/ampersand/articles/9cf546795074d1)
-
-[https://zenn.dev/ampersand/articles/9cf546795074d1](https://zenn.dev/ampersand/articles/9cf546795074d1)
+### cf. 
+- [https://zenn.dev/ampersand/articles/9cf546795074d1](https://zenn.dev/ampersand/articles/9cf546795074d1)
+- [https://zenn.dev/ampersand/articles/9cf546795074d1](https://zenn.dev/ampersand/articles/9cf546795074d1)
 
 **分離すべき（ビジネスロジック）**_**// ❌ UI層に置くべきでない**_**  
 - データの変換・計算ロジック  
@@ -23,4 +21,3 @@
 - アニメーション・トランジション  
 - propsで受け取ったコールバックの実行**
 
-## **推奨案：部分的分離**
