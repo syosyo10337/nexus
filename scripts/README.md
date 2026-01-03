@@ -89,3 +89,4 @@ cd /Users/masanao/Obsidian
 cp -r nexus "nexus-backup-$(date +%Y%m%d-%H%M%S)"
 ```
 
+
