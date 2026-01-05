@@ -55,7 +55,7 @@ git pull
 
 # 2. submoduleを更新（初回または新しいsubmoduleが追加された場合）
 git submodule update --init --recursive
-
+git submodule update --remote # submoduleを最新のまmasterにする
 # 3. すでに初期化済みの場合はこちらでもOK
 git submodule update --recursive
 ```
@@ -71,4 +71,4 @@ cf.
 
 ```Bash
 https://claude.ai/chat/e8a69685-35ac-48d5-abbc-827cdae50d36
-```
+``` 
