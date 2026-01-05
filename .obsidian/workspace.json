@@ -185,8 +185,10 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "8f10114a9fb25fb5",
+  "active": "756fd0f5efe0424a",
   "lastOpenFiles": [
+    "Tech/Linux/commands/trコマンド.md",
+    "Tech/Linux/commands/wcコマンド.md",
     "Meta/Templates/Default.md",
     "Meta/Templates",
     "Meta/scripts/reorganize_import_tech.py",
@@ -224,8 +226,6 @@
     "Tech/Web/Hosting.md",
     "Tech/Web/HTTPプロトコル.md",
     "Tech/Web/HTTPステータスコード.md",
-    "Tech/Web/DNS( Domain Name System).md",
-    "Tech/Web/DNS リバインディング.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
     "Tech/TypeScript/Attachments/og.png",
