@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "bf9e0f0cc2d0d17b",
+        "id": "9c9c565f14d31ba8",
         "type": "tabs",
         "children": [
           {
-            "id": "8f10114a9fb25fb5",
+            "id": "8c6c0120db3f4668",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -185,8 +185,11 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "756fd0f5efe0424a",
+  "active": "8c6c0120db3f4668",
   "lastOpenFiles": [
+    "Tech/Linux/README.md",
+    "commands.md",
+    "commands 1.md",
     "Resources/StudyPlans/assured学種計画.md",
     "Resources/StudyPlans",
     "Tech/Linux/commands/trコマンド.md",
@@ -223,9 +226,6 @@
     "Tech/Web/MIME.md",
     "Tech/Web/MFA.md",
     "Tech/Web/JWT(JSON Web Token).md",
-    "Tech/Web/IPアドレスについて.md",
-    "Tech/Web/Hosting.md",
-    "Tech/Web/HTTPプロトコル.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
     "Tech/TypeScript/Attachments/og.png",
