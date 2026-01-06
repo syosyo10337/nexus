@@ -42,32 +42,7 @@ $ yum info パッケージ名
 ---------
 
 
-## Homebrewのコマンド一例
-#パッケージをインストール
-$ brew install <パッケージ名>
 
-#インストールされているパッケージ一覧
-$ brew list
-
-#更新可能なパッケージの一覧を表示
-$ brew outdated
-
-#パッケージの情報を表示
-$ brew info パッケージ名
-
-#パッケージをアンインストール
-$ brew remove <パッケージ名>
-
-# すべてのパッケージをアップグレード
-$ brew upgrade
-
-# 個別のパッケージをアップグレード
-$ brew upgrade <パッケージ名>
-
-#Homebrewの更新
-$ brew update
-
---------
 
 
 apt-get update -qq
