@@ -1,11 +1,17 @@
-# Kubernetes入門
+---
+tags: [kubernetes, k8s, infrastructure, container, orchestration, IaC]
+created: 2026-01-06
+status: active
+source: つくって、壊して、直して学ぶkubernetes入門
+---
+
+# Kubernetesとは
 
 "宣言的"(declarative)ツール。手続き型ツールとしてAnsibleとかがあるらしい。
 "Desired State"を定義するツールです。
 
 
-
-# Kubernetesの特徴
+## Kubernetesの特徴
 
 1. Reconciliation Loopによって、障害から自動復旧を試みる
 Desired Stateになるように自動で動く
@@ -21,6 +27,7 @@ Desired Stateになるように自動で動く
 
 3. KubernetesAPIがインフラレイヤを抽象化するため、サーバ固有の設定を知る必要がない。
 OSの種類や外部公開の手段などが書かれなくて済む
+
 ```yaml
 apiVersion: v1
 kind: Service
@@ -38,6 +45,7 @@ spce:
 
 
 # kubernetesのアーキテクチャ
+
 大きく分けるとControl Plane Worker Nodeがある。
 重要な要素として、"Control PlaneはWorker Nodeを直接指示しない”というものがある。
 Worker NodeがControle Planeに問い合わせる方式を取ることで、Controle Planeが壊れても、即座にWorkerNode上に起動するコンテナが破壊されるわけではない。

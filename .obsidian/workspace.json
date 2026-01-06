@@ -187,6 +187,8 @@
   },
   "active": "8c6c0120db3f4668",
   "lastOpenFiles": [
+    "Tech/K8s/Pod.md",
+    "Tech/K8s/manifest.md",
     "Tech/K8s/kubectl.md",
     "Tech/Linux/basics/vim.md",
     "Tech/K8s/kind.md",
@@ -228,8 +230,6 @@
     "Tech/Web/web3層アーキテクチャ.md",
     "Tech/Web/reCAPTCHA 101.md",
     "Tech/Web/XSS(Xross-Site-Scripting).md",
-    "Tech/Web/URLとは.md",
-    "Tech/Web/Slug.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
     "Tech/TypeScript/Attachments/og.png",
