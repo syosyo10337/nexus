@@ -42,7 +42,7 @@ spce:
 重要な要素として、"Control PlaneはWorker Nodeを直接指示しない”というものがある。
 Worker NodeがControle Planeに問い合わせる方式を取ることで、Controle Planeが壊れても、即座にWorkerNode上に起動するコンテナが破壊されるわけではない。
 
-
+![k8s-architecture](./assets/k8s-architecture.png)
 
 ## Control Plane
 (Podのスケジュール先など)の決まった内容がControl Planeによって決められる
