@@ -12,3 +12,8 @@ kind create cluster --image=kindest/node:v1.35
 ```bash
 kind delete cluster
 ```
+
+## kindでの存在確認
+```bash
+kind get clusters
+```

@@ -16,5 +16,14 @@ kubectl cluster-info --context=<context>
 ```bash
 kubectl config use-context <context_name>
 ```
+- クラスタの起動確認
+```bash
+kubectl get nodes
+```
 
 ただ毎回打つのも面倒なのでkubectxをお勧めする。
+
+マニフェストをクラスタに適用する
+```bash
+kubectl apply -f/--filename <fileName>
+```
