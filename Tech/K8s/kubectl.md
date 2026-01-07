@@ -4,7 +4,7 @@ k8sを操作するコマンドツール
 
 ## kubectl configについて
 `~/.kube/config`に通常設定ファイルは存在します。
-クラスタごとに設定が従うことがある。
+クラスタごとに設定が違うことがある。
 複数のクラスタが存在する時にその分のcontextがそれぞれのクラスタの設定情報として存在する。
 
 ## tips
@@ -27,3 +27,5 @@ kubectl get nodes
 ```bash
 kubectl apply -f/--filename <fileName>
 ```
+
+
