@@ -48,3 +48,19 @@ tips: 現在のapplyされているマニフェストを出力する。
 ```
 kubectl get pod myapp -o yaml -n default > pod.yaml
 ```
+
+tips: jsonpath形式にして特定のフィールドを参照する
+
+```bash
+kubectl get pod myapp --output jsonpath='{.spec.containers[].image}'
+```
+
+
+### リソースの詳細を取得する: `kubectl describe`
+```bash
+kubectl describe pod <pod名>
+```
+getよりも詳しい内容がほしいときに役立つ。
+
+### コンテナのログを取得する: `kubectl logs`
+logsで
