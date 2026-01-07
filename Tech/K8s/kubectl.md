@@ -42,3 +42,9 @@ kubectl get pod <pod名>
 ###　オプション
 `--namespace(-n)`: namespaceを作成できる
 `-output(-o)`: IPやNodeの情報が取得できる `-o wide` `-o yaml` yaml形式でリソース情報を取得する
+lessコマンドを組み合わせて使ったりする。
+
+tips: 現在のapplyされているマニフェストを出力する。
+```
+kubectl get pod myapp -o yaml -n default > pod.yaml
+```

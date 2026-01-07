@@ -6,34 +6,7 @@ created: 2026-01-04
 status: active
 ---
 
-👨‍🏫
-
-# 正規表現(Regular Expression)
-
-[そもそも](#e7edefce-c753-4ccc-a676-bb17abd2fb91)
-
-[よく使うもの一覧表](#fe83bb8d-98bf-4783-be7b-0959064db39e)
-
-[[]の中でのメタ文字](#f0244e01-e2d5-4726-a9bc-571236ece96d)
-
-[ちなみに、`i`を正規表現の後ろにつける時](#8187cc28-15e0-4b0c-b7df-5573571c9dd8)
-
-[Lookaround](#8fe4dc7d-4e05-4395-ba88-94342e92b3b5)
-
-[Positive lookahead(先読み)](#e2b538a0-02b7-45ed-a107-a451940a02e3)
-
-[Negative lookahead(否定の先読み)](#9a6373e8-daa9-4bbe-bcc6-666251396fba)
-
-[Lookbehind](#3a5b5358-5b0d-4047-a32d-3ac6ad77cedc)
-
-[Positive lookbehind](#f387abfa-b889-4c51-9b19-b61ad4601758)
-
-[Negative lookbehind](#d89a9772-df48-41d1-853c-113e8e79e898)
-
-[cf.)](#b00319ad-0015-47aa-b17d-ee1ed5a736f2)
-
-[(draft)](#cb670762-da44-4bd6-b078-ee13af065521)
-
+👨‍
 # そもそも
 
 正規表現とは、、[文字列](https://ja.wikipedia.org/wiki/%E6%96%87%E5%AD%97%E5%88%97)の集合を一つの文字列で表現する方法の一つである。??あってる？

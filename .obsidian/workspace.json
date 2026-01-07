@@ -187,6 +187,7 @@
   },
   "active": "756fd0f5efe0424a",
   "lastOpenFiles": [
+    "Tech/Linux/commands/diffコマンド.md",
     "Tech/K8s/assets/trobleshooting.jpg",
     "Tech/K8s/Pod.md",
     "Tech/K8s/manifest.md",
@@ -232,7 +233,6 @@
     "Tech/Web/reCAPTCHA 101.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
-    "Tech/TypeScript/Attachments/og.png",
     "Untitled.canvas"
   ]
 }
