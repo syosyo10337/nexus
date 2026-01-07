@@ -63,4 +63,14 @@ kubectl describe pod <pod名>
 getよりも詳しい内容がほしいときに役立つ。
 
 ### コンテナのログを取得する: `kubectl logs`
-logsで
+logsでコンテナのログが取得できます。これはdockerを似たようなものですね。
+
+```bash
+kubectl logs pod <pod名>
+```
+
+Podの中に複数containerが存在する時は `--container(-c)`を使うことでコンテナを指定することで絞り込めます。
+
+####　特定のDeploymentに紐づくPodのログを参照する
+```bash
+kubectl logs  deploy/<deployment>
