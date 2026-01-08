@@ -5,31 +5,23 @@ tags:
   - typescript
   - nextjs
 created: 2026-01-04
+updated: 2026-01-08
 status: active
 ---
 
-# tRPC
-
 ## 概要
 
-✅ **tRPC (TypeScript Remote Procedure Call)** は、TypeScriptの型システムを活用した**エンドツーエンドで型安全なAPI**を構築するためのフレームワークです。コード生成やスキーマ定義なしに、クライアントとサーバー間の型の整合性を保証します。
+ **tRPC (TypeScript Remote Procedure Call)** は、TypeScriptの型システムを活用した**エンドツーエンドで型安全なAPI**を構築するためのフレームワークです。コード生成やスキーマ定義なしに、クライアントとサーバー間の型の整合性を保証します。
 
 ### 主な特徴
 
-- ✅ **完全な型安全性**: TypeScriptの型推論により、クライアント・サーバー間の型の不整合を防ぐ
-- ✅ **開発効率の向上**: APIスキーマの手動定義やコード生成が不要
-- ✅ **優れたDX (Developer Experience)**: 自動補完、型チェック、リファクタリングが容易
-- ✅ **Next.jsとの優れた統合**: App Router / Pages Router両方に対応
-- ✅ **軽量**: 追加のランタイムオーバーヘッドがほぼない
+ **完全な型安全性**: TypeScriptの型推論により、クライアント・サーバー間の型の不整合を防ぐ
+ **開発効率の向上**: APIスキーマの手動定義やコード生成が不要
+ **優れたDX (Developer Experience)**: 自動補完、型チェック、リファクタリングが容易
+ **Next.jsとの優れた統合**: App Router / Pages Router両方に対応
+ **軽量**: 追加のランタイムオーバーヘッドがほぼない
 
-### 参考リンク
 
-- [公式ドキュメント](https://trpc.io/)
-- [コンセプト解説](https://trpc.io/docs/concepts)
-- [Qiita - tRPC解説](https://qiita.com/megmogmog1965/items/86ea05966027881afca0)
-- [Zenn - tRPC入門](https://zenn.dev/big_tanukiudon/articles/2f5e6efd851686)
-
----
 
 ## 基本概念
 
@@ -240,7 +232,7 @@ export type AppRouter = typeof appRouter;
 
 #### 3. Next.js APIルートの作成
 
-✅ **Pages Router の場合:**
+ **Pages Router の場合:**
 
 `src/pages/api/trpc/[trpc].ts`
 
@@ -255,7 +247,7 @@ export default createNextApiHandler({
 });
 ```
 
-✅ **App Router の場合:**
+ **App Router の場合:**
 
 `src/app/api/trpc/[trpc]/route.ts`
 
@@ -287,7 +279,7 @@ export const trpc = createTRPCReact<AppRouter>();
 
 #### 5. Providerの設定
 
-✅ **Pages Router の場合:**
+ **Pages Router の場合:**
 
 `src/pages/_app.tsx`
 
@@ -322,7 +314,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 export default MyApp;
 ```
 
-✅ **App Router の場合:**
+ **App Router の場合:**
 
 `src/app/providers.tsx`
 
@@ -417,7 +409,7 @@ export default function HomePage() {
 
 ## ベストプラクティス
 
-### ✅ 推奨される実装方法
+ 推奨される実装方法
 
 1. **Zodを使用した入力バリデーション**: 型安全性とランタイムバリデーションの両立
 2. **Contextを使ったDI**: テスタビリティと保守性の向上
@@ -451,10 +443,13 @@ const appRouter = router({
 - 外部APIとの統合には従来のREST/GraphQLを使用
 - Server Componentsでの使用には追加の設定が必要
 
----
 
-## 関連リソース
+### 参考リンク
 
-- [tRPC公式ドキュメント](https://trpc.io/docs)
 - [Next.js with React Server Components](https://trpc.io/docs/client/react/server-components)
 - [TanStack Query (React Query)](https://tanstack.com/query/latest)
+
+- [公式ドキュメント](https://trpc.io/)
+- [コンセプト解説](https://trpc.io/docs/concepts)
+- [Qiita - tRPC解説](https://qiita.com/megmogmog1965/items/86ea05966027881afca0)
+- [Zenn - tRPC入門](https://zenn.dev/big_tanukiudon/articles/2f5e6efd851686)
