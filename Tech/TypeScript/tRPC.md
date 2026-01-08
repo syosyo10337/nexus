@@ -1,6 +1,5 @@
 ---
 tags:
-  - react
   - trpc
   - api
   - typescript
