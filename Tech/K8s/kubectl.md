@@ -9,7 +9,7 @@ k8sを操作するコマンドツール
 
 ## kubectlコマンド
 - クラスタの情報を確認する
-```
+```bash
 kubectl cluster-info --context=<context>
 ```
 - defaultのcontextを設定するコマンド(毎回 --contextフラグをつけない)
@@ -24,7 +24,7 @@ kubectl get nodes
 
 - マニフェストをクラスタに適用する 
 ```bash
-kubectl apply -f/--filename <fileName>
+kubectl apply -f/(--filename) <fileName>
 ```
 
 
@@ -34,7 +34,7 @@ kubectl get pod --namespace default
 ```
 
 
-- 特定のリソース情報飲み取得する
+- 特定のリソース情報のみ取得する
 
 ```bash
 kubectl get pod <pod名>
