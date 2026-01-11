@@ -34,10 +34,25 @@ kubectl debug --stdin --tty myapp \
 
 **tips**:
 `--stdin` : コンテナの標準入力（stdin）をあなたのターミナルに接続
-`--tty` : 疑似ターミナル（PTY）を割り当てて、対話型シェルを提供a
+`--tty` : 疑似ターミナル（PTY）を割り当てて、対話型シェルを提供(**stdinを合わせて、`--it`とすることもある**aaaaaaaaaaaaaaaa)
 
 
 # コンテナを即時事項する
+k8s 1.25以前はそもそもdebugコマンドがなかったので、デバッグ用のpodを立てる必要がありました。
+
+
 ```bash
 kubectl run <pod_name> --image=<image_name>
+
+
+# e.g.)
+kubectl --n default run busybox \
+--image=busybox:latest \
+--rm \
+--stdin \
+--tty \
+--restart=Never \
+--command -- nslookup google.com
 ```
+
+# コンテナにログインする
