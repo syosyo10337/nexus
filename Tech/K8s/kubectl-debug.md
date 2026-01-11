@@ -7,10 +7,10 @@ tags:
 created: 2026-01-11
 status: draft
 ---
-
+# 概要
 参照系のkubectlコマンドでも、情報が足りない場合は以下のコマンドなどを使うことでデバッグ作業が捗ります。
 
-# デバッグ用のサイドカー コンテナを立ち上げる
+## デバッグ用のサイドカー コンテナを立ち上げる(`kubectl debug`)
 podで既に構築されている環境とリソースを共有できるデバッグコンテナをデバッグ目的で一時的に追加する。
 
 ```bash 
@@ -34,10 +34,10 @@ kubectl debug --stdin --tty myapp \
 
 **tips**:
 `--stdin` : コンテナの標準入力（stdin）をあなたのターミナルに接続
-`--tty` : 疑似ターミナル（PTY）を割り当てて、対話型シェルを提供(**stdinを合わせて、`--it`とすることもある**aaaaaaaaaaaaaaaa)
+`--tty` : 疑似ターミナル（PTY）を割り当てて、対話型シェルを提供(**stdinを合わせて、`-it`とすることもある**)
 
 
-# コンテナを即時事項する
+## コンテナを即時事項する(`kubectl run`)
 k8s 1.25以前はそもそもdebugコマンドがなかったので、デバッグ用のpodを立てる必要がありました。
 
 
@@ -55,4 +55,13 @@ kubectl --n default run busybox \
 --command -- nslookup google.com
 ```
 
-# コンテナにログインする
+## コンテナにログインする(`kubectl exec`)
+```bash
+kubectl exec -it <pod_name> -- <command>
+```
+
+## port-forwardingを行う(`kubectl port-forward`)
+```bash
+kubectl port-forward <pod_name> <local_port>:<remote_port>
+```
+
