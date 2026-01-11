@@ -1,3 +1,12 @@
+---
+tags:
+  - kubernetes
+  - k8s
+  - kubectl
+created: 2026-01-11
+status: active
+---
+
 # kubectl
 k8sを操作するコマンドツール
 
@@ -82,3 +91,6 @@ kubectl get pod --selector(-l) <labelkey>=<labelvalue>
 ```
 
 同様にlogsもlabel指定で絞り込むことができます。
+
+## 参考
+より詳細なデバッグ用のコマンドについては[こちら](kubectl-debug.md)

@@ -185,8 +185,9 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "756fd0f5efe0424a",
+  "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Tech/K8s/kubectl-debug.md",
     "Tech/TypeScript/tRPC.md",
     "Tech/TypeScript/trpc.md",
     "Tech/Linux/commands/diffコマンド.md",
@@ -230,7 +231,6 @@
     "Tech/Web/リクエストのUser-agentを判定する。.md",
     "Tech/Web/プロキシとリバースプロキシ.md",
     "Tech/Web/ドメインとホスト名について.md",
-    "Tech/Web/ドメインとホスト名.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
     "Untitled.canvas"
