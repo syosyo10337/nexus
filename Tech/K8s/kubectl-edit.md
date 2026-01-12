@@ -20,8 +20,13 @@ kubectl edit <resource_name>
 kubectlには再起動コマンドが存在しないので、deleteで削除するという操作は意外と使われるらしい。
 
 Deploymentで一部問題がある場合は、Pod deleteとして再起動させることもある。
-
+tips: **deployment全体を再起動したい場合は`kubectl rollout restart`を使うことができます。
 
 ```bash
 kubectl delete <resource_name>
 ```
+
+
+## 参考
+- [kubectl](./kubectl.md)
+- [kubectl-debug](./kubectl-debug.md)

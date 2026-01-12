@@ -94,3 +94,5 @@ kubectl get pod --selector(-l) <labelkey>=<labelvalue>
 
 ## 参考
 より詳細なデバッグ用のコマンドについては[こちら](kubectl-debug.md)
+- [kubectl-edit](kubectl-edit.md)
+- [kubectl cheetsheet](https://kubernetes.io/ja/docs/reference/kubectl/cheatsheet/)
