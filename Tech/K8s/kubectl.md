@@ -41,8 +41,6 @@ kubectl apply -f/(--filename) <fileName>
 ```bash
 kubectl get pod --namespace default
 ```
-
-
 - 特定のリソース情報のみ取得する
 
 ```bash
