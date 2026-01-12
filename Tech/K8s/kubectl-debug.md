@@ -64,4 +64,6 @@ kubectl exec -it <pod_name> -- <command>
 ```bash
 kubectl port-forward <pod_name> <local_port>:<remote_port>
 ```
+Podにはk8sクラスタ内でIPが割り当てられます。この辺りはdockerと一緒ですね。Serviceを使うことで、クラスタ外からアクセスすることも可能ですが、それぞれのPodに対して個別にport-forwardingを行うこともできます。
 
+ポートフォワードを終了するには、`Ctrl + C`を押下します。
