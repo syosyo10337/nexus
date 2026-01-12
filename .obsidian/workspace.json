@@ -187,6 +187,7 @@
   },
   "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Tech/K8s/plugin.md",
     "Tech/K8s/kubectl-edit.md",
     "Tech/Linux/commands/ネットワーク状態確認に関するコマンド.md",
     "Tech/K8s/kubectl-debug.md",
@@ -230,7 +231,6 @@
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
     "Tech/Web/レインボーテーブル攻撃.md",
-    "Tech/Web/リクエストのUser-agentを判定する。.md",
     "Tech/UML/Attachments/mermaid-logo-horizontal.svg",
     "Tech/TypeScript/Attachments/明確な割り当てアサーション(definite assignment assertion).png",
     "Untitled.canvas"
