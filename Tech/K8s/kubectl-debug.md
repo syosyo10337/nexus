@@ -37,7 +37,7 @@ kubectl debug --stdin --tty myapp \
 `--tty` : 疑似ターミナル（PTY）を割り当てて、対話型シェルを提供(**stdinを合わせて、`-it`とすることもある**)
 
 
-## コンテナを即時事項する(`kubectl run`)
+## コンテナを即時実行する(`kubectl run`)
 k8s 1.25以前はそもそもdebugコマンドがなかったので、デバッグ用のpodを立てる必要がありました。
 
 
