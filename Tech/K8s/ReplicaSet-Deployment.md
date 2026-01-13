@@ -6,7 +6,7 @@ tags:
   - deployment
   - pod
 created: 2026-01-13
-status: draft
+status: active
 ---
 
 # ReplicaSetとDeploymentについて

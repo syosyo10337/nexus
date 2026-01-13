@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "9c9c565f14d31ba8",
+        "id": "8b6ac775f3210220",
         "type": "tabs",
         "children": [
           {
-            "id": "8c6c0120db3f4668",
+            "id": "d234cebf3fce398e",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Tech/Linux/README.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "README"
+              "title": "New tab"
             }
           }
         ]
@@ -137,13 +133,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Tech/Linux/README.md",
+                "file": "Tech/Linux/commands/diffコマンド.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of README"
+              "title": "Outline of diffコマンド"
             }
           },
           {
@@ -163,9 +159,19 @@
               "icon": "links-coming-in",
               "title": "Backlinks"
             }
+          },
+          {
+            "id": "e168245c97db4430",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 5
       }
     ],
     "direction": "horizontal",
@@ -187,6 +193,8 @@
   },
   "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Tech/Linux/README.md",
+    "Tech/K8s/Service.md",
     "Tech/K8s/ReplicaSet-Deployment.md",
     "Tech/K8s/plugin.md",
     "Tech/K8s/kubectl-edit.md",
@@ -211,7 +219,6 @@
     "Tech/K8s/Screenshot 2026-01-06 at 23.03.43.png",
     "Tech/K8s/README.",
     "Tech/K8s",
-    "Tech/Linux/README.md",
     "commands.md",
     "commands 1.md",
     "Resources/StudyPlans/assured学種計画.md",
@@ -227,7 +234,6 @@
     "Meta/scripts/README.md",
     "Resources/WebClippings/ようこそdotfilesの世界へ.md",
     "Resources/WebClippings/basenameとdirnameコマンドでパスを操作する方法.md",
-    "Tech/Web/O Auth/OAuth 2.0.md",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_18.14.05.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
