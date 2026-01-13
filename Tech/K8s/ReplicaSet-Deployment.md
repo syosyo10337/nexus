@@ -18,7 +18,6 @@ Deploymentは、ReplicaSetを管理するためのリソースです。
 
 ## ReplicaSet
 ReplicaSetは、指定した数のPodへ複製するリソースです。
-
 replicasで複製する数を指定します。
 
 
