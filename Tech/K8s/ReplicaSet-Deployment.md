@@ -78,3 +78,28 @@ spec:
         ports:
         - containerPort: 80
 ```
+
+-  リソースの確認
+```bash
+k get deployment
+```
+
+### StrategyType
+Deploymentを用いてPodを更新する際に、どのように更新するかのタイプのこと。
+
+- RollingUpdate: 一部のPodを更新し、更新が終わったら次のPodを更新する。
+- Recreate: 全てのPodを同時に更新する。
+の2種類があります。
+
+RollingUpdateの場合は、`rollingUpdateStrategy`で更新の速度を指定することができます。
+
+```yaml
+rollingUpdateStrategy:
+  type: RollingUpdate
+  maxSurge: 2
+  maxUnavailable: 1
+```
+
+cf. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+`
+
