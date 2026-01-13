@@ -125,13 +125,41 @@ spec:
 
 ```
 
-
+### RollingUpdateの場合
 ```yaml
-rollingUpdateStrategy:
-  type: RollingUpdate
-  maxSurge: 2
-  maxUnavailable: 1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 100%
+  replicas: 10
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.24.0
+        ports:
+        - containerPort: 80
+        lifecycle:
+          preStop:
+            exec:
+              command: ["/bin/sh", "-c", "sleep 10"]
+
 ```
+
 - maxSurge: 最大で何個のPodを新規作成できるか？(新旧合わせて何個までいけるか？ってこと e.g. 25%の場合は、10個のPodがある場合は、2個まで新規作成できる)
 - maxUnavailable: 最大で何個のPodを同時にシャットダウンできるか？ 
 
