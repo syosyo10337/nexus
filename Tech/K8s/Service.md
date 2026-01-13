@@ -55,7 +55,7 @@ spec:
       targetPort: 8080
       nodePort: 30599 
 ```
-
+NodePortは全Nodeに対してPortを紐づけるので、port-forwadを設定しなくて良くなる。本番ではClusterIPやLoadBalancerを使うことが多い。
 
 ## 参考
 
