@@ -104,7 +104,7 @@ metadata:
 spec:
   replicas: 10
   strategy:
-    type: Recreate
+    type: Recreate #StrategyTypeの指定
   selector:
     matchLabels:
       app: nginx
