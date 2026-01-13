@@ -161,6 +161,8 @@ spec:
 
 - maxSurge: 最大で何個のPodを新規作成できるか？(新旧合わせて何個までいけるか？ってこと e.g. 25%の場合は、10個のPodがある場合は、2個まで新規作成できる)
 - maxUnavailable: 最大で何個のPodを同時にシャットダウンできるか？ 
+maxUnavailableは、切り下げ、maxSurgeは切り上げ。
+
 
 cf. https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
 
