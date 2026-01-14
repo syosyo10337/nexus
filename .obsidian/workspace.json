@@ -193,6 +193,7 @@
   },
   "active": "d9e8e1c46c91a7b9",
   "lastOpenFiles": [
+    "Tech/K8s/Secret.md",
     "Tech/K8s/ConfigMap.md",
     "Tech/Linux/README.md",
     "Tech/K8s/Service.md",
@@ -233,7 +234,6 @@
     "Meta/scripts/merge_imported_folders.py",
     "Meta/scripts/find_duplicates.py",
     "Meta/scripts/README.md",
-    "Resources/WebClippings/ようこそdotfilesの世界へ.md",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_18.14.05.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
