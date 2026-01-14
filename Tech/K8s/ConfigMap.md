@@ -59,3 +59,44 @@ data:
 ```
 
 ConfigMap経由で設定した環境変数は、アプリケーションを再起動しないと反映されません。
+
+## ボリュームを利用して、アプリケーションのファイルとして読み込む
+ConfigMapの書き方は変わらないけど、VolumeMountする方式が異なりそう。
+
+```yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-server
+  labels:
+    app: hello-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-server
+  template:
+    metadata:
+      labels:
+        app: hello-server
+    spec:
+      containers:
+      - name: hello-server
+        image: blux2/hello-server:1.5
+        volumeMounts:
+        - name: hello-server-config
+          mountPath: /etc/config
+      volumes:
+      - name: hello-server-config
+        configMap:
+          name: hello-server-configmap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-server-configmap
+data:
+  myconfig.txt: |-
+    I am hungry.
+```
