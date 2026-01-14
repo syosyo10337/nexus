@@ -6,6 +6,7 @@ tags:
   - deployment
   - pod
 created: 2026-01-13
+updated: 2026-01-15
 status: active
 ---
 
@@ -199,7 +200,11 @@ kubectl rollout history deployment <deployment-name>
 kubectl rollout undo deployment <deployment-name>
 ```
 
-## 参考
+# 再起動を行う
+```bash
+kubectl rollout restart deployment <deployment-name>
+```
 
+## 参考
 - [Kubernetes Documentation - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
