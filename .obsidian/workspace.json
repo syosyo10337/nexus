@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "8b6ac775f3210220",
+        "id": "5a905b867e9da137",
         "type": "tabs",
         "children": [
           {
-            "id": "d234cebf3fce398e",
+            "id": "f93820364ae807e6",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -190,8 +190,10 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "d234cebf3fce398e",
+  "active": "f93820364ae807e6",
   "lastOpenFiles": [
+    "Tech/Design memo/Instagram API連携- イベント自動投稿システム設計書.md",
+    "Tech/Design memo",
     "Tech/Linux/commands/diffコマンド.md",
     "Tech/Kubernetes/Untitled",
     "Tech/Kubernetes/assets/trobleshooting.jpg",
@@ -233,7 +235,6 @@
     "Tech/K8s",
     "Resources/StudyPlans",
     "Meta/Templates",
-    "Meta/scripts/reorganize_import_tech.py",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_18.14.05.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
