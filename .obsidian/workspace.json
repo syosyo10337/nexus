@@ -133,13 +133,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Tech/Linux/commands/diffコマンド.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of diffコマンド"
+              "title": "Outline"
             }
           },
           {
@@ -191,8 +190,9 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "d9e8e1c46c91a7b9",
+  "active": "d234cebf3fce398e",
   "lastOpenFiles": [
+    "Tech/Linux/commands/diffコマンド.md",
     "Tech/Kubernetes/Untitled",
     "Tech/Kubernetes/assets/trobleshooting.jpg",
     "Tech/Kubernetes/assets/k8s-architecture.png",
@@ -221,7 +221,6 @@
     "Tech/K8s/kubectl-debug.md",
     "Tech/TypeScript/tRPC.md",
     "Tech/TypeScript/trpc.md",
-    "Tech/Linux/commands/diffコマンド.md",
     "Tech/K8s/assets/trobleshooting.jpg",
     "Tech/K8s/Pod.md",
     "Tech/K8s/kind",
@@ -235,7 +234,6 @@
     "Resources/StudyPlans",
     "Meta/Templates",
     "Meta/scripts/reorganize_import_tech.py",
-    "Meta/scripts/rename_uuid_files.py",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_18.14.05.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
     "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
