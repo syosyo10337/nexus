@@ -6,7 +6,7 @@ tags:
   - cronjob
   - configuration
 created: 2026-01-15
-status: draft
+status: active
 ---
 
 # 一度だけ実行されるジョブを実行する:Job

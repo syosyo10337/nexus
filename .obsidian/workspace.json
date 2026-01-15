@@ -192,6 +192,7 @@
   },
   "active": "f93820364ae807e6",
   "lastOpenFiles": [
+    "Tech/Kubernetes/health-check.md",
     "Tech/Kubernetes/Job-CronJob.md",
     "Tech/Kubernetes/Job.md",
     "Tech/Design memo/Instagram API連携- イベント自動投稿システム設計書.md",
@@ -223,7 +224,6 @@
     "Tech/K8s/kubectl-edit.md",
     "Tech/Linux/commands/ネットワーク状態確認に関するコマンド.md",
     "Tech/K8s/kubectl-debug.md",
-    "Tech/TypeScript/tRPC.md",
     "Tech/K8s/assets/trobleshooting.jpg",
     "Tech/K8s/kind",
     "Tech/K8s/assets/k8s-architecture.png",
