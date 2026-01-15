@@ -5,7 +5,7 @@ tags:
   - secret
   - configuration
 created: 2026-01-15
-status: draft
+status: active
 ---
 
 # Podの外部から機密情報を読み込む:Secret
@@ -59,3 +59,29 @@ data:
 ```
 
 ## Volumeを利用して、アプリケーションのファイルとして読み込む
+
+```yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-sample
+spec:
+  containers:
+  - name: nginx-container
+    image: nginx:1.25.3
+    volumeMounts:
+    - name: nginx-secret
+      mountPath: /etc/config
+  volumes:
+  - name: nginx-secret
+    secret:
+      secretName: nginx-secret
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: nginx-secret
+data:
+  server.key: ZU05a3UzZWNDcFVMOXpQb0lJdUcycHRaWkM1Q3U0WkNRWFJ5bWxIYWpZdlp5ZmZwTTYK
+```
+podの中で`cat /etc/config/server.key`でキーを読み込むことができます。
