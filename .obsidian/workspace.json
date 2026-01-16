@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "5a905b867e9da137",
+        "id": "964b2ad424a96178",
         "type": "tabs",
         "children": [
           {
-            "id": "f93820364ae807e6",
+            "id": "f505e0dc816ac9b9",
             "type": "leaf",
             "state": {
               "type": "empty",
@@ -114,35 +114,7 @@
             }
           },
           {
-            "id": "2edee39f7645684b",
-            "type": "leaf",
-            "state": {
-              "type": "all-properties",
-              "state": {
-                "sortOrder": "frequency",
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-archive",
-              "title": "All properties"
-            }
-          },
-          {
-            "id": "756fd0f5efe0424a",
-            "type": "leaf",
-            "state": {
-              "type": "outline",
-              "state": {
-                "followCursor": false,
-                "showSearch": false,
-                "searchQuery": ""
-              },
-              "icon": "lucide-list",
-              "title": "Outline"
-            }
-          },
-          {
-            "id": "ce72dac28a8afbd0",
+            "id": "df4dd0e04f9a8dad",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -160,17 +132,35 @@
             }
           },
           {
-            "id": "e168245c97db4430",
+            "id": "d315afa6bf2ad476",
             "type": "leaf",
             "state": {
-              "type": "git-view",
-              "state": {},
-              "icon": "git-pull-request",
-              "title": "Source Control"
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "d35d6210aba7dc2c",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline"
             }
           }
         ],
-        "currentTab": 5
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -190,37 +180,18 @@
       "obsidian-importer:Open Importer": false
     }
   },
-  "active": "f93820364ae807e6",
+  "active": "401529a0e05e9d52",
   "lastOpenFiles": [
-    "Tech/JavaScript/Node/zpagesパターン.md",
-    "Tech/NextJs/Attachments/space-field.jpeg",
-    "Tech/NextJs/Attachments/woodcuts_1.jpg",
-    "Tech/NextJs/Attachments/opengraph-image.png",
-    "Tech/NextJs/Attachments/og-reference.png",
-    "Tech/NextJs/Attachments/og-default.png",
-    "Tech/NextJs/Attachments/og-base-book_yz4z02.jpeg",
-    "Tech/NextJs/Attachments/og-2019.jpg",
-    "Tech/NextJs/Attachments/next-js-svgrepo-com.svg",
-    "Tech/NextJs/Attachments/maxresdefault.jpeg",
-    "Tech/NextJs/Attachments/logging-best-practices.png",
-    "Tech/NextJs/Attachments/favicon.ico",
-    "Tech/NextJs/Standaloneモードでのビルド.md",
-    "Tech/NextJs/SSGとgenerateStaticParams.md",
-    "Tech/NextJs/Next関連の型.md",
-    "Tech/NextJs/NEXT js.md",
-    "Tech/NextJs/Logging戦略について.md",
-    "Tech/NextJs/Linkコンポーネント.md",
-    "Tech/NextJs/Drizzle.md",
-    "Tech/NextJs/Auth jsを使って認証機構を作ってみる.md",
-    "Tech/NextJs/Attachments",
-    "Tech/NextJs",
     "Tech/Kubernetes/health-check.md",
     "Tech/Kubernetes/Job-CronJob.md",
-    "Tech/Kubernetes/Job.md",
+    "Tech/JavaScript/Node/zpagesパターン.md",
     "Tech/Design memo/Instagram API連携- イベント自動投稿システム設計書.md",
     "Tech/Design memo",
-    "Tech/Linux/commands/diffコマンド.md",
+    "Tech/Golang/zpagesパターン.md",
+    "conflict-files-obsidian-git.md",
     "Tech/Kubernetes/Untitled",
+    "Tech/Kubernetes/assets/trobleshooting.jpg",
+    "Tech/Kubernetes/assets/k8s-architecture.png",
     "Tech/Kubernetes/plugin.md",
     "Tech/Kubernetes/manifest.md",
     "Tech/Kubernetes/kubectl.md",
@@ -235,9 +206,27 @@
     "Tech/Kubernetes/Pod.md",
     "Tech/Kubernetes/ConfigMap.md",
     "Tech/Kubernetes",
+    "Tech/K8s/Secret.md",
+    "Tech/K8s/ConfigMap.md",
+    "Tech/Linux/README.md",
+    "Tech/K8s/Service.md",
+    "Tech/K8s/ReplicaSet-Deployment.md",
+    "Tech/K8s/plugin.md",
+    "Tech/K8s/kubectl-edit.md",
+    "Tech/K8s/assets/trobleshooting.jpg",
     "Tech/K8s/kind",
+    "Tech/K8s/assets/k8s-architecture.png",
+    "Tech/K8s/k8s-architecture.png",
+    "Tech/K8s/k8s-architecure.png",
     "Tech/K8s/assets",
+    "Tech/K8s/Screenshot 2026-01-06 at 23.03.43.png",
     "Tech/K8s/README.",
+    "Tech/K8s",
+    "Resources/StudyPlans",
+    "Meta/Templates",
+    "Tech/Web/Attachments/Screenshot_2023-03-05_at_18.14.05.png",
+    "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.47.57.png",
+    "Tech/Web/Attachments/Screenshot_2023-03-05_at_17.46.20.png",
     "Untitled.canvas"
   ]
 }
