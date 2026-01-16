@@ -58,6 +58,15 @@ BestEffort > Burstable > Guaranteedの順でOOMkillされます。
 
 詳しくは公式ドキュメントを参照してください。
 
+## コマンド
+
+QoSクラスを確認するコマンド
+pod describeでも確認できます。
+
+```bash
+k get pod <pod名> -o jsonpath='{.status.qosClass}'
+```
+
 ## 備考
 
 - [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/) - QoSクラスの分類と基準について
