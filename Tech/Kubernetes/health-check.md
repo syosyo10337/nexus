@@ -11,6 +11,7 @@ status: active
 ---
 
 # Health Check
+
 kubernetesでは、ヘルスチェックを行って、ヘルシーではないない時に、自動でServiceやPodを制御する仕組みがあります。
 
 - readiness probe: コンテナが準備できているかどうかをチェックする
@@ -107,6 +108,3 @@ startupProbe:
 
   # このマニフェストだと最大で30sec x 10 times コンテナの起動を待つ設定になる
 ```
-
-
-
