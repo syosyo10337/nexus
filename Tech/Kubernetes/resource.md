@@ -43,7 +43,9 @@ Kiは2^10=1024を意味します。ので一般的なキロとは少し異なる
 1 CPU = CPU時間の絶対的な単位を意味し、物理コアの性能そのものではなく、CPUを使用できる時間の割り当てを表します。
 単位を指定しない場合、1は1CPUと意味します。他にもmをつけられます。1m = 0.001コアなので、通常は整数やミリコアで指定する。
 
-## Resource Request and Limit
+## Quality of Service(QoS) Classes
+
+Nodeのメモリが完全に枯渇してしまうとそのNodeに載っているすべてのコンテナが動作しなくなる。
 
 Resource RequestとResource Limitは、Podのリソース使用量を制御するための機能です。
 Resource Requestは、Podが最低でも確保したいリソースの量を指定することができる機能です。
