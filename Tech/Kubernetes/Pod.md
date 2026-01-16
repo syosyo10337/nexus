@@ -1,8 +1,17 @@
+---
+tags:
+  - kubernetes
+  - k8s
+  - pod
+created: 2026-01-17
+status: active
+---
+
 # Podについて
 
 コンテナを起動するためのいくつかあるkubernetesリソースの中でも、最小構成リソースである。
 コンテナの実行単位であり、実行層らしい。1Pod = 1Node（直接配置）
-Nodeは
+Nodeは物理/仮装マシンであり、Podを実行するホストである。
 
 - e.g. podリソースを作成するマニフェスト
 

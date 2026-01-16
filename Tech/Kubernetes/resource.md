@@ -45,8 +45,20 @@ Kiは2^10=1024を意味します。ので一般的なキロとは少し異なる
 
 ## Quality of Service(QoS) Classes
 
-Nodeのメモリが完全に枯渇してしまうとそのNodeに載っているすべてのコンテナが動作しなくなる。
+Nodeのメモリが完全に枯渇してしまうとそのNodeに載っているすべてのコンテナが動作しなくな流のを防ぐために、OOM Killerという役割のプログラムが存在します。OOM KillerはQoSに応じて、OOMkilするPodの優先順位を決定して、必要に王座いて優先度の低いPodからkillされます。
 
-Resource RequestとResource Limitは、Podのリソース使用量を制御するための機能です。
-Resource Requestは、Podが最低でも確保したいリソースの量を指定することができる機能です。
-Resource Limitは、Podが最大で使用できるリソースの量を指定することができる機能です。
+QoSクラスには、Guaranteed、Burstable、BestEffortの3つがあります。
+BestEffort > Burstable > Guaranteedの順でOOMkillされます。
+
+| QoSクラス | 説明 |
+| ---------- | ------ |
+| Guaranteed | requests/limitsが全てのPodに指定されていること。メモリrequests=limis, CPUrequests=limitsとなる値が設定されていること |
+| Burstable | Podのうち少なくとも一つは、memoryまたはCPUのrequets/limitsが指定されていること |
+| BestEffort | GuranteeedでもBurstableでもないPod |
+
+詳しくは公式ドキュメントを参照してください。
+
+## 備考
+
+- [Pod Quality of Service Classes](https://kubernetes.io/docs/concepts/workloads/pods/pod-qos/) - QoSクラスの分類と基準について
+- [Configure Quality of Service for Pods](https://kubernetes.io/docs/tasks/configure-pod-container/quality-service-pod/) - 各QoSクラスを得るためのPod定義例と具体的な設定方法
