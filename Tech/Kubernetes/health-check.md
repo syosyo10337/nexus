@@ -70,3 +70,20 @@ spec:
       initialDelaySeconds: 5
       periodSeconds: 5
 ```
+
+ReadlinessとLiveness Probeをどちらも設定することは可能ですが、
+一般的には、次のように Readiness Probe が先に実行されることが推奨されます。
+
+```yaml
+readinessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 5
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 5
