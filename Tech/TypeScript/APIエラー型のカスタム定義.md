@@ -8,6 +8,7 @@
 */
 
 export class ApiError extends Error {
+  //NOTE publicキーワードがつくと自動的にdeclareとinitializeが行われる
   constructor(public status: number, message: string, public data?: unknown) {
     super(message);
 
