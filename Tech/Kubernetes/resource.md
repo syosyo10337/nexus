@@ -65,6 +65,10 @@ pod describeでも確認できます。
 
 ```bash
 k get pod <pod名> -o jsonpath='{.status.qosClass}'
+
+# e.g. PodのlastStateを確認するOOMなど
+k get po <pod名> -o=jsonpath='{.status.containerStatuses[0].lastState}'
+
 ```
 
 ## 備考
