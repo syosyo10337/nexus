@@ -77,11 +77,13 @@ flowchart TD
 ## Week 1-2: Kubernetes基礎
 
 ### 目標
+
 - Pod / Service / Deployment / ConfigMap / Secret を説明できる
 - kubectlで基本操作ができる
 - 「なぜk8sが必要か」を言語化できる
 
 ### 教材
+
 | 種別 | 教材名 | 用途 |
 |------|--------|------|
 | 📕 メイン | つくって、壊して、直して学ぶ Kubernetes入門 | ハンズオン学習 |
@@ -99,6 +101,7 @@ flowchart TD
 | Day 11-14 | 「完全ガイド」で気になった箇所を深掘り | 3h |
 
 ### チェックポイント ✅
+
 - [ ] Podとは何か説明できる
 - [ ] Deployment/ReplicaSetの関係を説明できる
 - [ ] Serviceの種類（ClusterIP/NodePort/LoadBalancer）を説明できる
@@ -109,17 +112,20 @@ flowchart TD
 ## Week 3-4: GCP/GKE + ACE学習開始
 
 ### 目標
+
 - GCPの主要サービスを把握（Compute Engine / Cloud Storage / VPC / IAM / GKE）
 - GKEでk8sクラスタを作成・デプロイできる
 - ACE試験範囲の50%を理解
 
 ### 教材
+
 | 種別 | 教材名 | 用途 |
 |------|--------|------|
 | 📕 メイン | 徹底攻略 Google Cloud認定資格 ACE教科書 | GCP学習 + 試験対策 |
 | 🌐 ハンズオン | [Google Cloud Skills Boost](https://www.cloudskillsboost.google/) | GKE実機操作 |
 
 ### AWS → GCP 対応表（復習用）
+
 ```
 AWS EC2        → GCP Compute Engine
 AWS ALB        → GCP Cloud Load Balancing  
@@ -141,6 +147,7 @@ AWS RDS        → GCP Cloud SQL
 | Day 13-14 | ACE教科書 残り + 章末問題 | 3h |
 
 ### チェックポイント ✅
+
 - [ ] GCPコンソールでプロジェクト作成・IAM設定ができる
 - [ ] gcloudコマンドの基本操作ができる
 - [ ] GKEクラスタを作成し、アプリをデプロイできる
@@ -151,11 +158,13 @@ AWS RDS        → GCP Cloud SQL
 ## Week 5: Terraform + ACE問題集
 
 ### 目標
+
 - Terraformでinit/plan/apply/destroyができる
 - GCPリソース（VPC/GCE/GKE）をコードで管理できる
 - ACE模擬試験で70%以上取れる
 
 ### 教材
+
 | 種別 | 教材名 | 用途 |
 |------|--------|------|
 | 📕 メイン | 入門Terraform（インプレス, 2024/11） | IaC学習 |
@@ -172,6 +181,7 @@ AWS RDS        → GCP Cloud SQL
 | Day 6-7 | **ACE Udemy模擬試験** 1回目 + 復習 | 4h |
 
 ### Terraform基本コマンド
+
 ```bash
 terraform init      # 初期化
 terraform plan      # 実行計画確認
@@ -181,6 +191,7 @@ terraform fmt       # コード整形
 ```
 
 ### チェックポイント ✅
+
 - [ ] HCLの基本構文（resource/variable/output）が書ける
 - [ ] terraform init/plan/apply/destroy の流れを説明できる
 - [ ] GCPのVPC/GCEをTerraformで作成できる
@@ -191,6 +202,7 @@ terraform fmt       # コード整形
 ## Week 6: ACE受験週 🎯
 
 ### 目標
+
 - **ACE合格**
 
 ### 日別プラン
@@ -206,6 +218,7 @@ terraform fmt       # コード整形
 | Day 7 | 休息 or 振り返り | - |
 
 ### 試験情報
+
 | 項目 | 内容 |
 |------|------|
 | 受験料 | $125（約19,000円） |
@@ -215,6 +228,7 @@ terraform fmt       # コード整形
 | 受験方法 | オンライン or テストセンター |
 
 ### 直前チェックリスト ✅
+
 - [ ] gcloud / gsutil / kubectl コマンドの主要オプション
 - [ ] IAMロールの種類と適用範囲
 - [ ] VPCネットワーク設計のベストプラクティス
@@ -226,11 +240,13 @@ terraform fmt       # コード整形
 ## Week 7-8: Scala
 
 ### 目標
+
 - Scalaの基本構文を理解
 - Option / Either / Future の概念を掴む
 - 簡単なコードが読める状態
 
 ### 教材
+
 | 種別 | 教材名 | 用途 |
 |------|--------|------|
 | 🌐 メイン | [Dwango Scala研修テキスト](https://scala-text.github.io/scala_text/) | 無料・実務的 |
@@ -247,6 +263,7 @@ terraform fmt       # コード整形
 | Day 13-14 | sbt操作練習 + サンプルコード写経 | 3h |
 
 ### Scala基本構文メモ
+
 ```scala
 // 変数
 val immutable = "変更不可"
@@ -273,6 +290,7 @@ for {
 ```
 
 ### チェックポイント ✅
+
 - [ ] val/var の違いを説明できる
 - [ ] Option/Some/None の使い方がわかる
 - [ ] Either[Left, Right] の用途がわかる
@@ -284,6 +302,7 @@ for {
 ## 並行学習（隙間時間）
 
 ### ネットワーク基礎
+
 | 教材 | 読み方 | 期間 |
 |------|--------|------|
 | 📕 ネットワークはなぜつながるのか 第2版 | 通勤・就寝前に15-30分 | Week 1-6 |
@@ -291,11 +310,13 @@ for {
 **学ぶこと**: ブラウザにURLを入力 → Webページ表示までの全工程（DNS/HTTP/TCP/IP）
 
 ### セキュリティ基礎
+
 | 教材 | 読み方 | 期間 |
 |------|--------|------|
 | 📕 体系的に学ぶ安全なWebアプリケーションの作り方 第2版（徳丸本） | 週末に1-2時間 | Week 3-6 |
 
 **優先して読む章**:
+
 - 第4章: Webアプリケーションの機能別に見るセキュリティバグ
   - 4.3 XSS（クロスサイトスクリプティング）
   - 4.4 SQLインジェクション
@@ -314,6 +335,7 @@ pie title 1週間の時間配分（約15-20時間）
 ```
 
 ### 平日
+
 | 時間帯 | 内容 | 時間 |
 |--------|------|------|
 | 朝 | ネットワーク本 or 徳丸本 | 30分 |
@@ -321,6 +343,7 @@ pie title 1週間の時間配分（約15-20時間）
 | 夜 | メイン学習 | 1.5-2時間 |
 
 ### 週末
+
 | 時間帯 | 内容 | 時間 |
 |--------|------|------|
 | 午前〜午後 | ハンズオン・集中学習 | 3-4時間/日 |
@@ -348,18 +371,22 @@ timeline
 ## 参考リンク
 
 ### Kubernetes
+
 - [Kubernetes公式ドキュメント](https://kubernetes.io/ja/docs/home/)
 - [Killercoda（無料ハンズオン）](https://killercoda.com)
 
 ### GCP
+
 - [Google Cloud Skills Boost](https://www.cloudskillsboost.google/)
 - [ACE試験ガイド](https://cloud.google.com/learn/certification/cloud-engineer)
 
 ### Terraform
+
 - [Terraform公式ドキュメント](https://developer.hashicorp.com/terraform/docs)
 - [Terraform Registry（GCPプロバイダ）](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
 
 ### Scala
+
 - [Dwango Scala研修テキスト](https://scala-text.github.io/scala_text/)
 - [Scala公式ドキュメント](https://docs.scala-lang.org/ja/)
 
