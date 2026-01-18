@@ -115,4 +115,32 @@ spec:
 ```
 
 ## Pod Topology Spread Constraints
-Pod
+
+Podを分散されるための設定です。
+
+> そもそもTopologyとは、物理的な配置を意味します。
+> ネットワークトポロジーの略称らしい
+
+e.g. `topologyKey: kubernetes.io/hostname` で、同じデータセンター(zone)にPodを配置しないようにします。
+あえて、`preferredDuringSchedulingIgnoredDuringExecution`と比較するのであれば、こちらだとPodの数がNodeを超えた場合には適切に分散されなくなります。(一部Nodeに偏る可能性がある。)
+
+```yaml
+# node間でのPodの数の差を1つまでにします。
+kind: Pod
+apiVersion: v1
+metadata:
+  name: mypod
+  labels:
+    app: nginx
+spec:
+  topologySpreadConstraints:
+  - maxSkew: 
+    topologyKey: zone
+    whenUnsatisfiable: DoNotSchedule
+    labelSelector:
+      matchLabels:
+        app: nginx
+  containers:
+  - name: nginx
+    image: nginx:1.25.3
+```
