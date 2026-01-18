@@ -74,5 +74,45 @@ spec:
 
 `preferredDuringSchedulingIgnoredDuringExecution`を使用する場合には、weightの指定が必須です。
 
+### Pod Affinity/Pod Anti-Affinity
 
-### Pod Affinity/
+Pod同士が近くなるように、また近くならないようにスケジュールを制御するフィールドです。
+`spec.affiniy`配下に記述しますが、Pod間のAffinityという理解がよりわかりやすいと思います。
+
+Node Affinityでは、Nodeのラベルを指定しましたが、Pod affiniyでは、すでにNodeにスケジュールされているPodのラベルに基づいてスケジュールされます。
+
+よくあるユースケースとしては、同じアプリケーションを動かしているPodを同一Node上に配置しない。 (Node障害への耐性を高めるため)
+**POd Topology Spread Constraitns**で代替できることもあります
+
+- requiredDuringSchedulingIgnoredDuringExecution: 対応するPodが見つからない場合はスケジュールできません。
+- preferredDuringSchedulingIgnoredDuringExecution: 対応するPodが見つからない場合は適当なPodを使ってスケジュールします
+
+```yaml
+
+# app:nginxのラベルがついているPodが割り当てられているNodeには同一ラベルを持つPod はなるべく配置しないようにします。
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-anti-affinity
+  labels:
+    app: nginx
+spec:
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 100
+        podAffinityTerm:
+          labelSelector:
+            matchExpressions:
+            - key: app
+              operator: In
+              values:
+              - nginx
+          topologyKey: kubernetes.io/hostname #こちらの記述で、同じデータセンター(zone)にPodを配置しないようにします。
+  containers:
+  - name: nginx
+    image: nginx:1.25.3
+```
+
+## Pod Topology Spread Constraints
+Pod
