@@ -7,15 +7,6 @@ tags:
 created: 2026-01-03
 status: active
 ---
-
-![](NextJS/Attachments/woodcuts_1.jpg)
-
-![](NextJS/Attachments/next-js-svgrepo-com.svg)
-
-# NEXT.js
-
----
-
 ## TypeScriptを使用したプロジェクトの作成
 
 ```Bash

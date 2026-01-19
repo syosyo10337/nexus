@@ -51,7 +51,7 @@ Node障害にも強い設計ができるようになります。
 - `preferredDuringSchedulingIgnoredDuringExecution`: 対応するNodeが見つからない場合は適当なNodeを使ってスケジュールします
 
 ```yaml
-# Nodeにkey: disktype, value: ssdのラベルが付与されているNodeにスケジュールされます。ない場合は、Podをスケジュールします。
+# Nodeにkey: disktype, value: ssdのラベルが付与されているNodeにスケジュールされます。ない場合でも、適当なNodeにPodをスケジュールします。
 apiVersion: v1
 kind: Pod
 metadata:
