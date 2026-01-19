@@ -9,22 +9,20 @@ status: active
 
 # useRouter in Page Router
 
-router インスタンスを取得する、`withRouter`で取得することも可能らしい。
-
-## `router`object
+`useRouter` は React Hook のため、関数コンポーネント内でのみ使用可能。クラスコンポーネントでは `withRouter` HOC を使用する必要がある。
 
 ## よく使うプロパティ
 
-- `pathname`: パス名だけを取得する `pages`
-- `query`: クエリパラメータを取得する
-- `asPath`: ブラウザに表示されているサーチパラメータを含めた値を取得します。`basePath`/`locale`は含まれません。
+- `pathname`: `/pages` 以下のルートファイルに対応するパス名を取得。`basePath`、`locale`、trailing slash は含まれない。
+- `query`: クエリパラメータおよび動的ルートパラメータをオブジェクトで取得。プリレンダリング中は空のオブジェクト `{}`。
+- `asPath`: ブラウザに表示されている完全なパス（クエリパラメータ含む）を取得。`basePath` と `locale` は含まれない。
 
-## よくつかうメソッド
+## よく使うメソッド
 
 - `push`: Link では不十分なときに使う。useState を適切にリセットしたいときなど特に。
   - cf. [https://nextjs.org/docs/pages/api-reference/functions/use-router#resetting-state-after-navigation](https://nextjs.org/docs/pages/api-reference/functions/use-router#resetting-state-after-navigation)
-- `replace`: 履歴を差し替える。
-- `reload`: browser の更新ボタンクリックと同等の処理を行う。
+- `replace`: 履歴スタックを更新せずに現在の URL を置き換える。
+- `reload`: ブラウザの更新ボタンクリックと同等の処理を行う。
 
 ## 参考
 
