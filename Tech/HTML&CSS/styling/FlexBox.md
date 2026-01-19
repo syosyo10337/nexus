@@ -5,54 +5,25 @@ tags:
   - css
   - layout
 created: 2026-01-04
+updated: 2026-01-19
 status: active
 ---
 
 # FlexBox
 
 余白の配分やコンテンツの並び方を指定することで、ページ構成要素を配置するためのレイアウト方法。
-
 縦方向や横方向、1 つの軸に沿ってレイアウトすることも、複数の行を介してレイアウトすることもできる
 
-<目次>
+## flex container
 
-[flex container](#afde1489-d487-4ddb-b4a5-9359253b0af2)
-
-[`flex-direction:`](#c30906be-cf43-44f0-8fea-7c7dda083510)
-
-[`flex-wrap:`](#bea8c408-129c-46b9-9e79-ba50196beb93)
-
-[`justify-content:`](#d82873f9-d930-4149-b3e2-4af4d51ac061)
-
-[`align-items:`](#acf60010-f14a-429b-8083-3ccc6ff7cfee)
-
-[?`align-content:`](#587899a3-f683-4310-9128-37a3a93ebd22)
-
-[`flex-flow:`](#04895cc9-d5f2-4661-804c-74eb385bceeb)
-
-[flex Item](#7cb18bd0-10a3-4b20-af02-2db3bd735291)
-
-[`flex-grow:`](#7d297dd7-e029-47ef-8257-335acc9774e3)
-
-[`order:`](#badf962c-f0a6-46a6-9c4c-abef0f172e25)
-
-[`align-self:`](#fac1a4f2-3935-4ea0-823b-ce0a516d4e2b)
-
-# flex container
-
-flexboxを使うためには、配置したい要素の親要素に
-
-`display: flex;`を付与すること。
+flexboxを使うためには、配置したい要素の親要素に`display: flex;`を付与すること。
 
 この時、親要素は、**flex container**となり、子要素は**flex item**となる。
-
 また、この構造はネストすることができる。つまり、flex itemをflex containerとして、その子要素をまたflex itemとして扱うことができるということ。
 
 このコンテナの中では、flex itemは、設定された主軸(main-axis)に沿って配置され、デフォルトでは水平方向のx→の主軸がある。
 
 この主軸に対して、垂直に交わる軸を交差軸(cross-axis)と呼ぶ。
-
-☝
 
 flex container内ではmarginの相殺が起きないようです。
 
@@ -70,7 +41,7 @@ flex container内ではmarginの相殺が起きないようです。
 
 - column-reverse
 
-[![](HTML&CSS/styling/Attachments/Screen_Shot_2023-02-03_at_14.33.02.png)](FlexBox/Screen_Shot_2023-02-03_at_14.33.02.png)
+![flex-direction](HTML&CSS/styling/Attachments/Screen_Shot_2023-02-03_at_14.33.02.png)
 
 ### `flex-wrap:`
 
@@ -111,7 +82,6 @@ wrap-reverseを指定した場合には、wrap と同じく要素を複数行表
 [![](HTML&CSS/styling/Attachments/Screen_Shot_2023-02-03_at_14.45.39.png)](FlexBox/Screen_Shot_2023-02-03_at_14.45.39.png)
 
 ☝
-
 flex-itemが元々inline要素の時は、配置する部分のwidthを指定する必要があるね。
 
 ### `align-items:`
@@ -130,10 +100,9 @@ flex-itemが元々inline要素の時は、配置する部分のwidthを指定す
 
 - stretch
 
-[![](HTML&CSS/styling/Attachments/Screen_Shot_2023-02-03_at_14.47.52.png)](FlexBox/Screen_Shot_2023-02-03_at_14.47.52.png)
+![align-items](HTML&CSS/styling/Attachments/Screen_Shot_2023-02-03_at_14.47.52.png)
 
 ☝
-
 `justify-content: center; align-items: center`で中央揃えをすることができる。
 
 ==// alignとついたら、交差軸に対する操作==
@@ -148,7 +117,7 @@ flex-itemが元々inline要素の時は、配置する部分のwidthを指定す
 
 flex-direction flex-wrapの順序で一括指定できる。
 
-# flex Item
+## flex Item
 
 ### `flex-grow:`
 
