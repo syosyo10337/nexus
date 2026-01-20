@@ -7,10 +7,10 @@
 
  要件
 
- - 投稿形式: シングル画像投稿（サムネイル + キャプション）
- - 投稿タイミング: 即時（Draft → Published 時）
- - エラー処理: 非ブロッキング（Instagram失敗でもイベント公開は成功）
- - Archive/Delete: 手動対応が必要とユーザーに通知
+- 投稿形式: シングル画像投稿（サムネイル + キャプション）
+- 投稿タイミング: 即時（Draft → Published 時）
+- エラー処理: 非ブロッキング（Instagram失敗でもイベント公開は成功）
+- Archive/Delete: 手動対応が必要とユーザーに通知
 
  ---
  アーキテクチャ
@@ -66,6 +66,7 @@
      └── eventInstagramService.ts      # イベント→Instagram変換
 
  ---
+
  1. データベーススキーマ拡張
 
  1.1 Instagram投稿ステータスEnum追加
@@ -99,7 +100,8 @@
  });
 
  ---
- 2. ドメイン層
+
+ 1. ドメイン層
 
  2.1 InstagramPostStatus Entity
 
@@ -113,7 +115,7 @@
  } as const satisfies Record<string, string>;
 
  export type InstagramPostStatus =
-   (typeof InstagramPostStatus)[keyof typeof InstagramPostStatus];
+   [typeof InstagramPostStatus](keyof typeof InstagramPostStatus);
 
  export interface InstagramPostResult {
    success: boolean;
@@ -137,12 +139,14 @@
  }
 
  ---
- 3. インフラストラクチャ層 - Instagram Service
+
+ 1. インフラストラクチャ層 - Instagram Service
 
  3.1 InstagramService
 
  // src/infrastructure/social/instagram/instagramService.ts
 
+```typeScript
  export class InstagramService {
    private instagramAccountId: string;
 
@@ -151,7 +155,7 @@
    }
 
    /**
-    * 画像をInstagramに投稿（2段階プロセス）
+    *画像をInstagramに投稿（2段階プロセス）
     */
    async postImage(payload: {
      imageUrl: string;
@@ -163,8 +167,9 @@
      // 4. 結果返却
    }
  }
+```
 
- 3.2 Instagram Graph API制約
+3.2 Instagram Graph API制約
  ┌────────────────────┬──────────────────────┐
  │        制約        │          値          │
  ├────────────────────┼──────────────────────┤
@@ -179,7 +184,8 @@
  │ トークン有効期限   │ 60日（長期トークン） │
  └────────────────────┴──────────────────────┘
  ---
- 4. サービス層
+
+ 1. サービス層
 
  4.1 EventInstagramService
 
@@ -187,7 +193,7 @@
 
  export class EventInstagramService {
    /**
-    * イベントをInstagramに投稿
+    *イベントをInstagramに投稿
     */
    async postEventToInstagram(event: EventEntity):
  Promise<InstagramPostData> {
@@ -238,28 +244,32 @@
  }
 
  ---
- 5. 環境変数
 
- # .env.local に追加（dotenvxで暗号化）
+ 1. 環境変数
 
- # Instagram Graph API
+# .env.local に追加（dotenvxで暗号化）
+
+# Instagram Graph API
+
  INSTAGRAM_ACCESS_TOKEN="長期アクセストークン"
  INSTAGRAM_ACCOUNT_ID="Instagramビジネスアカウント ID"
 
- # オプション: トークンリフレッシュ用
+# オプション: トークンリフレッシュ用
+
  FACEBOOK_APP_ID="FacebookアプリID"
  FACEBOOK_APP_SECRET="Facebookアプリシークレット"
 
  認証情報の取得手順
 
- 6. Meta Developer Console でFacebookアプリを作成
- 7. Instagram Graph API 製品を追加
- 8. instagram_content_publish スコープでユーザートークン生成
- 9. 短期トークン → 長期トークン（60日）に交換
- 10. Instagram Business Account IDを取得
+ 1. Meta Developer Console でFacebookアプリを作成
+ 2. Instagram Graph API 製品を追加
+ 3. instagram_content_publish スコープでユーザートークン生成
+ 4. 短期トークン → 長期トークン（60日）に交換
+ 5. Instagram Business Account IDを取得
 
  ---
- 11. 管理画面UI更新
+
+ 1. 管理画面UI更新
 
  6.1 Instagram投稿ステータスバッジ
 
@@ -296,7 +306,8 @@
  └─────────────────────────────────────────┘
 
  ---
- 12. エラーハンドリング
+
+ 1. エラーハンドリング
 
  7.1 エラーコード対応表
  エラー: Rate Limit (code: 4, 17)
@@ -312,80 +323,86 @@
  対応: スキップ、エラーメッセージ保存
  7.2 トークン期限切れ対応
 
- 13. トークン有効期限を監視（残り7日で警告）
- 14. 自動リフレッシュ試行
- 15. 失敗時は管理者に手動更新を通知
+ 1. トークン有効期限を監視（残り7日で警告）
+ 2. 自動リフレッシュ試行
+ 3. 失敗時は管理者に手動更新を通知
 
  ---
- 16. 修正対象ファイル一覧
+
+ 1. 修正対象ファイル一覧
 
  新規作成
 
- - src/domain/entities/instagram/index.ts
- - src/infrastructure/social/instagram/index.ts
- - src/infrastructure/social/instagram/instagramService.ts
- - src/infrastructure/social/instagram/tokenManager.ts
- - src/infrastructure/social/instagram/types.ts
- - src/services/eventInstagramService.ts
- - src/components/admin/InstagramStatusBadge.tsx
+- src/domain/entities/instagram/index.ts
+- src/infrastructure/social/instagram/index.ts
+- src/infrastructure/social/instagram/instagramService.ts
+- src/infrastructure/social/instagram/tokenManager.ts
+- src/infrastructure/social/instagram/types.ts
+- src/services/eventInstagramService.ts
+- src/components/admin/InstagramStatusBadge.tsx
 
  修正
 
- - src/infrastructure/db/schema.ts - Instagramフィールド追加
- - src/domain/entities/event/index.ts - EventEntity拡張
- - src/domain/entities/index.ts - エクスポート追加
- - src/services/eventService.ts - Instagram投稿トリガー追加
- - src/infrastructure/db/repositories/drizzleEventRepository.ts -
+- src/infrastructure/db/schema.ts - Instagramフィールド追加
+- src/domain/entities/event/index.ts - EventEntity拡張
+- src/domain/entities/index.ts - エクスポート追加
+- src/services/eventService.ts - Instagram投稿トリガー追加
+- src/infrastructure/db/repositories/drizzleEventRepository.ts -
  新フィールド対応
- - src/infrastructure/trpc/routers/events.ts -
+- src/infrastructure/trpc/routers/events.ts -
  再試行エンドポイント追加
- - src/app/admin/(authenticated)/events/[id]/_components/EventDetailCa
+- src/app/admin/(authenticated)/events/[id]/_components/EventDetailCa
  rd/index.tsx - UI更新
 
  ---
- 9. 実装順序
+
+ 1. 実装順序
 
  Phase 1: データベース
 
- 10. schema.ts にEnum・フィールド追加
- 11. マイグレーション生成・適用
- 12. Repository更新
+ 1. schema.ts にEnum・フィールド追加
+ 2. マイグレーション生成・適用
+ 3. Repository更新
 
  Phase 2: ドメイン層
 
- 13. InstagramPostStatus Entity作成
- 14. EventEntity 拡張
+ 1. InstagramPostStatus Entity作成
+ 2. EventEntity 拡張
 
  Phase 3: インフラ層
 
- 15. InstagramService 実装
- 16. トークン管理実装
- 17. 環境変数設定
+ 1. InstagramService 実装
+ 2. トークン管理実装
+ 3. 環境変数設定
 
  Phase 4: サービス層
 
- 18. EventInstagramService 実装
- 19. EventService 修正
+ 1. EventInstagramService 実装
+ 2. EventService 修正
 
  Phase 5: API・UI
 
- 20. tRPC再試行エンドポイント
- 21. 管理画面UI更新
- 22. 警告表示実装
+ 1. tRPC再試行エンドポイント
+ 2. 管理画面UI更新
+ 3. 警告表示実装
 
  ---
- 23. 検証方法
+
+ 1. 検証方法
 
  10.1 単体テスト（手動）
 
- 24. Instagram API接続テスト
- # トークン検証
- curl "https://graph.facebook.com/v21.0/me?access_token={TOKEN}"
+ 1. Instagram API接続テスト
+
+# トークン検証
+
+ curl "<https://graph.facebook.com/v21.0/me?access_token={TOKEN}>"
  25. テスト投稿
-   - テスト用イベントを作成（Draft）
-   - サムネイルをアップロード
-   - Published に変更
-   - Instagramアカウントで投稿確認
+
+- テスト用イベントを作成（Draft）
+- サムネイルをアップロード
+- Published に変更
+- Instagramアカウントで投稿確認
 
  10.2 エラーケーステスト
 
@@ -395,17 +412,17 @@
 
  10.3 E2Eフロー
 
- 4. 管理画面でイベント作成
- 5. サムネイル画像アップロード
- 6. ステータスを「公開」に変更
- 7. イベント詳細画面でInstagramステータス確認
- 8. Instagramアプリで投稿確認
- 9. イベントをアーカイブ → 警告メッセージ表示確認
+ 1. 管理画面でイベント作成
+ 2. サムネイル画像アップロード
+ 3. ステータスを「公開」に変更
+ 4. イベント詳細画面でInstagramステータス確認
+ 5. Instagramアプリで投稿確認
+ 6. イベントをアーカイブ → 警告メッセージ表示確認
 
  ---
  注意事項
 
- - Instagram Graph APIは Instagram Business/Creator アカウント が必須
- - 画像URLは 公開アクセス可能 である必要あり（Cloudinary URLはOK）
- - 投稿の 削除API は存在しないため、Archive/Deleteは手動対応
- - レート制限（25件/24時間）に注意
+- Instagram Graph APIは Instagram Business/Creator アカウント が必須
+- 画像URLは 公開アクセス可能 である必要あり（Cloudinary URLはOK）
+- 投稿の 削除API は存在しないため、Archive/Deleteは手動対応
+- レート制限（25件/24時間）に注意
