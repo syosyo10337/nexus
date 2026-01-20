@@ -1,9 +1,9 @@
 ---
 tags:
-  - computer-science
   - unicode
   - text-processing
   - normalization
+  - cs
 created: 2026-01-27
 status: active
 ---
@@ -243,34 +243,6 @@ const query = "#削除#";
 console.log(searchText(text, query)); // true
 ```
 
-### Python
-
-```Python
-import unicodedata
-
-# 基本的な使用
-text = "＃削除＃"
-normalized = unicodedata.normalize("NFKC", text)
-print(normalized)  # "#削除#"
-
-# 比較の例
-def compare_strings(str1, str2):
-    return unicodedata.normalize("NFKC", str1) == unicodedata.normalize("NFKC", str2)
-
-print(compare_strings("ＡＢＣ", "ABC"))  # True
-print(compare_strings("ｶﾀｶﾅ", "カタカナ"))  # True
-
-# 検索の例
-def search_text(text, query):
-    normalized_text = unicodedata.normalize("NFKC", text)
-    normalized_query = unicodedata.normalize("NFKC", query)
-    return normalized_query in normalized_text
-
-text = "これは＃削除＃です"
-query = "#削除#"
-print(search_text(text, query))  # True
-```
-
 ### Ruby
 
 ```Ruby
@@ -299,28 +271,6 @@ end
 text = "これは＃削除＃です"
 query = "#削除#"
 puts search_text(text, query)  # true
-```
-
-### Java
-
-```Java
-import java.text.Normalizer;
-
-// 基本的な使用
-String text = "＃削除＃";
-String normalized = Normalizer.normalize(text, Normalizer.Form.NFKC);
-System.out.println(normalized); // "#削除#"
-
-// 比較の例
-public static boolean compareStrings(String str1, String str2) {
-    String normalized1 = Normalizer.normalize(str1, Normalizer.Form.NFKC);
-    String normalized2 = Normalizer.normalize(str2, Normalizer.Form.NFKC);
-    return normalized1.equals(normalized2);
-}
-
-// 使用例
-System.out.println(compareStrings("ＡＢＣ", "ABC")); // true
-System.out.println(compareStrings("ｶﾀｶﾅ", "カタカナ")); // true
 ```
 
 ## まとめ
