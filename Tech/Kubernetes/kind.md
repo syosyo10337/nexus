@@ -4,26 +4,32 @@
 Docker in Dockerのアーキテクチャらしいので最悪dockerコマンドで削除できる
 
 ## とりあえずクラスタを構築してみる
+
 ```bash
 kind create cluster --image=kindest/node:v1.35
 ```
 
 ## とりあえずクラスタを削除してみる
+
 ```bash
 kind delete cluster
 ```
 
 ## kindでの存在確認
+
 ```bash
 kind get clusters
 ```
+
 作成されるクラスタのイメージ
-```
+
+```bash
 kind create cluster --name my-cluster
 ```
 
 この 1 コマンドで：
-```
+
+```text
 【Docker 上で動作】
 ┌─────────────────────────────────────────────────────┐
 │                 Docker コンテナ = ノード             │
@@ -42,7 +48,8 @@ kind create cluster --name my-cluster
 ```
 
 ### 本番クラスタ（複数ノード）の場合
-```
+
+```text
 ┌─────────────────────────────────────────┐
 │   Control Plane ノード（マスター）      │
 │   - API Server                          │
