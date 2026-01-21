@@ -85,6 +85,14 @@ spec:
 
 ```
 
+CPUの使用率に応じて、podの数を増やします。ただスケールには時間がかかるので急なスパイクには対応できません。
+
+## Vertical Pod Autoscaler(VPA)
+
+Vertical Pod Autoscaler(VPA)は、垂直スケーリングを行うためのK8sのコントローラーです。
+自動で、Resource RequestとResource Limitの値を変更できます。
+ただし、HPAとの併用はできないため、HPAが優先されて利用されることが多い。
+
 ## 参考
 
 - [Tech/CS/Vertical and Horizontal Scaling.md](/Tech/CS/Vertical%20and%20Horizontal%20Scaling.md)
