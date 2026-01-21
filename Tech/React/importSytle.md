@@ -23,8 +23,8 @@ import { useState } from "react";
 ```
 
 のように、Named Import を使用するように推奨している。
-NameSpaceImportをしてもTree shakingによってパフォーマンスへの影響はほとんどない
-。
+NameSpaceImport をしても Tree shaking によってパフォーマンスへの影響はほとんどない。
+また、shadcn/ui や Radix UI などのライブラリでは、NameSpace Import を使用している。
 
 ## 参考
 
