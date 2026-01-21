@@ -12,6 +12,7 @@ status: active
 `useRouter` は React Hook のため、関数コンポーネント内でのみ使用可能。クラスコンポーネントでは `withRouter` HOC を使用する必要がある。
 
 基本的には Router オブジェクトを直接使用することなく、useRouter 経由で取得すること。
+cf. [https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating#injecting-the-router](https://nextjs.org/docs/pages/building-your-application/routing/linking-and-navigating#injecting-the-router)
 
 ## よく使うプロパティ
 
