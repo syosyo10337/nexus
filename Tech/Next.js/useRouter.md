@@ -11,6 +11,8 @@ status: active
 
 `useRouter` は React Hook のため、関数コンポーネント内でのみ使用可能。クラスコンポーネントでは `withRouter` HOC を使用する必要がある。
 
+基本的には Router オブジェクトを直接使用することなく、useRouter 経由で取得すること。
+
 ## よく使うプロパティ
 
 - `pathname`: `/pages` 以下のルートファイルに対応するパス名を取得。`basePath`、`locale`、trailing slash は含まれない。
