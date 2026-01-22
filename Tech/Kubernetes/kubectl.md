@@ -40,6 +40,12 @@ kubectl get nodes
 
 ただ毎回打つのも面倒なのでkubectxをお勧めする。
 
+- nodeのIPを取得する
+
+```bash
+k get node -o jsonpath='{.items[*].status.addresses[?(@.type=="InternalIP")].address}'
+```
+
 - マニフェストをクラスタに適用する
 
 ```bash
