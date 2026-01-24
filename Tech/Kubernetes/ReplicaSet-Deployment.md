@@ -59,7 +59,7 @@ Deploymentは、ReplicaSetを複数紐づけるPod冗長化のさらに上位概
 
 Deploymentは、ReplicaSetを管理するためのリソースで、アプリケーションの更新戦略や履歴管理を提供します。
 
-### 例
+### deploymentの例
 
 ```yaml
 apiVersion: apps/v1
@@ -85,7 +85,7 @@ spec:
         - containerPort: 80
 ```
 
-### コマンド
+### deploymentのコマンド
 
 ```bash
 kubectl get deployment
@@ -186,8 +186,7 @@ spec:
 
 **注意**: `maxUnavailable`は切り下げ、`maxSurge`は切り上げで計算されます。
 
-
-### コマンド
+### deploy関連のkubectlコマンド
 
 ```bash
 # Deploymentの更新状況を確認
@@ -199,12 +198,13 @@ kubectl rollout history deployment <deployment-name>
 # 前のバージョンにロールバック
 kubectl rollout undo deployment <deployment-name>
 ```
+  
+## 再起動を行う
 
-# 再起動を行う
 ```bash
 kubectl rollout restart deployment <deployment-name>
 ```
 
 ## 参考
-- [Kubernetes Documentation - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
 
+- [Kubernetes Documentation - Deployments](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/)
