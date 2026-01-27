@@ -11,6 +11,7 @@ status: active
 # kubectl
 
 k8sを操作するコマンドツール
+もう少し具体的にいうと、kube-apiserverと通信するためのCLIツール
 
 ## kubectl configについて
 

@@ -30,7 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: my-service
-spce:
+spce:- **kube-proxy**: ネットワーク通信のルーティングを管理する。OSのネットワーク機能（iptables等）を利用して、Serviceの仮想IPアドレスへの通信を、適切なPodのIPアドレスへ転送・負荷分散する。
   type: NodePort
   selector:
     app.kubernetes.io/name: myapp
@@ -42,9 +42,11 @@ spce:
 
 ## kubernetes のアーキテクチャ
 
-大きく分けると Control Plane Worker Node がある。
+大きく分けると Control Plane と Worker Node がある。
+詳細は [[architecture|アーキテクチャ詳細]] を参照。
+
 重要な要素として、"Control Plane は Worker Node を直接指示しない”というものがある。
-Worker Node が Controle Plane に問い合わせる方式を取ることで、Controle Plane が壊れても、即座に WorkerNode 上に起動するコンテナが破壊されるわけではない。
+Worker Node が Control Plane に問い合わせる方式を取ることで、Control Plane が壊れても、即座に Worker Node 上に起動するコンテナが破壊されるわけではない。
 
 ![k8s-architecture](./assets/k8s-architecture.png)
 

@@ -9,11 +9,13 @@ status: active
 ---
 
 # Podの外部から機密情報を読み込む:Secret
+
 Secretは、機密情報（パスワード、トークン、キーなど）を安全に保存するためのKubernetesリソースです。
 Secretを利用することで、機密情報をコンテナ内に直接保存することなく、Kubernetesクラスタ内で安全に管理できます。
 Base64でエンコードして登録する必要があります。
 
 > tips: how to encode to Base64
+
 ```bash
 echo -n "your_secret" | base64
 ```
@@ -84,4 +86,5 @@ metadata:
 data:
   server.key: ZU05a3UzZWNDcFVMOXpQb0lJdUcycHRaWkM1Q3U0WkNRWFJ5bWxIYWpZdlp5ZmZwTTYK
 ```
+
 podの中で`cat /etc/config/server.key`でキーを読み込むことができます。
