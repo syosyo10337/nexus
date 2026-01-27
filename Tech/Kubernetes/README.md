@@ -66,3 +66,15 @@ Worker Node が Control Plane に問い合わせる方式を取ることで、Co
 ## Pod という概念
 
 コンテナーの集合
+
+## デプロイ戦略 (CI/CD)
+
+Kubernetes におけるデプロイのアプローチについては、以下のドキュメントを参照してください。
+
+- [[ciops-gitops|CIOps と GitOps の比較]]
+
+## マニフェスト管理 (Helm / Kustomize)
+
+環境ごとの差異や再利用性を管理するためのツールについては、以下のドキュメントを参照してください。
+
+- [[manifest-management|マニフェスト管理ツール (Helm vs Kustomize)]]
