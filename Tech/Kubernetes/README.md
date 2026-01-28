@@ -78,3 +78,9 @@ Kubernetes におけるデプロイのアプローチについては、以下の
 環境ごとの差異や再利用性を管理するためのツールについては、以下のドキュメントを参照してください。
 
 - [[manifest-management|マニフェスト管理ツール (Helm vs Kustomize)]]
+
+## オブザーバビリティ
+
+システムの監視と信頼性向上のためのシグナルについては、以下のドキュメントを参照してください。
+
+- [[observability|オブザーバビリティ (Logs, Metrics, Traces, Profiles, Dumps)]]
