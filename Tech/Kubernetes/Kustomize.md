@@ -8,3 +8,6 @@ status: active
 
 base/overlaysのディレクトリ構成になる。
 buildする際には、kustomization.yamlを参照される。
+
+- resources: ベースになるディレクトリを指定する
+- patches: overlaysするものをここに当てる。
