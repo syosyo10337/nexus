@@ -11,3 +11,9 @@ buildする際には、kustomization.yamlを参照される。
 
 - resources: ベースになるディレクトリを指定する
 - patches: overlaysするものをここに当てる。
+
+実際マニフェストを適用する例
+
+```bash
+❯ kustomize build ./overlays/staging | k -n default apply -f - 
+```
