@@ -1,12 +1,12 @@
 ---
-tags: [kubernetes, observability, monitoring, logging, tracing]
+tags: [sre, observability, monitoring, logging, tracing]
 created: 2026-01-29
 status: active
 ---
 
 # オブザーバビリティ (Observability)
 
-オブザーバビリティとは、システムの外部から出力を観察することで、システムの内部状態をどれだけ理解できるかという能力を指します。Kubernetes のような分散システムでは、単なる「死活監視」を超えた深い洞察が求められます。
+オブザーバビリティとは、システムの外部から出力を観察することで、システムの内部状態をどれだけ理解できるかという能力を指します。分散システムでは、単なる「死活監視」を超えた深い洞察が求められます。
 
 ## 3 つのプライマリーシグナル (The Three Pillars)
 
@@ -55,3 +55,7 @@ status: active
 | **Traces** | 依存関係・遅延特定 | どこで遅れているのか？ |
 | **Profiles** | コードの効率化 | どの処理がリソースを食っているか？ |
 | **Dumps** | 致命的エラーの解析 | メモリの中で何が起きていたのか？ |
+
+書籍で詳しく学びたい人は
+
+入門監視　Olilyなどもおすすめ。

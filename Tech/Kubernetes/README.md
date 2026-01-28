@@ -83,4 +83,4 @@ Kubernetes におけるデプロイのアプローチについては、以下の
 
 システムの監視と信頼性向上のためのシグナルについては、以下のドキュメントを参照してください。
 
-- [[observability|オブザーバビリティ (Logs, Metrics, Traces, Profiles, Dumps)]]
+- [[Tech/SRE/observability|オブザーバビリティ (Logs, Metrics, Traces, Profiles, Dumps)]]
