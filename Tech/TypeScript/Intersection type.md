@@ -31,7 +31,7 @@ const p: ThreeDimensionalPoint = {
 };
 ```
 
-# プリミティブ型のインターセクション型
+## プリミティブ型のインターセクション型
 
 neverという型になるそうな。
 
@@ -41,7 +41,7 @@ type Never = string & number;
 const n: Never = "2";
 ```
 
-# インターセクションを使いこなす。
+## インターセクションを使いこなす
 
 Required<T> Partial<T>は後々出てきますので。
 
