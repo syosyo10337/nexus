@@ -9,7 +9,6 @@ status: active
 
 # s`et +e` / -e /-u / -o
 
-
 シェルスクリプトにおいて、直前の**`set -e`の設定を解除する**ためのコマンドです。
 
 それぞれの意味は以下の通りです。
@@ -20,7 +19,7 @@ status: active
 
 特定のコマンドでのみエラーを無視したい場合などに、一時的に`set +e`を使用してエラーチェックを無効にし、その後に再び`set -e`で有効にする、といった使い方をします。
 
-# robustでdebugイージーなな記法はこちら
+## robustでdebugイージーな記法はこちら
 
 ```Bash
 set -euo pipefail
@@ -47,8 +46,6 @@ firstName="Aaron"
 fullName="$firstname Maxwell"
 echo "$fullName"
 ```
-
-  
 
 ## set -o pipefail
 
