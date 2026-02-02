@@ -12,32 +12,32 @@ status: active
 
 ## 書き方
 
-as構文
+as 構文
 
 ```TypeScript
 const value: string | number = "this is a string";
 const strLength: number = (value as string).length;
 ```
 
-angle-bracket sytanx
+angle-bracket syntax
 
 ```TypeScript
 const value: string | number = "this is a string";
 const strLength: number = (<string>value).length;
 ```
 
-どちらも好みで使っていいけど、JSXと見分けがつかないことがあるので、as構文の方が一般的かもね。
+どちらも好みで使っていいけど、JSX と見分けがつかないことがあるので、as 構文の方が一般的かもね。
 
 ## 無理やりに型を書き換える方法
 
-uんknownを経由する。
+unknown を経由する。
 
 ```TypeScript
 const num = 123;
 const str: string = num as unknown as string; // OK
 ```
 
-## キャストとの違い。
+## キャストとの違い
 
 [https://typescriptbook.jp/reference/values-types-variables/type-assertion-as#%E5%9E%8B%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%AE%E9%81%95%E3%81%84](https://typescriptbook.jp/reference/values-types-variables/type-assertion-as#%E5%9E%8B%E3%82%A2%E3%82%B5%E3%83%BC%E3%82%B7%E3%83%A7%E3%83%B3%E3%81%A8%E3%82%AD%E3%83%A3%E3%82%B9%E3%83%88%E3%81%AE%E9%81%95%E3%81%84)
 

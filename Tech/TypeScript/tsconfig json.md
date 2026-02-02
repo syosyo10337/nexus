@@ -10,9 +10,7 @@ status: active
 
 # tsconfig.json
 
-[allowJS/checkJS](#1cb38cdd-027d-801f-8d63-f13bb87d68a1)
-
-# allowJS/checkJS
+## allowJS/checkJS
 
 JSを許すか、その上でチェックするか。
 

@@ -8,7 +8,7 @@ status: active
 
 # const assertion (as const)
 
-readonlyにした上で、　リテラル型にしてくれる。
+readonly にした上で、　リテラル型にしてくれる。
 
 ```TypeScript
 const pikachu = {
@@ -30,7 +30,7 @@ let obj: Readonly<{
 // もしくは、ひとつづつにreadonly キーワードをしているする必要がある。
 ```
 
-## readonlyとの差異。
+## readonly との差異
 
 [https://typescriptbook.jp/reference/values-types-variables/const-assertion#readonly%E3%81%A8const-assertion%E3%81%AE%E9%81%95%E3%81%84](https://typescriptbook.jp/reference/values-types-variables/const-assertion#readonly%E3%81%A8const-assertion%E3%81%AE%E9%81%95%E3%81%84)
 
