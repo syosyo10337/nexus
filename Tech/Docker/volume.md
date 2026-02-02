@@ -5,17 +5,25 @@ tags:
   - container
   - network
 created: 2026-01-03
+updated: 2026-02-02
 status: active
 ---
 
 # Dockerのデータ管理 (Volume / Bind Mount)
 
 Dockerコンテナのファイルシステムは、デフォルトでは「エフェメラル（一時的）」です。コンテナが削除されると、その中で作成・変更されたデータもすべて失われます。
-データを永続化したり、ホスト・コンテナ間で共有したりするために、Dockerには主に3つの仕組み（Mount types）が用意されています。
+データを永続化したり、ホスト・コンテナ間で共有したりするために、Dockerには主に3つの仕組み（Mount types）が提供されています。
 
-1. **Volumes** (Docker管理領域)
-2. **Bind Mounts** (ホストの任意パス)
-3. **tmpfs mounts** (メモリ上 - 非永続)
+## 3つのボリュームタイプの比較
+
+| タイプ | 構文例 | ライフサイクル | 主な用途 |
+| :--- | :--- | :--- | :--- |
+| **Bind Mount** | `./src:/app` | ホストに依存 | ソースコード共有（開発環境） |
+| **Named Volume** | `db_data:/var/lib/mysql` | 明示的に削除するまで永続 | DB データ、共有キャッシュ |
+| **Anonymous Volume** | `/app/node_modules` | コンテナ削除時に消える* | 一時的な保護領域、ホスト汚染防止 |
+
+> [!NOTE]
+> *匿名ボリュームは、`docker rm -v` や `docker compose down -v` など、明示的にボリューム削除を指定した場合に削除されます。
 
 ---
 
@@ -61,7 +69,7 @@ volumes:
 
 #### Anonymous Volume（匿名ボリューム）
 
-名前を指定せずに作成されるボリュームです。コンテナ削除時に `--rm` フラグを付けていないとゴミとして残りやすいため、注意が必要です。
+名前を指定せずに作成されるボリュームです。コンテナ内のあるパスをバインドマウント（ホスト共有）から「隠す（マスクする）」ために使われることが多いです。
 
 ```bash
 # コンテナパスのみ指定すると匿名ボリュームになる
@@ -75,7 +83,7 @@ $ docker run -v /data ubuntu touch /data/testfile
 ホストマシンの特定のディレクトリやファイルを、コンテナ内に直接マウントします。
 
 - **特徴**:
-  - ホスト側の絶対パスを指定する。
+  - ホスト側のパスを指定する（相対パス or 絶対パス）。
   - ホスト側でファイルを編集すると、即座にコンテナ内に反映される。
   - ホストのファイルシステム構造に依存する。
 - **適した用途**: **開発環境でのソースコード同期**、ホスト上の設定ファイルの共有。
@@ -104,31 +112,82 @@ services:
       - ./src:/app # ホストの./srcをコンテナの/appにマウント
 ```
 
-> [!IMPORTANT]
-> **Volume vs Bind Mount の使い分け**
->
-> - **Volume**: データ（DB等）の永続化、コンテナ間共有。
-> - **Bind Mount**: 開発中のソースコード同期（ホットリロード等）。
+---
+
+## 実際のベストプラクティス（2024-2025年時点）
+
+### ローカル開発での使い分け
+
+| 用途 | 推奨タイプ | 理由 |
+| :--- | :--- | :--- |
+| ソースコード | Bind Mount | ホットリロードのため |
+| `node_modules` | Anonymous Volume | OS 間の互換性問題を回避 (特に Windows/macOS) |
+| `.next` (build cache) | Anonymous Volume | ホスト側の汚染を防ぐ |
+| DB データ（Postgres等） | Named Volume | コンテナ再作成時もデータを維持するため |
+
+### Anonymous Volume の落とし穴
+
+依存関係を更新（`npm install` など）してイメージを再ビルドした際、既存の匿名ボリュームが残っていると古い内容が参照され続けることがあります。
+
+```bash
+# 確実に更新する方法
+$ docker compose down
+$ docker compose up --build
+
+# またはボリュームも含めて強制再作成
+$ docker compose up --build --force-recreate
+```
 
 ---
 
-## 3. Data Volume コンテナ (Legacy)
+## より堅牢な構成パターン
 
-以前のDocker（v1.9以前）でよく使われていた、データを保持するためだけのコンテナを介して共有する手法です。
+### Pattern A: Anonymous Volume（シンプル派）
 
-現在は **Named Volumes を使うことが推奨されている**ため、新規にこのパターンを採用する理由はほとんどありません。
+`node_modules` などをホスト側のバインドマウントから上書きされないように保護します。
 
-### 仕組み
+```yaml
+services:
+  app:
+    build: .
+    volumes:
+      - .:/app              # Bind mount (ソースコード)
+      - /app/node_modules   # Anonymous volume (保護)
+      - /app/.next          # Anonymous volume (ビルドキャッシュ)
+```
 
-1. データを保持する専用コンテナ（例: `db-data`）を作る。
-2. 他のコンテナから `--volumes-from` を使ってそのコンテナのボリュームを継承する。
+### Pattern B: Named Volume（高速・明示的管理）
 
-```bash
-# 1. データの入れ物となるコンテナを作成
-$ docker run --name data-container -v /dbdata busybox
+ボリュームに名前を付けて管理します。キャッシュの再利用が効率的になります。
 
-# 2. --volumes-from でそのデータを参照
-$ docker run --volumes-from data-container ubuntu ls /dbdata
+```yaml
+services:
+  app:
+    volumes:
+      - .:/app
+      - app_node_modules:/app/node_modules
+      - app_next:/app/.next
+
+volumes:
+  app_node_modules:
+  app_next:
+```
+
+### Pattern C: Dev Containers (VS Code)
+
+モダンなチーム開発では、Docker Compose よりも **Dev Containers** でボリューム管理を隠蔽・最適化するのが主流です。
+
+```json
+// .devcontainer/devcontainer.json
+{
+  "name": "Node.js Project",
+  "dockerComposeFile": "compose.yaml",
+  "service": "app",
+  "workspaceFolder": "/app",
+  "mounts": [
+    "source=node_modules,target=/app/node_modules,type=volume"
+  ]
+}
 ```
 
 ---
@@ -149,7 +208,8 @@ $ docker run --rm \
   tar cvzf /backup/backup.tar.gz -C /source .
 ```
 
-- `-v db-vol:/source`: バックアップ元のボリュームをマウント
-- `-v $(pwd):/backup`: ホストのカレントディレクトリをマウント
-- `tar ...`: `/source` を固めて `/backup` (ホスト側) に出力
-- `--rm`: 実行終了後にこの一時コンテナを自動削除
+---
+
+## 参考：Data Volume コンテナ (Legacy)
+
+以前のDocker（v1.9以前）で使われていた手法ですが、現在は **Named Volumes を使うことが推奨されている**ため、新規に採用する必要はありません。
