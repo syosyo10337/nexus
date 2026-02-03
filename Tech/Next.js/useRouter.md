@@ -24,7 +24,7 @@ cf. [https://nextjs.org/docs/pages/building-your-application/routing/linking-and
 
 - `push`: Link では不十分なときに使う。useState を適切にリセットしたいときなど特に。
   - cf. [https://nextjs.org/docs/pages/api-reference/functions/use-router#resetting-state-after-navigation](https://nextjs.org/docs/pages/api-reference/functions/use-router#resetting-state-after-navigation)
-- `replace`: 履歴スタックを更新せずに現在の URL を置き換える。
+- `replace`: 履歴スタックを更新せずに現在の URL を置き換える。client-side navigation/getServerSidePropsを再実行
 - `reload`: ブラウザの更新ボタンクリックと同等の処理を行う。
 
 ## 参考
