@@ -175,8 +175,7 @@ export default stylisticConfig
 
 ## 参考
 
-[https://qiita.com/Shilaca/items/c494e4dc6b536a5231de](https://qiita.com/Shilaca/items/c494e4dc6b536a5231de)
-
-[https://eslint.org/docs/latest/use/configure/configuration-files](https://eslint.org/docs/latest/use/configure/configuration-files)
-
-[https://eslint.org/docs/latest/use/configure/plugins](https://eslint.org/docs/latest/use/configure/plugins)
+- [SonarJS（ESLint プラグイン）](./SonarJS.md) — 当リポジトリ内
+- [Qiita: ESLint](https://qiita.com/Shilaca/items/c494e4dc6b536a5231de)
+- [ESLint Configuration files](https://eslint.org/docs/latest/use/configure/configuration-files)
+- [ESLint Plugins](https://eslint.org/docs/latest/use/configure/plugins)
