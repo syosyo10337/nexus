@@ -15,6 +15,86 @@ status: active
 
 v9 から推奨され、v10 では、eslintrc は削除されるらしいので対応する
 
+### 具体的な書き方について
+
+Flat config は「設定オブジェクトの配列」です。
+
+```javascript
+export default [
+  {
+    /* 設定 1 */
+  },
+  {
+    /* 設定 2 */
+  },
+  {
+    /* 設定 3 */
+  },
+];
+```
+
+各オブジェクトは以下のプロパティを持てます：
+
+```markdown
+┌─────────────────┬──────┬────────────────────────────┐
+│ プロパティ │ 必須 │ 説明 │
+├─────────────────┼──────┼────────────────────────────┤
+│ files │ × │ 対象ファイルの glob パターン │
+├─────────────────┼──────┼────────────────────────────┤
+│ ignores │ × │ 無視するファイル │
+├─────────────────┼──────┼────────────────────────────┤
+│ plugins │ × │ 使用するプラグイン │
+├─────────────────┼──────┼────────────────────────────┤
+│ rules │ × │ ルール設定 │
+├─────────────────┼──────┼────────────────────────────┤
+│ languageOptions │ × │ parser, globals 等 │
+└─────────────────┴──────┴────────────────────────────┘
+→ 全部オプショナル。必須プロパティはありません。
+```
+
+### plugin を入れるだけで動く？
+
+動きません。
+plugin は「ルールの定義集」なだけで、有効化は別途必要です。
+
+```javascript
+// これだけだとルールは何も有効にならない
+  {
+    plugins: { unicorn: unicornPlugin }
+  }
+
+  // rules で有効化が必要
+  {
+    plugins: { unicorn: unicornPlugin },
+    rules: {
+      'unicorn/no-null': 'error',
+    },
+  },
+```
+
+recommended を使えば楽
+
+多くのプラグインは recommended
+設定を提供しています。これを使えば個別に rules を書かなくて OK：
+
+```javascript
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+
+export default [
+  eslintPluginUnicorn.configs['flat/recommended'], // これだけで OK
+]
+
+// recommended の中身は結局こうなってます：
+{
+plugins: { unicorn: ... },
+rules: {
+  'unicorn/no-null': 'error',
+  'unicorn/prefer-string-slice': 'error',
+    // ... 推奨ルールが全部入り
+  },
+};
+```
+
 ## Prettier の代わりに Stylistic を使う
 
 [https://eslint.style/guide/why](https://eslint.style/guide/why)
