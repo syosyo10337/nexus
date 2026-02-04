@@ -1,30 +1,21 @@
 ---
 tags:
   - typescript
-  - type-system
+  - linter
+  - eslint
   - syntax
-  - function
 created: 2026-01-03
+updated: 2026-02-04
 status: active
 ---
 
-![](TypeScript/Attachments/eslint.svg)
+# ESlint
 
-# ESLint
+## Flat Config
 
-[https://qiita.com/Shilaca/items/c494e4dc6b536a5231de](https://qiita.com/Shilaca/items/c494e4dc6b536a5231de)
+v9 から推奨され、v10 では、eslintrc は削除されるらしいので対応する
 
-# Prettierの代わりにStylisticを使う
-
-[
-
-ESLint Stylistic
-
-Stylistic Formatting for ESLint
-
-![](TypeScript/Attachments/logo.svg)https://eslint.style/packages/default
-
-![](TypeScript/Attachments/og.png)](https://eslint.style/packages/default)
+## Prettier の代わりに Stylistic を使う
 
 [https://eslint.style/guide/why](https://eslint.style/guide/why)
 
@@ -41,7 +32,9 @@ import stylistic from '@stylistic/eslint-plugin'
  * 推奨設定を適用しつつ、必要に応じて調整する。
  *
  * @see https://eslint.style/packages/default#rules
- * @see https://github.com/eslint-stylistic/eslint-stylistic/blob/main/packages/eslint-plugin/configs/index.ts
+ * @see https://github.com/eslint-stylistic/eslint-stylistic/blob/main/packages/eslint-plugin/configs/index.
+[https://qiita.com/Shilaca/items/c494e4dc6b536a5231de](https://qiita.com/Shilaca/items/c494e4dc6b536a5231de)
+ts
  */
 export const stylisticConfig = {
   ...stylistic.configs.recommended,
@@ -92,8 +85,12 @@ export default stylisticConfig
 
 [https://www.notion.so/ESLint-1ca38cdd027d8067a2e2fe9674212935](ESLint%201ca38cdd027d8067a2e2fe9674212935.html)
 
-### ルールセット参考
+## ルールセット参考
 
 [https://miraitranslate-tech.hatenablog.jp/entry/2021/09/10/080000](https://miraitranslate-tech.hatenablog.jp/entry/2021/09/10/080000)
 
 [https://zenn.dev/noshiro_piko/articles/take-full-advantage-of-typescript-eslint](https://zenn.dev/noshiro_piko/articles/take-full-advantage-of-typescript-eslint)
+
+## 参考
+
+[https://qiita.com/Shilaca/items/c494e4dc6b536a5231de](https://qiita.com/Shilaca/items/c494e4dc6b536a5231de)
