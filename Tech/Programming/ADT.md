@@ -1,5 +1,9 @@
 ---
-tags: [programming, functional-programming, scala, adt]
+tags: 
+  - programming,
+  -  functional-programming, 
+  - scala, 
+  -adt
 updated: 2026-01-29
 status: draft
 ---
@@ -59,7 +63,7 @@ case class Some[A](value: A) extends Option[A]
 case object None extends Option[Nothing]
 
 // 使用例
-def findUser(id: Int): Option[User] = 
+def findUser(id: Int): Option[User] =
   if (exists(id)) Some(getUser(id)) else None
 ```
 
@@ -86,12 +90,12 @@ def area(s: Shape): Double = s match {
 
 ## なぜ ADT が重要か
 
-| メリット | 説明 |
-| :--- | :--- |
-| **網羅性チェック** | `sealed` により、パターンマッチの漏れをコンパイル時に検出できる |
-| **不正な状態の排除** | 「ありえない状態」を型レベルで表現不能にし、バグを未然に防ぐ |
+| メリット               | 説明                                                                  |
+| :--------------------- | :-------------------------------------------------------------------- |
+| **網羅性チェック**     | `sealed` により、パターンマッチの漏れをコンパイル時に検出できる       |
+| **不正な状態の排除**   | 「ありえない状態」を型レベルで表現不能にし、バグを未然に防ぐ          |
 | **不変性 (Immutable)** | `case class` はデフォルトで不変であり、副作用の少ないコードに寄与する |
-| **null の排除** | `Option` や `Either` を使うことで、安全に欠損値やエラーを扱える |
+| **null の排除**        | `Option` や `Either` を使うことで、安全に欠損値やエラーを扱える       |
 
 ---
 

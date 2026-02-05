@@ -51,7 +51,87 @@ Pointではなく、そのサブクラスのインスタンスを返すことが
 case class Point(x: Int, y: Int)
 ```
 
+### caseクラス
+
+equals()・hashCode()・toString()などのオブジェクトの基本的なメソッドをオーバーライドしたクラスを生成し、また、そのクラスのインスタンスを生成するためのファクトリメソッドを生成するものです。たとえば、 case class Point(x: Int, y: Int)で定義した Point クラスは equals() メソッドを明示的に定義してはいませんが、
+
+```scala
+// コンパイラが生成する実際のコード（概念的には）
+class Point(val x: Int, val y: Int) {
+  // 1. equals メソッド（値ベースの比較）
+  override def equals(obj: Any): Boolean = obj match {
+    case that: Point => this.x == that.x && this.y == that.y
+    case _ => false
+  }
+
+  // 2. hashCode メソッド（フィールドの値から生成）
+  override def hashCode(): Int = {
+    31 * x.hashCode + y.hashCode
+  }
+
+  // 3. toString メソッド（わかりやすい文字列表現）
+  override def toString: String = s"Point($x,$y)"
+
+  // 4. copy メソッド（一部のフィールドだけ変更した新しいインスタンス）
+  def copy(x: Int = this.x, y: Int = this.y): Point =
+    new Point(x, y)
+}
+
+// さらに、コンパニオンオブジェクトも自動生成
+object Point {
+  // 5. apply メソッド（new なしでインスタンス生成）
+  def apply(x: Int, y: Int): Point = new Point(x, y)
+
+  // 6. unapply メソッド（パターンマッチング用）
+  def unapply(p: Point): Option[(Int, Int)] =
+    Some((p.x, p.y))
+}
+
+// 以下のことが実行できるらしい　
+val p1 = Point(1, 2)         // apply メソッド（ファクトリ）
+val p2 = Point(1, 2)
+
+p1 == p2                     // true（equals メソッド）
+p1.toString                  // "Point(1,2)"（toString メソッド）
+p1.hashCode                  // 一貫した値（hashCode メソッド）
+val p3 = p1.copy(x = 5)      // Point(5, 2)（copy メソッド）
+
+// パターンマッチング（unapply メソッド）
+p1 match {
+  case Point(x, y) => println(s"x=$x, y=$y")
+}
+```
+
 ## コンパニオンオブジェクト
+
+クラスと同じファイル内、同じ名前で定義されたシングルトンオブジェクトは、コンパニオンオブジェクトと呼ばれます。
+コンパニオンオブジェクトは対応するクラスに対して特権的なアクセス権を持っています。たとえば、 weightをprivateにした場合、
+
+```scala
+class Person(name: String, age: Int, private val weight: Int)
+
+object Hoge {
+  def printWeight(): Unit = {
+    val taro = new Person("Taro", 20, 70)
+    println(taro.weight)
+  }
+}
+```
+
+はNGですが、
+
+```scala
+class Person(name: String, age: Int, private val weight: Int)
+
+object Person {
+  def printWeight(): Unit = {
+    val taro = new Person("Taro", 20, 70)
+    println(taro.weight)
+  }
+}
+```
+
+はOKです。**privateとした場合、コンパニオンオブジェクトからはアクセス可能です。**
 
 ## applyメソッド
 
