@@ -4,5 +4,16 @@
   ],
   "files.watcherExclude": {
     "**/target": true
+  },
+  "markdown.validate.enabled": true,
+  // Prettierをデフォルトフォーマッターに設定
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  // Markdownファイルで保存時に自動フォーマット
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.markdownlint": "explicit"
+    }
   }
 }
