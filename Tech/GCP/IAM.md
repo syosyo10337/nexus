@@ -3,6 +3,7 @@ tags:
   - gcp
   - iam
   - cloud-run
+  - SA
   - vertex-ai
 created: 2026-01-03
 status: active
@@ -10,16 +11,16 @@ status: active
 
 # IAM
 
-# サービスアカウントの作成
+## サービスアカウントの作成
 
 ```Bash
-cloud iam service-accounts create <name> \
+gcloud iam service-accounts create <name> \
   --display-name="Chimer Wiki Slack Bot Deployment SA" \
   --description="Service account for deploying and managing the Chimer Wiki Slack Bot on Cloud Functions" \
   --project=syoya-internal
 ```
 
-# ロールの付与
+## ロールの付与
 
 ```Bash
 # Secret Manager Secret Accessor ロールを付与
@@ -47,7 +48,7 @@ echo ""
 echo "✅ Workload Identity binding created for repository: $REPO"
 ```
 
-# 権限の確認
+## 権限の確認
 
 ```Bash
 gcloud projects get-iam-policy <prj-name>\
