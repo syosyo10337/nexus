@@ -2,7 +2,7 @@
 
 ## 🔤 「rc」の語源
 
-**"run commands" の略**
+"run commands" の略
 
 ### 歴史的背景
 
@@ -17,7 +17,7 @@
 
 ## 📝 .npmrc とは何か
 
-**npm Run Commands = npmの設定ファイル**
+npm Run Commands = npmの設定ファイル
 
 ### 役割
 
@@ -61,3 +61,5 @@ package-lock=true
 - `.vimrc` - Vim起動時の設定
 - `.zshrc` - Zsh起動時の設定
 - `.gitconfig` - Gitの設定（rcという名前ではないが同様の役割）
+
+起動、実行時の設定ファイルっていうのが現代的解釈だね？
