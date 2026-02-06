@@ -11,10 +11,13 @@ updated: 2026-02-06
 # 概要
 
 npmのprivateパッケージをGoogle Cloudに配置する方法
+基本は公式に則るで良さそう
+cf. <https://docs.cloud.google.com/artifact-registry/docs/nodejs/authentication>
 
-## 1. パッケージの設定
+## 1. パッケージ作成と設定
 
-@<scope>/packageノカタチで、パッケージ名を設定する
+### @scope/packageノカタチで、パッケージ名を設定する
+
 publishconfigを書くのもお作法
 
 ```json
@@ -28,13 +31,16 @@ publishconfigを書くのもお作法
 }
 ```
 
-.npmrcを
+### .npmrcを追加
 
-## プライベート npm パッケージの公開手順
+scopeがあるものはここへむける！という設定情報をかいてあげる。公式だとこの文字列を出力するコマンドがあり、repositoryの作成と、設定が済んだらprintするだけになる。実際の手順はpublish直前かも
 
-### 1. Artifact Registry の準備
+`gcloud artifacts print-settings npm ..` 以下略
+@<scope>:registry=<https://asia-northeast1-npm.pkg.dev/avalon-project-id/my-repo-name/>
 
-#### レジストリの作成
+## 2. Artifact Registry の準備
+
+### レジストリの作成
 
 ```bash
 # npm レジストリを作成
@@ -44,7 +50,7 @@ gcloud artifacts repositories create <REPOSITORY_NAME> \
   --description=<e.g.Private npm packages>
 ```
 
-#### IAM 権限の設定
+### IAM 権限の設定
 
 ```bash
 # 権限の確認
@@ -58,29 +64,29 @@ gcloud artifacts repositories add-iam-policy-binding <REPOSITORY_NAME> \
   --role=roles/artifactregistry.writer
 ```
 
-### 2. 認証設定
+## 3. 認証設定
 
-#### gcloud 認証の設定
+### gcloud 認証の設定
 
 ```bash
-# Artifact Registry への認証設定
-gcloud auth configure-docker <LOCATION>-npm.pkg.dev
+# 1. ブラウザ認証
+gcloud auth login
 
-# または npm 用の認証ヘルパーを使用
-npx google-artifactregistry-auth
+# 2. プロジェクト切り替え（対象のGCPプロジェクトへ）
+gcloud config set project avalon-project-id
+
+# 3. ADC（アプリ用認証）の取得 ※これがAuthツールには必要
+gcloud auth application-default login
 ```
 
-#### .npmrc の設定
+### 認証ヘルパーを利用
 
-プロジェクトルートまたはホームディレクトリに `.npmrc` ファイルを作成:
-これは、packageの宛先を書きます(宛先だけじゃなくて、認証情報もほしいので書きます？)
+認証ヘルパーの実行
+ここで npx コマンドを使います。これが .npmrc に認証トークンの設定を追記してくれます。
 
-```ini
-# スコープ付きパッケージのレジストリを指定
-@<SCOPE>:registry=https://<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/
-
-# 認証トークン（自動生成される場合が多い）
-//<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/:_authToken=<TOKEN>
+```bash
+# プロジェクトルートで実行
+npx google-artifactregistry-auth
 ```
 
 ### 3. npm パッケージの準備
@@ -138,3 +144,7 @@ gcloud auth application-default print-access-token
 
 - [rc (run commands)](<../CS/rc%20(run%20commands).md>) - .npmrc の詳細
 - [GCP公式ドキュメント](https://cloud.google.com/artifact-registry/docs/nodejs/quickstart)
+
+```
+
+```
