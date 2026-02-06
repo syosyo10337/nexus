@@ -79,11 +79,7 @@ jobs:
 
 ## アクション
 
-cf. [composite actionを作成する。](<Github%20Actions%E3%82%92(%E7%A0%94%E3%81%8E)%E3%81%99%E3%81%BE%E3%81%9B%E3%81%B0/composite%20action%E3%82%92%E4%BD%9C%E6%88%90%E3%81%99%E3%82%8B%E3%80%82%202a238cdd027d805da88cda3a88526093.html>)
-
-cf. [https://docs.github.com/ja/actions/learn-github-actions/finding-and-customizing-actions?learn=getting_started&learnProduct=actions#using-inputs-and-outputs-with-an-action](https://docs.github.com/ja/actions/learn-github-actions/finding-and-customizing-actions?learn=getting_started&learnProduct=actions#using-inputs-and-outputs-with-an-action)
-
-cf. [format](<Github%20Actions%E3%82%92(%E7%A0%94%E3%81%8E)%E3%81%99%E3%81%BE%E3%81%9B%E3%81%B0/format%202cc38cdd027d8078b4ebfa6488ca5926.html>)
+参考：[アクションで入出力を使用する](https://docs.github.com/ja/actions/learn-github-actions/finding-and-customizing-actions?learn=getting_started&learnProduct=actions#using-inputs-and-outputs-with-an-action)
 
 ## 構文チートシート
 

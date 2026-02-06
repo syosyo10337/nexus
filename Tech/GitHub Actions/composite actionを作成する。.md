@@ -6,9 +6,7 @@ created: 2026-01-03
 status: active
 ---
 
-# composite actionを作成する。
-
-**正確には:**
+# composite actionを作成する
 
 > GitHub公式ドキュメントの例では常にactions/checkoutが先に実行されており、技術的な理由により同じリポジトリ内のComposite Actionを使用するには事前のcheckoutが必要です。ただし、この制約が明示的に「必須」と記述されているわけではありません。
 

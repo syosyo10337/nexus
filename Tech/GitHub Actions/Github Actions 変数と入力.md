@@ -32,10 +32,6 @@ jobs:
 
 GitHub Actionsワークフローでサポートされている変数、名前付け規則、制限、コンテキストについて説明します。
 
-### 参考
-
-- [head_ref on PR/ ref_name on Push](<Github%20Actions%E3%82%92(%E7%A0%94%E3%81%8E)%E3%81%99%E3%81%BE%E3%81%9B%E3%81%B0/head_ref%20on%20PR%20ref_name%20on%20Push%202b038cdd027d8084bf11f82eae0df00c.html>)
-
 ## 入力を受け付ける
 
 再利用可能なワークフローで入力を定義できます。

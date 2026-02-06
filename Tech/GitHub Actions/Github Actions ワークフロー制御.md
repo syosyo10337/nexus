@@ -29,32 +29,6 @@ on:
       - ".github/workflows/deploy-slack-bot.yml"
 ```
 
-## 重複実行を避ける
-
-### Push/PRの両方で重複実行を避ける方法
-
-```yaml
-on:
-  push:
-    branches:
-      - master
-  pull_request:
-    branches:
-      - master
-```
-
-[How to trigger an action on push or pull request but not both?](https://github.com/orgs/community/discussions/26276)
-
-### Concurrencyによる制御
-
-`concurrency`を使用して、同じワークフローの重複実行を防ぐことができます。
-
-```yaml
-concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
-  cancel-in-progress: true
-```
-
 [ワークフロー構文 - concurrency](https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax#concurrency)
 
 ## 権限を与える（Permissions）
@@ -63,7 +37,7 @@ concurrency:
 
 ```yaml
 permissions:
-  id-token: write # Workload Identity Federation用のJWT取得に必要
+  id-token: write # Workload Identity Federation用のJWT取得に必要(Github OIDCくださいー)
   contents: read # actions/checkoutに必要
 ```
 
@@ -120,4 +94,3 @@ jobs:
 
 - [ワークフロー構文リファレンス](https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions)
 - [ワークフローをトリガーするイベント](https://docs.github.com/ja/actions/using-workflows/events-that-trigger-workflows)
-- [重複実行をやめる](<Github%20Actions%E3%82%92(%E7%A0%94%E3%81%8E)%E3%81%99%E3%81%BE%E3%81%9B%E3%81%B0/%E9%87%8D%E8%A4%87%E5%AE%9F%E8%A1%8C%E3%82%92%E3%82%84%E3%82%81%E3%82%8B%202b038cdd027d8020a327ff070b7baa93.html>)
