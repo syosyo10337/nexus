@@ -35,7 +35,7 @@ publishconfigを書くのもお作法
 
 scopeがあるものはここへむける！という設定情報をかいてあげる。公式だとこの文字列を出力するコマンドがあり、repositoryの作成と、設定が済んだらprintするだけになる。実際の手順はpublish直前かも
 
-`gcloud artifacts print-settings npm ..` 以下略
+リポジトリ構成出力コマンド`gcloud artifacts print-settings npm ..` 以下略
 @<scope>:registry=<https://asia-northeast1-npm.pkg.dev/avalon-project-id/my-repo-name/>
 
 ## 2. Artifact Registry の準備
@@ -83,15 +83,30 @@ gcloud auth application-default login
 
 ### 認証ヘルパーを利用
 
-認証ヘルパーの実行
-.npmrcを読み込んで、
+認証ヘルパー [google-artifactregistry-auth](https://www.npmjs.com/package/google-artifactregistry-auth)の実行をします。
+
+この認証ライブラリは、
+
+1. ADC
+2. `gcloud auth application-default login`などのgcloud CLI
+   の順で、認証情報をとってくるらしい。
+
+ローカルで実行するときは、前項のCLI認証で問題ないと思うので知識として理解しておく。
+
+### アクセストークンを取得する
 
 ```bash
 # プロジェクトルートで実行
 npx google-artifactregistry-auth
 ```
 
-cf. <https://www.npmjs.com/package/google-artifactregistry-auth>
+cf. <https://docs.cloud.google.com/artifact-registry/docs/nodejs/authentication?hl=ja#get-token>
+
+これで認証は通るわけですが、、
+
+> Artifact Registry はプロジェクト .npmrc ファイル内の Artifact Registry リ> ポジトリの設定を読み取り、それらを使用してユーザーの .npmrc ファイルにトークン認> 証情報を追加します。ユーザーの .npmrc ファイルにトークンを保存すると、認証情報が> ソースコードとソース コントロール システムから分離されます。
+
+つまり、~/.npmrcに認証情報は置かれるってことですな。
 
 ### 3. npm パッケージの準備
 
