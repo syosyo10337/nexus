@@ -29,7 +29,7 @@ pull request が作成された時。
 ジョブは、同じランナーで実行される、ワークフロー内の一連の  *ステップ*  です。 各ステップは、実行されるシェル スクリプト、または実行される  *アクション*  のいずれかです。
 
 - アクション
-*アクション*  は、GitHub Actions 用のカスタム アプリケーションであり、複雑で頻繁に繰り返されるタスクを実行します。 アクションを使用すると、ワークフロー ファイルに記述する繰り返しコードの量を削減するのに役立ちます
+  *アクション*  は、GitHub Actions 用のカスタム アプリケーションであり、複雑で頻繁に繰り返されるタスクを実行します。 アクションを使用すると、ワークフロー ファイルに記述する繰り返しコードの量を削減するのに役立ちます
 
 - ランナー
 
@@ -174,19 +174,19 @@ jobs:
 
 ワークフローは、1 つ以上のジョブからなる設定可能な自動化プロセスです。 ワークフローの設定を定義するには、YAML ファイルを作成しなければなりません。
 
-https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs
+<https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs>
 
-https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs
+<https://docs.github.com/ja/actions/using-workflows/workflow-syntax-for-github-actions#onworkflow_callinputs>
 
-## Flutter 関連
+## GHA with Flutter
 
 pubspec.yaml のバージョンを Github Actions で更新する
 
-※ 補足 作成当初は気づいていませんでしたが、題材については似た先人の記事もありました！ （改めて zenn にまとめる際に参考にさせてもらいました） https://naipaka.hatenablog.com/entry/2022/03/18/204856
+※ 補足 作成当初は気づいていませんでしたが、題材については似た先人の記事もありました！ （改めて zenn にまとめる際に参考にさせてもらいました） <https://naipaka.hatenablog.com/entry/2022/03/18/204856>
 
-https://zenn.dev/beeeyan/articles/ffe38e4fad00bc
+<https://zenn.dev/beeeyan/articles/ffe38e4fad00bc>
 
-![](GitHub%20Actions/Attachments/og-base-w1200-v2.png)](https://zenn.dev/beeeyan/articles/ffe38e4fad00bc)
+![](GitHub%20Actions/Attachments/og-base-w1200-v2.png)](<https://zenn.dev/beeeyan/articles/ffe38e4fad00bc>)
 
 [
 
@@ -194,13 +194,13 @@ https://zenn.dev/beeeyan/articles/ffe38e4fad00bc
 
 概要 最近個人開発や副業で Flutter で CI/CD 環境を構築しています。 その中で PR をトリガーに pubspec.yml 記載のビルド番号をインクリメントして push まで行うジョブを作ってみたので紹介します。 GitHub Actions でワークフローが走るたびに採番される番号をビルド番号に使うのも良さそうなのですが、…
 
-![](GitHub%20Actions/Attachments/link.png)https://naipaka.hatenablog.com/entry/2022/03/18/204856
+![](GitHub%20Actions/Attachments/link.png)<https://naipaka.hatenablog.com/entry/2022/03/18/204856>
 
-![](GitHub%20Actions/Attachments/1647604136.png)](https://naipaka.hatenablog.com/entry/2022/03/18/204856)
+![](GitHub%20Actions/Attachments/1647604136.png)](<https://naipaka.hatenablog.com/entry/2022/03/18/204856>)
 
 [https://github.com/x-motemen/git-pr-release](https://github.com/x-motemen/git-pr-release)
 
-## e.g. PR 出したとき、main にまーじされたときどちらも走らせたい。
+## e.g. PR 出したとき、main にまーじされたときどちらも走らせたい
 
 ```Bash
   workflow_dispatch:
@@ -215,7 +215,7 @@ https://zenn.dev/beeeyan/articles/ffe38e4fad00bc
       - ".github/workflows/deploy-slack-bot.yml"
 ```
 
-# 重複実行を避ける。
+# 重複実行を避ける
 
 以下にすると良いらしい？
 
@@ -235,17 +235,17 @@ How to trigger an action on push or pull request but not both? · community · D
 
 I would like my workflow to be triggered by either a push or a pull-request, but if it a push to a pull-request only trigger one rather than two workflows. Something like, on: [push | pull_request]
 
-https://github.com/orgs/community/discussions/26276
+<https://github.com/orgs/community/discussions/26276>
 
-conrurrency でも避けられそう
+conrurrency でも避けられそう:
 
 GitHub Actions 　のワークフロー構文 - GitHub ドキュメント
 
 ワークフローは、1 つ以上のジョブからなる設定可能な自動化プロセスです。 ワークフローの設定を定義するには、YAML ファイルを作成しなければなりません。
 
-https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax#concurrency
+<https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax#concurrency>
 
-https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax#concurrency
+<https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-syntax#concurrency>
 
 ### 権限を与える。(permissions)
 
@@ -255,19 +255,19 @@ https://docs.github.com/ja/actions/reference/workflows-and-actions/workflow-synt
 
 GITHUB_TOKEN に付与される既定の権限を変更します。
 
-https://docs.github.com/ja/enterprise-cloud@latest/actions/using-jobs/assigning-permissions-to-jobs
+<https://docs.github.com/ja/enterprise-cloud@latest/actions/using-jobs/assigning-permissions-to-jobs>
 
-](https://docs.github.com/ja/enterprise-cloud@latest/actions/using-jobs/assigning-permissions-to-jobs)
+](<https://docs.github.com/ja/enterprise-cloud@latest/actions/using-jobs/assigning-permissions-to-jobs>)
 
 [
 
 github actions の「permissions」とはなにか？
 
-https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions
+<https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#permissions>
 
-https://zenn.dev/not75743/scraps/926f2693809744
+<https://zenn.dev/not75743/scraps/926f2693809744>
 
-](https://zenn.dev/not75743/scraps/926f2693809744)
+](<https://zenn.dev/not75743/scraps/926f2693809744>)
 
 ## workflow が表示されない
 
@@ -277,9 +277,9 @@ Events that trigger workflows - GitHub Docs
 
 You can configure your workflows to run when specific activity on GitHub happens, at a scheduled time, or when an event outside of GitHub occurs.
 
-https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch
+<https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch>
 
-](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch)
+](<https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_dispatch>)
 
 ## step 間で値を共有
 
@@ -289,11 +289,11 @@ GitHub Actions で step 間で値を共有する - Qiita
 
 この記事は何 GitHub Actions を利用していて、step 間で値を共有して、実行した場面があったため、その方法を記載した記事になります。方法 GITHUB_OUTPUT を利用します。st…
 
-![](GitHub%20Actions/Attachments/production-c620d3e403342b1022967ba5e3db1aaa.ico)https://qiita.com/fussy113/items/def629e9922e0ce2d924
+<https://qiita.com/fussy113/items/def629e9922e0ce2d924>
 
-![](GitHub%20Actions/Attachments/article-ogp-background-412672c5f0600ab9a64263b751f1bc81.jpeg)](https://qiita.com/fussy113/items/def629e9922e0ce2d924)
+<https://qiita.com/fussy113/items/def629e9922e0ce2d924>
 
-# Cache 戦略
+## Cache 戦略
 
 3 種類の cache が存在する
 
