@@ -43,11 +43,6 @@ gcloud projects get-iam-policy $PROJECT_ID \
     --format="table(bindings.role)" \
     --filter="bindings.members:$MY_ACCOUNT"
 
- # 特定のサービスアカウントにポリシーに追加する。
- gcloud iam service-accounts add-iam-policy-binding \
-  "workflow-service-account@syoya-internal.iam.gserviceaccount.com" \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/projects/877688327905/locations/global/workloadIdentityPools/github-actions-for-avalon/attribute.repository/syoya/chimer-wiki"
 ```
 
 [IAM](IAM.md)
@@ -61,3 +56,7 @@ gcloud projects get-iam-policy $PROJECT_ID \
 [🏐Cloud Run functions](Cloud%20Run%20functions.md)
 
 [Vertex AI Applications](Vertex%20AI%20Applications.md)
+
+```
+
+```

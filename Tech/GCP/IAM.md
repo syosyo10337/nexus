@@ -34,20 +34,6 @@ gcloud projects add-iam-policy-binding syoya-internal \
 gcloud iam workload-identity-pools list --location=global --project=syoya-internal --format="table(name,displayName,state)"
 ```
 
-```Bash
-SA_EMAIL="chimer-wiki-slack-bot@syoya-internal.iam.gserviceaccount.com"
-REPO="syoya/chimer-wiki"
-
-# Workload Identity ユーザーロールを付与（GitHub Actions からサービスアカウントを使用できるようにする）
-gcloud iam service-accounts add-iam-policy-binding "$SA_EMAIL" \
-  --project=syoya-internal \
-  --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/projects/877688327905/locations/global/workloadIdentityPools/github-actions-for-avalon/attribute.repository/$REPO"
-
-echo ""
-echo "✅ Workload Identity binding created for repository: $REPO"
-```
-
 ## 権限の確認
 
 ```Bash
@@ -55,4 +41,33 @@ gcloud projects get-iam-policy <prj-name>\
   --flatten="bindings[].members" \
   --filter="bindings.members:"<SA-acount>" \
   --format="table(bindings.role)"
+```
+
+### 特定のサービスアカウントにポリシーに追加する
+
+```bash
+# GCPのプロジェクトID
+export PROJECT_ID="avalon-project-id"
+
+# 使おうとしている Service Account のメールアドレス (secrets.AVALON_SA_EMAIL_GCR の中身)
+export SERVICE_ACCOUNT_EMAIL="my-sa-name@${PROJECT_ID}.iam.gserviceaccount.com"
+
+# GitHubのリポジトリ名 (例: your-org/your-repo)
+export REPO="avalon-org/avalon-nest"
+
+# Workload Identity Pool のID (プロバイダーIDではなくPool ID)
+# secrets.AVALON_GCP_WORKLOAD_IDENTITY_PROVIDER... の中にある ".../workloadIdentityPools/【ここ】/providers/..." の部分
+export WORKLOAD_IDENTITY_POOL="avalon-pool"
+
+# プロジェクト番号を取得
+
+export PROJECT_NUMBER=$(gcloud projects describe $PROJECT_ID --format="value(projectNumber)")
+
+# GitHubリポジトリ全体に対して、このSAの使用許可を与える
+
+gcloud iam service-accounts add-iam-policy-binding "${SERVICE_ACCOUNT_EMAIL}" \
+  --project="${PROJECT_ID}" \
+ --role="roles/iam.workloadIdentityUser" \
+ --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/${WORKLOAD_IDENTITY_POOL}/attribute.repository/${REPO}"
+
 ```
