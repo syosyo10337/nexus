@@ -2,37 +2,18 @@
 tags:
   - gcp
   - iam
-  - vertex-ai
   - secrets
-created: 2026-01-03
+created: 2026-02-05
 status: active
 ---
 
-![](GCP/Attachments/met_the_unicorn_in_captivity.jpg)
+# Workload Identity Federation(Workload Identity連携)
 
-# **Workload Identity**
+Workload Identity 連携を使用すると、サービス アカウント キーの代わりにフェデレーション ID を使用して、オンプレミスまたはマルチクラウドのワークロードに Google Cloud リソースへのアクセス権を付与できます。
 
-[**主な特徴**](#2bd38cdd-027d-80e1-b268-c5f45c6c0173)
+cf. <https://docs.cloud.google.com/iam/docs/workload-identity-federation?hl=ja>
 
-[認証のフロー](#2bd38cdd-027d-8015-92cf-d8122c4c8a86)
-
-[主要コンポーネント](#2bd38cdd-027d-8093-a232-d6535331d4ac)
-
-[特定ブランチのみ許可](#2bd38cdd-027d-8085-91f0-c89d018c05fe)
-
-[組織全体を許可](#2bd38cdd-027d-80ed-9464-c900f9523c0c)
-
-[
-
-Workload Identity 連携  |  IAM Documentation  |  Google Cloud Documentation
-
-このドキュメントでは、Workload Identity 連携の概要について説明します。Workload Identity 連携を使用すると、サービス アカウント キーの代わりにフェデレーション ID を使用して、オンプレミスまたはマルチクラウドのワークロードに Google Cloud リソースへのアクセス権を付与できます。
-
-![](GCP/Attachments/super_cloud%201.png)https://docs.cloud.google.com/iam/docs/workload-identity-federation?hl=ja
-
-![](GCP/Attachments/social-icon-google-cloud-1200-630%201.png)](https://docs.cloud.google.com/iam/docs/workload-identity-federation?hl=ja)
-
-外部の CI/CD システム(GitHub Actions、GitLab CI/CD など)から GCP リソースに対して、**長期的な認証情報(Service Account Key)を使わずに認証する仕組み**です。
+外部の CI/CD システム(GitHub Actionsなど)から GCP リソースに対して、**長期的な認証情報(Service Account Key)を使わずに認証する仕組み**です。
 
 ### **主な特徴**
 
@@ -144,16 +125,16 @@ Attribute Mapping と Attribute Condition を設定
 完全な識別子: projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
 
 1. Attribute Mapping  
-    GitHub OIDC トークンの Claims を GCP の属性にマッピング:  
-    bashattribute.actor = assertion.actor # GitHub ユーザー名  
-    google.subject = assertion.sub # サブジェクト  
-    attribute.repository = assertion.repository # リポジトリ名  
-    attribute.repository_owner = assertion.repository_owner
+   GitHub OIDC トークンの Claims を GCP の属性にマッピング:  
+   bashattribute.actor = assertion.actor # GitHub ユーザー名  
+   google.subject = assertion.sub # サブジェクト  
+   attribute.repository = assertion.repository # リポジトリ名  
+   attribute.repository_owner = assertion.repository_owner
 
 2. Attribute Condition (オプション)  
-    特定の条件でのみ認証を許可:  
-    cel# 特定リポジトリのみ許可  
-    assertion.repository == 'organization/repository-name'
+   特定の条件でのみ認証を許可:  
+   cel# 特定リポジトリのみ許可  
+   assertion.repository == 'organization/repository-name'
 
 # 特定ブランチのみ許可
 

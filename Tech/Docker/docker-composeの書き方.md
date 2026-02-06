@@ -11,19 +11,20 @@ status: active
 
 # docker-compose の書き方
 
-Docker Compose と呼ばれる docker の機能を使って、複数のコンテナを実行できるようにする。docker-compose.yml はそのための設定ファイルで、これによってコマンドで行っていた実行構成(-p 等)を設定ファイルとして管理できるようになる。
+Docker Compose と呼ばれる docker の機能を使って、複数のコンテナを実行できるようにする。compose.yml はそのための設定ファイルで、これによってコマンドで行っていた実行構成(-p 等)を設定ファイルとして管理できるようになる。
 
 e.g.)
 
-```YAML
-version: '3.7' #docker-composeのバージョンを指定
+```yaml
+version: "3.7" #docker-composeのバージョンを指定
 
 services: #起動するコンテナを定義する
-  nginx:  #1
+  nginx: #1
     build: #docker buildの実行情報を記述する.そのビルドしたイメージ使用してコンテナを起動します。#imageもしくはbuildを記述する必要がある。
       context: .
-      dockerfile: docker/nginx/Dockerfile # コマンドで言うところの
-																					# docker build -f docker/nginx/Dockerfile .
+      dockerfile:
+        docker/nginx/Dockerfile # コマンドで言うところの
+        # docker build -f docker/nginx/Dockerfile .
     volumes: #volumeのマウントを行う コマンドだと$(pwd)/public:/var/www/html/public:ro <IMAGE ID>
       - ./public:/var/www/html/public:ro
     ports: #ポートの開放 <hostポート>:<コンテナのポート>
@@ -36,7 +37,7 @@ services: #起動するコンテナを定義する
       context: .
       dockerfile: Dockerfile
       env_file:
-      - .env.example
+        - .env.example
     # volumes:
     #   - .:/var/www/html:cached
 
@@ -46,26 +47,10 @@ services: #起動するコンテナを定義する
       - ./mysql:/var/lib/mysql:delegated
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
     ports:
       - 13306:3306
 ```
-
-[
-
-docker-compose
-
-プロジェクトで Docker を使用する際、まず使用するであろう docker-compose を紹介します。 docker-compose はローカルで Docker のオーケストレーションを行うためのツールです。 Docker のビルドから Network や Volume の管理をコードベースで定義して行ってくれます。 docker-compose は Docker の構成を yaml を定義し、その yaml を元に起動します。 例えば nginx を起動し、ホストの 8080 ポートへコンテナの 80 ポートをフォワードする設定は以下の yaml になります。 docker run -p 8080:80 nginx とほぼ同じ動きをします(異なる点としては、docker-compose では専用の Network を作成・使用する点です)。 単純な nginx の起動であれば素の docker コマンドで問題ありませんが、ここに PHP, MySQL...と増えていくとその威力を発揮します。 雰囲気を知るために上記のような 3 つのコンテナを協調させて動かしてみましょう。 $ git clone https://github.com/y-ohgi/introduction-docker.git $ cd introduction-docker/handson/laravel $ docker-compose up Play with Docker 上へポートが公開されるので、ブラウザで確認してみましょう。 起動した Laravel リポジトリの Dockerfile をもとに、docker-compose.yaml の書き方を学びましょう。 docker-compose のバージョンを指定します。 特にこだわりがなければ最新のものを記述するようにしましょう。 起動するコンテナの定義を行います。 この docker-compose.yaml では nginx , app , mysql の 3 つが定義されています。 image コンテナを起動する Docker Image を指定します。 build docker build の実行情報を記述します。 ここで定義された情報を元に Docker をビルドし、そのビルドしたイメージ使用してコンテナを起動します。 image もしくは build どちらかを記述する必要があります。 コマンドの場合、 docker build -f docker/nginx/Dockerfile .
-
-<https://y-ohgi.com/introduction-docker/3_production/docker-compose>
-
-docker-compose
-
-docker-compose でよく使う Tips 集です。 一般的に Docker のベストプラクティスにのっとった設計をすると環境変数で各種パラメータの定義が重要になってきます。 例えば MySQL のパスワードや各種接続情報や秘匿情報など、環境によって変更されるものは基本的にコンテナ起動時に環境変数で定義します。 docker-compose を使用した場合どのような方法で定義するのか、代表的な 4 つの方法を紹介します。 $ docker-compose up -e MYSQL_PASSWORD=mypassword version: '3.7' services: app: build: . + environment: + - MYSQL_PASSWORD=mypassword docker-compose.yaml version: '3.7' services: app: build: . environment: - - MYSQL_PASSWORD=mypassword + - MYSQL_PASSWORD=${MYSQL_PASSWORD} $ export MYSQL_PASSWORD=mypassword $ docker-compose up docker-compose.yaml version: '3.7' services: app: build: .
-
-![](favicon%202.png)https://y-ohgi.com/introduction-docker/4_tips/docker-compose/
-
-](https://y-ohgi.com/introduction-docker/4_tips/docker-compose/)
 
 ### compose ファイルの書き方
 
@@ -91,7 +76,7 @@ docker-compose.yml を作成したディレクトリ上で、`docker-compose up 
 
 cf)
 
-[🐭Docker コマンドチートシート](Docker%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%83%81%E3%83%BC%E3%83%88%E3%82%B7%E3%83%BC%E3%83%88%20f5e6db7a763e4004b02b45ab27c31fe9.html)
+[[Dockerコマンドチートシート.md|Docker コマンドチートシート]]
 
 ## テンプレート
 
