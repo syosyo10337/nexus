@@ -56,19 +56,19 @@ or
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                 │                                         │
 └─────────────────────────────────┼─────────────────────────────────────────┘
-                                │
-                        ┌─────────────▼────────────────┐
-                        │  GitHub OIDC Token (JWT)     │
-                        │  Issuer:                     │
-                        │  token.actions.githubusercontent.com │
-                        │  Claims:                     │
-                        │  - repository                │
-                        │  - workflow                  │
-                        │  - actor                     │
-                        │  - ref                       │
-                        └──────────────┬───────────────┘
-                                │
-                                ▼
+                        　　　　　　│
+                    ┌─────────────▼────────────────┐
+                    │  GitHub OIDC Token (JWT)     │
+                    │  Issuer:                     │
+                    │  token.actions.githubusercontent.com │
+                    │  Claims:                     │
+                    │  - repository                │
+                    │  - workflow                  │
+                    │  - actor                     │
+                    │  - ref                       │
+                    └──────────────┬───────────────┘
+                                   │
+                                   ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          Google Cloud Platform                           │
 │                                                                          │
@@ -120,22 +120,24 @@ or
 
 1. Workload Identity Provider
 
-外部 Identity Provider (GitHub OIDC) との連携を定義  
-Issuer URI: [https://token.actions.githubusercontent.com](https://token.actions.githubusercontent.com/)  
-Attribute Mapping と Attribute Condition を設定  
-完全な識別子: projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
+- 外部 Identity Provider (GitHub OIDC) との連携を定義  
+  Issuer URI: [https://token.actions.githubusercontent.com](https://token.actions.githubusercontent.com/)
+- トークンの検証を行う
 
-1. Attribute Mapping  
-   GitHub OIDC トークンの Claims を GCP の属性にマッピング:  
-   bashattribute.actor = assertion.actor # GitHub ユーザー名  
-   google.subject = assertion.sub # サブジェクト  
-   attribute.repository = assertion.repository # リポジトリ名  
-   attribute.repository_owner = assertion.repository_owner
+- Attribute Mapping と Attribute Condition を設定  
+  完全な識別子: projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider
 
-2. Attribute Condition (オプション)  
-   特定の条件でのみ認証を許可:  
-   cel# 特定リポジトリのみ許可  
-   assertion.repository == 'organization/repository-name'
+**Attribute Mapping**
+GitHub OIDC トークンの Claims を GCP の属性にマッピング:  
+ bashattribute.actor = assertion.actor # GitHub ユーザー名  
+ google.subject = assertion.sub # サブジェクト  
+ attribute.repository = assertion.repository # リポジトリ名  
+ attribute.repository_owner = assertion.repository_owner
+
+**Attribute Condition (オプション)**
+特定の条件でのみ認証を許可:  
+ cel# 特定リポジトリのみ許可  
+ assertion.repository == 'organization/repository-name'
 
 ## 特定ブランチのみ許可
 
@@ -150,3 +152,27 @@ assertion.repository_owner == 'organization-name'
 自動期限切れ: トークンは 1 時間でデフォルトで期限切れ  
 細かなアクセス制御: リポジトリ、ブランチ、ユーザーレベルで制限可能  
 監査性の向上: すべての認証試行が Cloud Audit Logs に記録され
+
+### 実際のセットアップ例
+
+- Workload Identity Poolの作成
+
+```bash
+# 外部IDを管理するプールを作成
+  gcloud iam workload-identity-pools create "github-pool" \
+   --project="${PROJECT_ID}" \
+   --location="global" \
+   --display-name="GitHub Actions Pool"
+```
+
+- Workload Identity Providerの作成
+
+```bash
+  # GitHub ActionsとGCPを繋ぐプロバイダーを作成
+  gcloud iam workload-identity-pools providers create-oidc "github-provider" \
+   --location="global" \
+   --workload-identity-pool="github-pool" \
+   --display-name="GitHub Provider" \
+   --attribute-mapping="google.subject=assertion.sub,attribute.actor=assertion.actor,attribute.repository=assertion.repository" \
+   --issuer-uri="<https://token.actions.githubusercontent.com>"
+```
