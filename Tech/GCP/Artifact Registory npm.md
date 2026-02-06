@@ -50,7 +50,9 @@ gcloud artifacts repositories create <REPOSITORY_NAME> \
   --description=<e.g.Private npm packages>
 ```
 
-### IAM 権限の設定
+### (opt)IAM 権限の設定
+
+CIでWordLoad Fedeartionなどを使いながら、SAによって認証したい場合には、追加で権限の付与が必要です。
 
 ```bash
 # 権限の確認
@@ -82,12 +84,14 @@ gcloud auth application-default login
 ### 認証ヘルパーを利用
 
 認証ヘルパーの実行
-ここで npx コマンドを使います。これが .npmrc に認証トークンの設定を追記してくれます。
+.npmrcを読み込んで、
 
 ```bash
 # プロジェクトルートで実行
 npx google-artifactregistry-auth
 ```
+
+cf. <https://www.npmjs.com/package/google-artifactregistry-auth>
 
 ### 3. npm パッケージの準備
 
