@@ -108,22 +108,6 @@ cf. <https://docs.cloud.google.com/artifact-registry/docs/nodejs/authentication?
 
 つまり、~/.npmrcに認証情報は置かれるってことですな。
 
-### 3. npm パッケージの準備
-
-#### package.json の設定
-
-```json
-{
-  "name": "@<SCOPE>/<PACKAGE_NAME>",
-  "version": "1.0.0",
-  "description": "Private package",
-  "main": "index.js",
-  "publishConfig": {
-    "registry": "https://<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/"
-  }
-}
-```
-
 ### 4. パッケージの公開
 
 ```bash
@@ -134,36 +118,98 @@ npm run build
 npm publish
 ```
 
-### 5. パッケージのインストール
+## 関連: 利用側でも、privaterepoへのアクセス情報が必要
 
-他のプロジェクトでプライベートパッケージを使用する:
+Google CLIがインストールされている環境であれば、~/.npmrcに認証情報があるはずなので、プロジェクトごとに宛先だけかいた.npmrcがあればよいということになる
+ただし、dockerコンテナやCIサービスで npm iなどアクセスする場合には、access_tokenが必要になる
 
-```bash
-# .npmrc が設定されていれば通常通りインストール可能
-npm install @<SCOPE>/<PACKAGE_NAME>
-```
+### 対応策の一例
 
-## トラブルシューティング
-
-### 認証エラー
+#### Dockerコンテナへ: .envrcをつかって,環境変数としてprint
 
 ```bash
-# 認証情報の再生成
-gcloud auth application-default print-access-token
+Artifact Registry認証用のNPMトークンを動的に取得
+# direnvがインストールされている必要があります
+# 初回は `direnv allow` を実行してください
+
+export NPM_TOKEN=$(gcloud auth print-access-token 2>/dev/null)
+
+if [ -z "$NPM_TOKEN" ]; then
+  echo "⚠️  Warning: Failed to get GCP access token"
+  echo "   Run: gcloud auth login"
+fi
 ```
 
-### 権限エラー
+それをcomposeのsecrets値として渡してあげる
 
-必要な権限:
+```yaml
+# 例: NPM_TOKENの名前で受け取っている
+services:
+  storybook:
+    image: birdcage:local
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+      secrets:
+        - NPM_TOKEN
+    ports:
+      - "127.0.0.1:6006:6006"
+    environment:
+      - NODE_ENV=development
+      - NPM_TOKEN=${NPM_TOKEN}
+    command: npm run sb:no-open -- --host 0.0.0.0
+    profiles:
+      - storybook
+      - dev
+    volumes:
+      - ./:/opt/birdcage
 
-- `roles/artifactregistry.writer` - パッケージの公開
-- `roles/artifactregistry.reader` - パッケージのインストール
-
-## 関連リンク
-
-- [rc (run commands)](<../CS/rc%20(run%20commands).md>) - .npmrc の詳細
-- [GCP公式ドキュメント](https://cloud.google.com/artifact-registry/docs/nodejs/quickstart)
-
+secrets:
+  NPM_TOKEN:
+    environment: NPM_TOKEN
 ```
 
+#### CI: 専用のSAを作って、workload indentity federation経由でアクセストークンだけ持ってくる
+
+```yaml
+# ...
+- name: Authenticate to Google Cloud
+  id: gcp-auth
+  uses: google-github-actions/auth@v2
+  with:
+    workload_identity_provider: ${{ secrets.AVALON_GCP_WORKLOAD_IDENTITY_PROVIDER_SYOYA_INTERNAL }}
+    service_account: ${{ secrets.AVALON_SA_EMAIL_GCR }} #GCR用のSAを拝借
+    token_format: access_token
+```
+
+このようにすると、本来ユーザ環境で必要な ~/.npmrcに配置されているaccss_tokenが
+`steps.xxx.outputs.access_token`という形でセットできる。こいつを使えばよい。
+
+```yaml
+# e.g.buildkitで用いるとき
+# docker secretsに入れてあげる
+- name: Build builder stage with GHA cache
+  uses: docker/build-push-action@v6
+  with:
+    context: .
+    file: Dockerfile
+    target: builder
+    load: true
+    tags: birdcage:builder
+    cache-from: type=gha,scope=${{ steps.set-cache-scope.outputs.cache_scope }}
+    cache-to: type=gha,mode=max,scope=${{ steps.set-cache-scope.outputs.cache_scope }}
+    secrets: |
+      NPM_TOKEN=${{ steps.gcp-auth.outputs.access_token }}
+```
+
+```yaml
+# e.g. 自動でnpm publishしたいとき
+- name: Publish package
+  if: steps.check_version.outputs.exists == 'false'
+  env:
+    NPM_TOKEN: ${{ steps.gcp-auth.outputs.access_token }}
+  run: npm publish
 ```
