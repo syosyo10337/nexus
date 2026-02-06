@@ -45,8 +45,8 @@ on:
   workflow_call:
     inputs:
       username:
-        description: 'A username passed from the caller workflow'
-        default: 'john-doe'
+        description: "A username passed from the caller workflow"
+        default: "john-doe"
         required: false
         type: string
 
@@ -69,7 +69,7 @@ steps:
   - name: Set output
     id: step1
     run: echo "result=success" >> $GITHUB_OUTPUT
-  
+
   - name: Use output
     run: echo "Previous step result: ${{ steps.step1.outputs.result }}"
 ```
