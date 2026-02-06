@@ -8,11 +8,27 @@ created: 2026-02-06
 updated: 2026-02-06
 ---
 
-# Artifact Registry
+# 概要
 
-## 概要
+npmのprivateパッケージをGoogle Cloudに配置する方法
 
-（後で記述）
+## 1. パッケージの設定
+
+@<scope>/packageノカタチで、パッケージ名を設定する
+publishconfigを書くのもお作法
+
+```json
+// package.json
+{
+  "name": "@avalon/my-utils",
+  "version": "1.0.0",
+  "publishConfig": {
+    "registry": "https://asia-northeast1-npm.pkg.dev/avalon-project-id/my-repo-name/"
+  }
+}
+```
+
+.npmrcを
 
 ## プライベート npm パッケージの公開手順
 
@@ -25,20 +41,20 @@ updated: 2026-02-06
 gcloud artifacts repositories create <REPOSITORY_NAME> \
   --repository-format=npm \
   --location=<LOCATION> \
-  --description=<e.g.Private npm packages> 
+  --description=<e.g.Private npm packages>
 ```
 
 #### IAM 権限の設定
 
 ```bash
 # 権限の確認
-gcloud artifacts repositories get-iam-policy REPOSITORY_NAME \
-  --location=LOCATION
+gcloud artifacts repositories get-iam-policy <REPOSITORY_NAME> \
+  --location=<LOCATION>
 
 # 権限の付与
-gcloud artifacts repositories add-iam-policy-binding REPOSITORY_NAME \
-  --location=LOCATION \
-  --member=user:EMAIL \
+gcloud artifacts repositories add-iam-policy-binding <REPOSITORY_NAME> \
+  --location=<LOCATION> \
+  --member=user:<EMAIL> \
   --role=roles/artifactregistry.writer
 ```
 
@@ -48,7 +64,7 @@ gcloud artifacts repositories add-iam-policy-binding REPOSITORY_NAME \
 
 ```bash
 # Artifact Registry への認証設定
-gcloud auth configure-docker LOCATION-npm.pkg.dev
+gcloud auth configure-docker <LOCATION>-npm.pkg.dev
 
 # または npm 用の認証ヘルパーを使用
 npx google-artifactregistry-auth
@@ -57,13 +73,14 @@ npx google-artifactregistry-auth
 #### .npmrc の設定
 
 プロジェクトルートまたはホームディレクトリに `.npmrc` ファイルを作成:
+これは、packageの宛先を書きます(宛先だけじゃなくて、認証情報もほしいので書きます？)
 
 ```ini
 # スコープ付きパッケージのレジストリを指定
-@SCOPE:registry=https://LOCATION-npm.pkg.dev/PROJECT_ID/REPOSITORY_NAME/
+@<SCOPE>:registry=https://<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/
 
 # 認証トークン（自動生成される場合が多い）
-//LOCATION-npm.pkg.dev/PROJECT_ID/REPOSITORY_NAME/:_authToken=TOKEN
+//<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/:_authToken=<TOKEN>
 ```
 
 ### 3. npm パッケージの準備
@@ -72,12 +89,12 @@ npx google-artifactregistry-auth
 
 ```json
 {
-  "name": "@SCOPE/package-name",
+  "name": "@<SCOPE>/<PACKAGE_NAME>",
   "version": "1.0.0",
   "description": "Private package",
   "main": "index.js",
   "publishConfig": {
-    "registry": "https://LOCATION-npm.pkg.dev/PROJECT_ID/REPOSITORY_NAME/"
+    "registry": "https://<LOCATION>-npm.pkg.dev/<PROJECT_ID>/<REPOSITORY_NAME>/"
   }
 }
 ```
@@ -98,7 +115,7 @@ npm publish
 
 ```bash
 # .npmrc が設定されていれば通常通りインストール可能
-npm install @SCOPE/package-name
+npm install @<SCOPE>/<PACKAGE_NAME>
 ```
 
 ## トラブルシューティング
