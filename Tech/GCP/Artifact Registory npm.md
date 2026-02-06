@@ -121,9 +121,21 @@ npm publish
 ## 関連: 利用側でも、privaterepoへのアクセス情報が必要
 
 Google CLIがインストールされている環境であれば、~/.npmrcに認証情報があるはずなので、プロジェクトごとに宛先だけかいた.npmrcがあればよいということになる
-ただし、dockerコンテナやCIサービスで npm iなどアクセスする場合には、access_tokenが必要になる
+
+## HOWTO：コンテナやCI環境からアクセスするとき
+
+dockerコンテナやCIサービスで npm iなどアクセスする場合には、access_tokenが必要になる
 
 ### 対応策の一例
+
+まず、プロジェクトの.npmrcに
+
+```bash
+# .npmrc
+@avalon:registry=https://asia-northeast1-npm.pkg.dev/avalon-project-id/my-repo-name/
+//asia-northeast1-npm.pkg.dev/avalon-project-id/my-repo-name/:_authToken=${NPM_TOKEN}
+のようにplaceホルダーを設置
+```
 
 #### Dockerコンテナへ: .envrcをつかって,環境変数としてprint
 
@@ -172,6 +184,17 @@ secrets:
     environment: NPM_TOKEN
 ```
 
+```dockefile
+# Dockerfile
+FROM node:18-alpine AS builder
+WORKDIR /app
+COPY package*.json .npmrc ./
+
+# Secretをマウントして環境変数に展開してから npm ci を実行
+RUN --mount=type=secret,id=NPM_TOKEN \
+    NPM_TOKEN=$(cat /run/secrets/NPM_TOKEN) npm ci
+```
+
 #### CI: 専用のSAを作って、workload indentity federation経由でアクセストークンだけ持ってくる
 
 ```yaml
@@ -213,3 +236,10 @@ secrets:
     NPM_TOKEN: ${{ steps.gcp-auth.outputs.access_token }}
   run: npm publish
 ```
+
+## CIでartifact registoryを読み書きしたいとき
+
+[前項の対策例](#対応策の一例)でも記述しましたが、
+`uses: google-github-actions/auth@v2`を使いながらworkload indentity federationを実行するSAを用意しておきましょう。
+その設定は artifact側二権限が付与されていることも必要なので
+[こちら](#optiam-権限の設定)を参考に追加する必要がある。
