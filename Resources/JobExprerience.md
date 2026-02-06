@@ -4,6 +4,15 @@
 
 ## GCP/Cloud Run function/Vertex AI Applications つかった社内 RAG 及び Notion 連携
 
+タイトル URL
+Notion Integration
+Slack App
+GoogleCloud/Vertex AI Search
+GoogleCloud/GCS
+GoogleCloud/Cloud Run functions
+GoogleCloud/Secret Manager
+GoogleCloud/Vertex AI
+
 ## pino + cloud logging をつかったロギング戦略 for Next.js15 (Approuter)
 
 client でのエラーか？server でのエラーか？を分けてロギングする
