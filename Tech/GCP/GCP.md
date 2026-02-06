@@ -56,7 +56,3 @@ gcloud projects get-iam-policy $PROJECT_ID \
 [🏐Cloud Run functions](Cloud%20Run%20functions.md)
 
 [Vertex AI Applications](Vertex%20AI%20Applications.md)
-
-```
-
-```
