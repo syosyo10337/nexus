@@ -9,13 +9,14 @@ status: active
 
 # Workload Identity Federation(Workload Identity連携)
 
-Workload Identity 連携を使用すると、サービス アカウント キーの代わりにフェデレーション ID を使用して、オンプレミスまたはマルチクラウドのワークロードに Google Cloud リソースへのアクセス権を付与できます。
+Workload Identity Federationを使用すると、サービス アカウント キーの代わりにフェデレーション ID を使用して、オンプレミスまたはマルチクラウドのワークロードに Google Cloud リソースへのアクセス権を付与できます。
 
 cf. <https://docs.cloud.google.com/iam/docs/workload-identity-federation?hl=ja>
 
+つまり、
 外部の CI/CD システム(GitHub Actionsなど)から GCP リソースに対して、**長期的な認証情報(Service Account Key)を使わずに認証する仕組み**です。
 
-### **主な特徴**
+## 主な特徴
 
 1. **キーレス認証**: Service Account Key JSON ファイルが不要
 
@@ -30,10 +31,10 @@ cf. <https://docs.cloud.google.com/iam/docs/workload-identity-federation?hl=ja>
 ```Bash
 GitHub Actions → GitHub OIDC Provider (JWT発行)
     ↓
-GCP Workload Identity Pool (トークン検証・属性マッピング)
+GCP Workload **Identity** Pool (トークン検証・属性マッピング)
     ↓
 [Direct WIF] 直接リソースアクセス (推奨)
-または
+or
 [WIF through SA] Service Account 経由でアクセス
 ```
 
@@ -55,19 +56,19 @@ GCP Workload Identity Pool (トークン検証・属性マッピング)
 │  └───────────────────────────────────────────────────────────────────┘  │
 │                                 │                                         │
 └─────────────────────────────────┼─────────────────────────────────────────┘
-																	│
-							 			┌─────────────▼────────────────┐
-										│  GitHub OIDC Token (JWT)     │
-										│  Issuer:                     │
-										│  token.actions.githubusercontent.com │
-										│  Claims:                     │
-										│  - repository                │
-										│  - workflow                  │
-										│  - actor                     │
-										│  - ref                       │
-										└──────────────┬───────────────┘
-																	│
-																	▼
+                                │
+                        ┌─────────────▼────────────────┐
+                        │  GitHub OIDC Token (JWT)     │
+                        │  Issuer:                     │
+                        │  token.actions.githubusercontent.com │
+                        │  Claims:                     │
+                        │  - repository                │
+                        │  - workflow                  │
+                        │  - actor                     │
+                        │  - ref                       │
+                        └──────────────┬───────────────┘
+                                │
+                                ▼
 ┌──────────────────────────────────────────────────────────────────────────┐
 │                          Google Cloud Platform                           │
 │                                                                          │
@@ -136,11 +137,11 @@ Attribute Mapping と Attribute Condition を設定
    cel# 特定リポジトリのみ許可  
    assertion.repository == 'organization/repository-name'
 
-# 特定ブランチのみ許可
+## 特定ブランチのみ許可
 
 assertion.ref == 'refs/heads/main'
 
-# 組織全体を許可
+## 組織全体を許可
 
 assertion.repository_owner == 'organization-name'  
 セキュリティの利点
