@@ -8,7 +8,7 @@ created: 2025-11-29
 updated: 2025-11-29
 status: draft
 related:
-  - "[[Tidy first?]]"
+  - "Tidy first?"
 ---
 
 # PRをわけるgit操作
