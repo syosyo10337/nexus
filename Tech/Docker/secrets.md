@@ -23,14 +23,14 @@ secret はコンテナー内部において /run/secrets/<secret_name> 内のフ
 
 ### Single-service secret injection
 
-以下の利用例では、フロントエンドサービスにおいて my_secret という secret へのアクセス権が与えられています。 このコンテナーでは ./my_secret.txt のファイル内容が /run/secrets/MY_SECRET に設定されます。
+以下の利用例では、フロントエンドサービスにおいて MY_SECRET という secret へのアクセス権が与えられています。 このコンテナーでは ./my_secret.txt のファイル内容が /run/secrets/MY_SECRET に設定されます。
 
 ```yaml
 services:
   myapp:
     image: myapp:latest
     secrets:
-      - my_secret
+      - MY_SECRET
 secrets:
   MY_SECRET:
     file: ./my_secret.txt
