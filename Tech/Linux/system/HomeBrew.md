@@ -1,10 +1,12 @@
 ---
+description: macOS用パッケージマネージャーの使い方とaptコマンドとの対応
 tags:
   - package manager
   - homebrew
   - macos
+  - linux
 created: 2026-01-04
-updated: 2026-01-06
+updated: 2026-02-08
 status: active
 ---
 
@@ -98,10 +100,22 @@ brew update && brew upgrade
 brew cleanup
 ```
 
-## Tips
+## brew と apt の対応表
+
+パッケージ管理コマンドの対応関係：
+
+| 操作                       | apt (Debian/Ubuntu)                     | brew (macOS)         |
+| -------------------------- | --------------------------------------- | -------------------- |
+| パッケージマネージャを更新 | `sudo apt update`                       | `brew update`        |
+| 更新可能なパッケージを確認 | `apt list --upgradable`                 | `brew outdated`      |
+| パッケージを更新           | `sudo apt upgrade`                      | `brew upgrade`       |
+| 特定パッケージを更新       | `sudo apt install --only-upgrade <pkg>` | `brew upgrade <pkg>` |
+| 不要なパッケージを削除     | `sudo apt autoremove`                   | `brew autoremove`    |
+| キャッシュを削除           | `sudo apt clean`                        | `brew cleanup`       |
+
+## よくあるコマンド
 
 - `brew update`: Homebrewのフォーミュラ（パッケージ定義）を更新
 - `brew upgrade`: インストール済みパッケージを最新版に更新
 - `brew outdated`: 更新可能なパッケージを確認
 - 定期的に `brew doctor` を実行して問題がないか確認するのがベストプラクティス
-
