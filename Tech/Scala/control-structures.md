@@ -42,7 +42,7 @@ if '('<条件式>')' <then式> (else <else式>)?
 // Scala 3ではthenキーワードを使用して以下のように書くこともできます。
 if <条件式> then <then式> (else <else式>)?
 
-// e.g. 
+// e.g.
 
 val age: Int = 18
 
@@ -114,7 +114,7 @@ for (<ジェネレータ>;)+ do <本体式>
 
 各 ジェネレータ の変数 x に相当する部分は、好きな名前のループ変数を使うことができます。 式 には色々な式が書けます。ただ、現状では全てを説明しきれないため、何かの数の範囲を表す式を使えると覚えておいてください。
 たとえば、1 to 10 は1から10まで（10を含む）の範囲で、
- 1 until 10 は1から10まで（10を含まない）の範囲です。
+1 until 10 は1から10まで（10を含まない）の範囲です。
 
 それでは、早速 for 式を使ってみましょう。
 
@@ -152,6 +152,8 @@ for(e <- List("A", "B", "C", "D", "E")) println(e)
 
 ```
 
+### for-comprehension
+
 ```scala
 for(e <- List("A", "B", "C", "D", "E")) yield {
   "Pre" + e
@@ -161,7 +163,15 @@ for(e <- List("A", "B", "C", "D", "E")) yield {
 
 ここでポイントとなるのは、yieldというキーワードです。実は、for構文はyieldキーワードを使うことで、コレクションの要素を加工して返すという全く異なる用途に使うことができます。特にyieldキーワードを使ったfor式を特別に for-comprehensionと呼ぶことがあります。
 
-# match expression
+以下のfor-comprehensionはflatMapのsyntax sugarです。
+
+```scala
+for(x <- col1; y <- col2) yield z
+
+col1.flatMap{x => col2.map{y => z}}
+```
+
+## match expression
 
 ```scala
 <対象式> match {
@@ -181,7 +191,7 @@ taro match {
 // res10: String = "Male"
 ```
 
-defaultの代わりにワイルドカードパターンを使います(_)
+defaultの代わりにワイルドカードパターンを使います(\_)
 
 ```scala
 val one: Int = 1

@@ -78,6 +78,10 @@ vector(1)        // 2
 Scala の `List` は単語鎖構造で表現されます。
 **先頭の要素**と**残りのリスト**に分割でき、その基底は空のリスト **`Nil`** です。
 
+Listの先頭要素へのアクセスは高速にできる反面、要素へのランダムアクセスや末尾へのデータの追加は Listの長さに比例した時間がかかってしまうということが挙げられます。Listは関数型プログラミング言語で最も基本的なデータ構造
+
+配列操作系のメソッドはこちらを参考に cf. <https://scala-text.github.io/scala_text/collection.html#foldleft%EF%BC%9A%E5%B7%A6%E3%81%8B%E3%82%89%E3%81%AE%E7%95%B3%E3%81%BF%E8%BE%BC%E3%81%BF>
+
 ```scala
 List(1, 2, 3)
 // 内部的には：1 :: (2 :: (3 :: Nil))
@@ -109,6 +113,16 @@ val list3 = 0 :: List(1, 2, 3)  // List(0, 1, 2, 3)
 `1 :: Nil`という記法は、中置表記と:で終わるメソッドの特殊ルールを組みあわせてものになっているらしい。
 // 見た目：1のメソッドを呼んでいるように見える
 // 実際：Nil.::(1) ← Nilのメソッドとして呼ばれる！
+
+#### 練習: 自作map
+
+```scala
+
+def map[T, U](list: List[T])(f: T => U): List[U] = {
+    list.foldLeft(Nil: List[U])((acc, elem) => f(elem) :: acc
+    ).reverse
+}
+```
 
 ### ++ （リスト連結演算子）
 
@@ -253,13 +267,48 @@ list.foldRight(0)(_ - _)  // 1 - (2 - (3 - 0)) = 1 - (2 - 3) = 1 - (-1) = 2
 List(1, 2, 3).foldRight(List[Int]())(_ :: _)  // List(1, 2, 3)
 ```
 
+#### foldLeftの練習
+
+`def mkString[T](list: List[T])(sep: String): String = ???
+`この宣言のmkStringを自作する
+
+```scala
+def mkString[T](list: List[T])(sep: String): String = list match {
+  case Nil => ""
+  case head :: tail => tail.foldLeft(head.toString)((acc, elem) => acc + sep + elem)
+}
+```
+
+#### 練習: 自作filter
+
+````scala
+def filter[T](list: List[T])(f: T => Boolean): List[T] = {
+    list.foldLeft(Nil: List[T])((acc, elem) =>
+        if (f(elem)) {
+            elem :: acc
+        } else {
+            acc
+        }
+    ).reverse
+}
+```
+
+#### 練習: 自作find
+```scala
+def find[T](list: List[T])(f: T => Boolean): Option[T] = list match {
+  case x::xs if f(x) => Some(x)
+  case x::xs => find(xs)(f)
+  case _ => None
+}
+```
+
 ## Setの具体例
 
 ```scala
 val set = Set(1, 2, 2, 3)
 set.contains(2)  // true
 set + 4          // Set(1, 2, 3, 4)
-```
+````
 
 ## Mapの具体例
 
@@ -309,9 +358,72 @@ nums.foldLeft(0)(_ + _)   // 15
 ### 検索系
 
 ```scala
+val nums = List(1, 2, 3, 4, 5)
+
 nums.find(_ > 3)          // Some(4)
 nums.exists(_ > 3)        // true
 nums.forall(_ > 0)        // true
+```
+
+#### find メソッド（Option型を返す）
+
+`find` メソッドは条件に一致する**最初の要素**を探し、**Option型**で返します。
+
+```scala
+val nums = List(1, 2, 3, 4, 5)
+
+// 条件に一致する要素が見つかる場合
+val result1 = nums.find(_ > 3)
+// result1: Option[Int] = Some(4)
+
+// 条件に一致する要素が見つからない場合
+val result2 = nums.find(_ > 10)
+// result2: Option[Int] = None
+```
+
+**Option型とは**：
+
+- **Some(値)**：値が存在する場合
+- **None**：値が存在しない場合
+
+このパターンにより、`null` を使わずに「値がないかもしれない」状況を型安全に扱えます。
+
+**Optionの扱い方**：
+
+```scala
+val result = nums.find(_ > 3)  // Some(4)
+
+// パターンマッチング
+result match {
+  case Some(value) => println(s"見つかった: $value")
+  case None => println("見つからなかった")
+}
+
+// getOrElse（デフォルト値を指定）
+val value = result.getOrElse(0)  // 4
+
+// map/flatMapで変換
+result.map(_ * 2)  // Some(8)
+
+// filter で絞り込み
+result.filter(_ > 5)  // None
+
+// 存在チェック
+result.isDefined  // true
+result.isEmpty    // false
+```
+
+**他の検索メソッド**：
+
+```scala
+// exists: 条件を満たす要素が存在するか（Boolean）
+nums.exists(_ > 3)  // true
+
+// forall: すべての要素が条件を満たすか（Boolean）
+nums.forall(_ > 0)  // true
+
+// contains: 指定した値が含まれるか（Boolean）
+nums.contains(3)    // true
 ```
 
 ### 分割・グループ化
