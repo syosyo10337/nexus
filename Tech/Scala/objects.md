@@ -102,6 +102,8 @@ p1 match {
 }
 ```
 
+cf. [case-class and pattern-matching](case-class-and-pattern-matching.md)
+
 ## コンパニオンオブジェクト
 
 クラスと同じファイル内、同じ名前で定義されたシングルトンオブジェクトは、コンパニオンオブジェクトと呼ばれます。
@@ -131,10 +133,58 @@ object Person {
 }
 ```
 
+### 自動生成されるメソッド
+
+#### 1. コンパニオンオブジェクトの `apply` メソッド
+
+```scala
+// new を使わずにインスタンスを生成できる
+val alice = Person("Alice", 25)
+// コンパイラが Person.apply("Alice", 25) に変換する
+```
+
+#### 2. `unapply` メソッド（パターンマッチング用）
+
+```scala
+val person = Person("Bob", 30)
+
+person match {
+  case Person(name, age) => println(s"$name is $age years old")
+}
+```
+
+#### 3. `equals` と `hashCode`
+
+構造的な等価性（structural equality）を自動実装します。
+
+```scala
+val p1 = Person("Alice", 25)
+val p2 = Person("Alice", 25)
+val p3 = Person("Bob", 30)
+
+p1 == p2  // true（内容が同じ）
+p1 == p3  // false
+```
+
+#### 4. `toString`
+
+デバッグに便利な文字列表現を自動生成します。
+
+```scala
+val person = Person("Alice", 25)
+println(person)  // Person(Alice,25)
+```
+
+#### 5. `copy` メソッド
+
+イミュータブルな変更を簡単に行えます。
+
+```scala
+val alice = Person("Alice", 25)
+val olderAlice = alice.copy(age = 26)  // name は変更しない
+
+println(alice)       // Person(Alice,25)
+println(olderAlice)  // Pe
+```
+
 はOKです。**privateとした場合、コンパニオンオブジェクトからはアクセス可能です。**
-
-## applyメソッド
-
-## objectの初期化
-
-## objectとclassの違い
