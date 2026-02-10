@@ -32,6 +32,7 @@ object <object名> extends <class名> (with <trait名>) {
 ## apply によるファクトリ
 
 `apply` は Scala 処理系で特別扱いされます。`Point(x)` と書いたとき、`Point` object に `apply` があると `Point.apply(x)` と解釈されます。
+つまり、ObjectName()はapplyのsyntax suagerです。
 
 ```scala
 class Point(val x: Int, val y: Int)
@@ -52,13 +53,15 @@ object Point {
 
 クラスと同じファイル内で同じ名前の `object` を定義するとコンパニオンオブジェクトになります。コンパニオンオブジェクトは対応するクラスに対して特権的なアクセス権を持ちます。
 
+（クラスに付随するシングルトン）Javaなどでいうstaticに大体するものですね。
+
 ```scala
 class Person(name: String, age: Int, private val weight: Int)
 
 object Hoge {
   def printWeight(): Unit = {
     val taro = new Person("Taro", 20, 70)
-    println(taro.weight)
+    println(taro.weight) // weightはprivateなのでNG
   }
 }
 ```

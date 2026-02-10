@@ -381,38 +381,6 @@ val result2 = nums.find(_ > 10)
 // result2: Option[Int] = None
 ```
 
-**Option型とは**：
-
-- **Some(値)**：値が存在する場合
-- **None**：値が存在しない場合
-
-このパターンにより、`null` を使わずに「値がないかもしれない」状況を型安全に扱えます。
-
-**Optionの扱い方**：
-
-```scala
-val result = nums.find(_ > 3)  // Some(4)
-
-// パターンマッチング
-result match {
-  case Some(value) => println(s"見つかった: $value")
-  case None => println("見つからなかった")
-}
-
-// getOrElse（デフォルト値を指定）
-val value = result.getOrElse(0)  // 4
-
-// map/flatMapで変換
-result.map(_ * 2)  // Some(8)
-
-// filter で絞り込み
-result.filter(_ > 5)  // None
-
-// 存在チェック
-result.isDefined  // true
-result.isEmpty    // false
-```
-
 **他の検索メソッド**：
 
 ```scala
