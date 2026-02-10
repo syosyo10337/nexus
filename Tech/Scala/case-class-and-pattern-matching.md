@@ -85,6 +85,39 @@ enum DayOfWeekScala3Enum {
 }
 ```
 
+### 練習問題: caseを使った表現例
+
+```scala
+object BinaryTree {
+  sealed abstract class Tree
+  case class Branch(value: Int, left: Tree, right: Tree) extends Tree
+  case object Empty extends Tree
+
+  def max(tree: Tree): Option[Int] = tree match {
+    case Branch(value, left, right) =>
+      val leftMax = max(left).getOrElse(Int.MinValue)
+      val rightMax = max(right).getOrElse(Int.MinValue)
+      Some(List(value, leftMax, rightMax).max)
+    case Empty => None
+  }
+
+  def min(tree: Tree): Option[Int] = tree match {
+    case Branch(value, left, right) =>
+      val leftMin = min(left).getOrElse(Int.MaxValue)
+      val rightMin = min(right).getOrElse(Int.MaxValue)
+      Some(List(value, leftMin, rightMin).min)
+    case Empty => None
+  }
+
+  def depth(tree: Tree): Int = tree match {
+    case Branch(_, left, right) => 1 + List(depth(left), depth(right)).max
+    case Empty => 0
+  }
+}
+```
+
+### 部分関数: TODOここから
+
 ## パターンマッチング
 
 ### 基本構文
