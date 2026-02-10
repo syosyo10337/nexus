@@ -5,7 +5,7 @@ tags:
   - pattern-matching
   - functional-programming
 created: 2026-02-09
-updated_at: 2026-02-09
+updated_at: 2026-02-11
 status: active
 ---
 
@@ -116,8 +116,6 @@ object BinaryTree {
 }
 ```
 
-### 部分関数: TODOここから
-
 ## パターンマッチング
 
 ### 基本構文
@@ -197,6 +195,131 @@ def area(shape: Shape): Double = shape match {
 ```
 
 `sealed` の場合、パターンが不足しているとコンパイル時に警告されます。
+
+## 部分関数（Partial Function）
+
+### 部分関数とは
+
+部分関数は、**一部の入力に対してのみ定義された関数**です。通常の関数はすべての入力に対して値を返す必要がありますが、部分関数は「パターンマッチするものだけ」処理を定義できます。
+
+```scala
+val pf: PartialFunction[Any, String] = {
+  case s: String => s"String: $s"
+  case i: Int => s"Int: $i"
+}
+
+pf("hello")  // OK: "String: hello"
+pf(42)       // OK: "Int: 42"
+pf(3.14)     // MatchError！（Double は定義されていない）
+```
+
+### PartialFunction 型とメソッド
+
+Scala では、`{ case ... }` 構文で書いたパターンマッチのブロックは、内部的に `PartialFunction` 型として扱われます。
+
+**主なメソッド：**
+
+#### `isDefinedAt`
+
+その値に対して関数が定義されているかチェックできます。
+
+```scala
+val pf: PartialFunction[Any, String] = {
+  case s: String => s"String: $s"
+  case i: Int => s"Int: $i"
+}
+
+pf.isDefinedAt("hello")  // true
+pf.isDefinedAt(42)       // true
+pf.isDefinedAt(3.14)     // false（Double には未定義）
+```
+
+#### `orElse`
+
+複数の部分関数を合成できます。
+
+```scala
+val stringHandler: PartialFunction[Any, String] = {
+  case s: String => s.toUpperCase
+}
+
+val intHandler: PartialFunction[Any, String] = {
+  case i: Int => i.toString
+}
+
+val combined = stringHandler orElse intHandler
+
+combined("hello")  // "HELLO"
+combined(42)       // "42"
+```
+
+#### `andThen`
+
+部分関数を適用した後に別の関数を適用します。
+
+```scala
+val pf: PartialFunction[Any, String] = {
+  case i: Int => i.toString
+}
+
+val doubled = pf andThen (s => s + s)
+
+doubled(3)  // "33"
+```
+
+### collect との組み合わせ
+
+部分関数の最も実用的な使い方は、コレクションの `collect` メソッドとの組み合わせです。`collect` は**フィルタリングと変換を同時に行う**ことができます。
+
+**従来の書き方：**
+
+```scala
+list.filter(x => x.isInstanceOf[String])
+    .map(x => x.asInstanceOf[String].toUpperCase)
+```
+
+**部分関数 + collect：**
+
+```scala
+list.collect { case s: String => s.toUpperCase }
+
+// また、
+List(1, 2, 3, 4, 5).collect { case i if i % 2 == 1 => i * 2 }
+などのように型ではないでももちろん使えます。
+```
+
+**動作の仕組み：**
+
+```scala
+val pf: PartialFunction[Any, String] = {
+  case s: String => s"String: $s"
+  case i: Int => s"Int: $i"
+}
+
+List(1, "two", 3.14, "four").collect(pf)
+// 内部で isDefinedAt をチェック
+// → 1 と "two" と "four" だけ適用
+// → 3.14 はスキップ（エラーにならない）
+// 結果: List("Int: 1", "String: two", "String: four")
+```
+
+### 実用例
+
+**Option の値がある要素だけ取り出す：**
+
+```scala
+val list: List[Option[Int]] = List(Some(1), None, Some(3), None, Some(5))
+
+val values = list.collect { case Some(x) => x }
+// List(1, 3, 5)
+```
+
+### まとめ
+
+- **部分関数**はパターンマッチするものだけ処理を定義する関数
+- **`isDefinedAt`** で定義域をチェック可能
+- **`collect`** と組み合わせると「フィルタ + 変換」を簡潔に表現できる
+- **Akka/Actor** のメッセージハンドラなど、実務でも頻出
 
 ## Option とパターンマッチング
 
