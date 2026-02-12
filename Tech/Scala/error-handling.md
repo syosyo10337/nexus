@@ -5,7 +5,7 @@ tags:
   - exception
   - functional-programming
 created: 2026-02-11
-updated_at: 2026-02-11
+updated_at: 2026-02-12
 status: draft
 ---
 
@@ -85,13 +85,50 @@ if (n.isDefined) {
 fold[B](ifEmpty: => B)(f: (A) => B): B
 
 n.fold(throw new RuntimeException)(_ * 3)
+
 Some(3).fold(throw new RuntimeException)(_ * 3)
 // res8: Int = 9
 ```
 
-flattenメソッドを使うネストしてしてしまってもOptionをフラットにできる
+#### flatMapメソッド
 
-TODO: ここから
+`flatMap`は`map`と`flatten`を組み合わせたメソッドです。`map`した結果が`Option[Option[T]]`のようにネストしてしまう場合に、自動的にフラット化してくれます。
+
+```scala
+// mapだけだとネストする
+Some(2).map(i => Some(i * 3))
+// res: Option[Option[Int]] = Some(Some(6))
+
+// flatMapを使うと自動的にフラット化
+Some(2).flatMap(i => Some(i * 3))
+// res: Option[Int] = Some(6)
+```
+
+複数のOptionを組み合わせる際に便利です。
+
+```scala
+val v1 = Some(2)
+val v2 = Some(3)
+val v3 = Some(5)
+
+v1.flatMap(i1 =>
+  v2.flatMap(i2 =>
+    v3.map(i3 => i1 * i2 * i3)))
+// res: Option[Int] = Some(30)
+```
+
+いずれかが`None`の場合、結果も`None`になります。
+
+```scala
+val v1 = Some(2)
+val v2: Option[Int] = None
+val v3 = Some(5)
+
+v1.flatMap(i1 =>
+  v2.flatMap(i2 =>
+    v3.map(i3 => i1 * i2 * i3)))
+// res: Option[Int] = None
+```
 
 ## Try 型
 
