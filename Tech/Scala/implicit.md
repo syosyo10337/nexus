@@ -116,6 +116,8 @@ trait Additive[A] {
   def zero: A
   def plus(a: A, b: A): A
 }
+def sum[A](lst: List[A])(a: Additive[A]) = lst.foldLeft(a.zero)((x, y) => a.plus(x, y))
+
 ```
 
 - `zero`：型パラメータ `A` の「0に相当する値」を返す
@@ -142,7 +144,24 @@ case class Point(val x: Int, val y: Int)
 implicit object PointAdditive extends Additive[Point] {
   def zero: Point = Point(0, 0)
   def plus(a: Point, b: Point): Point = Point(a.x + b.x, a.y + b.y)
+
+case class Rational(num: Int, den: Int)
+object Rational {
+  implicit object RationalAdditive extends Additive[Rational] {
+    def plus(a: Rational, b: Rational): Rational = {
+      if (a == zero) {
+        b
+      } else if (b == zero) {
+        a
+      } else {
+        Rational(a.num * b.den + b.num * a.den, a.den * b.den)
+      }
+    }
+    def zero: Rational = Rational(0, 0)
+  }
 }
+//
+ sum(List(Rational(1, 1), Rational(2, 2)))
 ```
 
 #### Step 2: Additive を使った sum メソッド
