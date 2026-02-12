@@ -21,6 +21,12 @@ ADTの概論は [Tech/Programming/ADT.md](../Programming/ADT.md) を参照。こ
 
 ### 基本的な定義
 
+case分のcaseから来ている、
+
+- new不要で初期化できて
+- パターンマッチできる
+- immutableなデータセットであるなどの場合に使うことができます。
+
 ```scala
 case class Person(name: String, age: Int)
 ```

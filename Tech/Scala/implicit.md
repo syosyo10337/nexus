@@ -4,7 +4,7 @@ tags:
   - implicit
   - type-class
 created: 2026-02-12
-updated_at: 2026-02-12
+updated_at: 2026-02-13
 status: draft
 ---
 
@@ -91,14 +91,86 @@ implicit val aConnection: Connection = connectDatabase(....)
 
 implicit parameterのもう1つの使い方は型クラスです。Haskellなどの型クラスがある言語から借りてきた概念です。
 
+### 型クラスとは
+
 型クラスを使うことで、**型に応じた異なるふるまい**を汎用的なメソッドで実現できます。
+
+#### 問題：List の全要素を合計するメソッドを作りたい
+
+`List` の全ての要素の値を加算した結果を返すメソッドを定義したいとします。問題は「何のリストかわかっていない」という点です。整数や浮動小数点数、文字列など、様々な型が考えられます。単純には以下のように書けません。
+
+```scala
+def sum[A](lst: List[A]): A = {
+  ???  // 何の + メソッドを使えばいい？
+}
+```
+
+何のリストかわからないということは、整数や浮動小数点数の `+` メソッドをそのまま使うことはできません。これを解決するのが型クラスです。
+
+#### 解決策：型クラスを定義する
+
+**2つの同じ型を足す（0の場合はそれに相当する値を返す）方法を知っている型** を定義します。ここではその型を `Additive` とします。
 
 ```scala
 trait Additive[A] {
   def zero: A
   def plus(a: A, b: A): A
 }
+```
 
+- `zero`：型パラメータ `A` の「0に相当する値」を返す
+- `plus()`：型パラメータ `A` を持つ2つの値を加算して返す
+
+#### Step 1: 型に応じた Additive インスタンスを定義
+
+型別に `Additive` の具体的な実装を定義します。
+
+```scala
+object IntAdditive extends Additive[Int] {
+  def zero: Int = 0
+  def plus(a: Int, b: Int): Int = a + b
+}
+
+object StringAdditive extends Additive[String] {
+  def zero: String = ""
+  def plus(a: String, b: String): String = a + b
+}
+
+// pointクラスはcaseで定義しておく
+case class Point(val x: Int, val y: Int)
+
+implicit object PointAdditive extends Additive[Point] {
+  def zero: Point = Point(0, 0)
+  def plus(a: Point, b: Point): Point = Point(a.x + b.x, a.y + b.y)
+}
+```
+
+#### Step 2: Additive を使った sum メソッド
+
+```scala
+def sum[A](lst: List[A])(a: Additive[A]) =
+  lst.foldLeft(a.zero)((x, y) => a.plus(x, y))
+```
+
+呼び出しは以下の通り：
+
+```scala
+sum(List(1, 2, 3))(IntAdditive)
+// res: Int = 6
+
+sum(List("A", "B", "C"))(StringAdditive)
+// res: String = "ABC"
+```
+
+これで **型に応じた異なるふるまい** を実現できました。しかし、毎回 `IntAdditive` や `StringAdditive` を明示的に渡すのは冗長です。
+
+### 型クラスの力：implicit を活用する
+
+ここで `implicit` キーワードの登場です。コンパイラに「型に応じた適切なインスタンスを自動選択させる」ことができます。
+
+#### Step 3: Additive インスタンスを implicit に
+
+```scala
 implicit object IntAdditive extends Additive[Int] {
   def zero: Int = 0
   def plus(a: Int, b: Int): Int = a + b
@@ -113,7 +185,54 @@ def sum[A](lst: List[A])(implicit m: Additive[A]) =
   lst.foldLeft(m.zero)((x, y) => m.plus(x, y))
 ```
 
-implicit parameterのこのような使い方では、Haskellの用語で `Additive` を**型クラス**、`IntAdditive` と `StringAdditive` を**型クラスのインスタンス**と呼びます。
+#### Step 4: 暗黙呼び出し
+
+```scala
+sum(List(1, 2, 3))
+// コンパイラが IntAdditive を自動選択
+// res: Int = 6
+
+sum(List("A", "B", "C"))
+// コンパイラが StringAdditive を自動選択
+// res: String = "ABC"
+```
+
+**コンパイラのふるまい**：
+
+1. `sum(List(1, 2, 3))` が呼び出されると
+2. 型チェッカーが `List[Int]` から `Additive[Int]` が必要なことを認識
+3. スコープから `implicit object IntAdditive extends Additive[Int]` を探索
+4. 見つかったので、自動的に `sum(List(1, 2, 3))(IntAdditive)` に展開
+
+### 型クラスのメリット
+
+1. **呼び出し側がシンプル**：`implicit` マークされていれば、コンパイラが自動選択
+2. **型安全**：コンパイル時に型が決定されるため、実行時エラーが少ない
+3. **拡張性**：新しい型に対応する `Additive` インスタンスを定義するだけで OK
+
+### 標準ライブラリでの活用
+
+Scala標準ライブラリでも型クラスが活躍しています。
+
+```scala
+List[Int]().sum
+// res: Int = 0
+
+List(1, 2, 3, 4).sum
+// res: Int = 10
+
+List(1.1, 1.2, 1.3, 1.4).sum
+// res: Double = 5.0
+```
+
+これらは `Numeric` という型クラスが背後で動いており、`implicit` パラメータにより型に応じた演算を実現しています。
+
+### Haskellの用語との対応
+
+implicit parameterのこのような使い方はプログラミング言語Haskellから借りてきたもので、Haskellでは**型クラス**と呼ばれます。Scalaでも同様に以下の用語を使います：
+
+- **型クラス**：`Additive[A]` のような `trait`
+- **型クラスのインスタンス**：`IntAdditive`、`StringAdditive` など、具体的な型クラスの実装
 
 ### implicitの探索範囲
 
