@@ -5,13 +5,17 @@ tags:
   - pattern-matching
   - functional-programming
 created: 2026-02-09
-updated_at: 2026-02-11
+updated_at: 2026-02-12
 status: active
 ---
 
 # ケースクラスとパターンマッチング
 
 Scala のケースクラス（case class）とパターンマッチング（pattern matching）は、代数的データ型（ADT）を扱うための中核機能です。
+
+## 代数的データ型（ADT）
+
+ADTの概論は [Tech/Programming/ADT.md](../Programming/ADT.md) を参照。ここではケースクラスとパターンマッチングの使い方に焦点を当てます。
 
 ## ケースクラス
 

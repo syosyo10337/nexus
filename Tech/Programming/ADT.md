@@ -1,10 +1,11 @@
 ---
-tags: 
-  - programming,
-  -  functional-programming, 
-  - scala, 
-  -adt
-updated: 2026-01-29
+tags:
+  - programming
+  - functional-programming
+  - scala
+  - adt
+created: 2026-01-29
+updated_at: 2026-02-12
 status: draft
 ---
 
@@ -14,6 +15,7 @@ status: draft
 
 代数的データ型（ADT）は、**型を「組み合わせ」で定義する**関数型プログラミングの基本概念です。
 その名称は、型を**積（AND）**と**和（OR）**という代数的な操作で組み合わせることに由来します。
+言い換えると「足し算（和）」は**選択肢のどれか1つ**を表し、「掛け算（積）」は**複数の要素を組み合わせる**ことを表します。
 
 ---
 
@@ -50,6 +52,35 @@ val r: Result = Success(42)  // Success か Failure のどちらか一方
 **なぜ「和」と呼ぶのか？**
 その型が取りうる状態の総数が、各選択肢の取りうる状態の**和（足し算）**になるからです。
 例：`Result` の状態数 = `Success` の状態数 + `Failure` の状態数
+
+---
+
+## Scalaでの具体例
+
+Scala 2 では和型を `sealed trait` と `case class` / `case object` の組み合わせで表現します。Scala 3 では `enum` がより直接的です。
+
+**和型の例（選択肢のどれか1つ）**
+
+```scala
+sealed trait DayOfWeek
+case object Sunday extends DayOfWeek
+case object Monday extends DayOfWeek
+case object Tuesday extends DayOfWeek
+case object Wednesday extends DayOfWeek
+case object Thursday extends DayOfWeek
+case object Friday extends DayOfWeek
+case object Saturday extends DayOfWeek
+```
+
+**和型 + 積型の組み合わせ（典型的なADT）**
+
+```scala
+sealed trait Tree
+case class Branch(value: Int, left: Tree, right: Tree) extends Tree
+case object Empty extends Tree
+```
+
+`Tree` は「`Branch` か `Empty` か」という和型で、`Branch` 自体は `value` / `left` / `right` を持つ積型です。ADTはこのように「選択肢」と「構成要素」を組み合わせて、データの形を正確に表現します。
 
 ---
 

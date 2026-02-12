@@ -130,13 +130,35 @@ v1.flatMap(i1 =>
 // res: Option[Int] = None
 ```
 
-## Try 型
+### forとyieldで表現する
 
-### Success と Failure
+`Option`の`flatMap`/`map`のネストはfor式で簡潔に書けます。for式の中で`yield`は「生成する」「産出する」という意味の英単語で、式全体として生成したい値を返します。
 
-### Try の基本操作
+```scala
+val v1 = Some(2)
+val v2 = Some(3)
+val v3 = Some(5)
 
-### Try と for 式
+val result = for {
+  i1 <- v1
+  i2 <- v2
+  i3 <- v3
+} yield i1 * i2 * i3
+// res: Option[Int] = Some(30)
+```
+
+for式の`if`ガードはフィルタ条件として働き、`withFilter`/`filter`に展開されます。これにより、条件を満たさない場合は`None`になります。
+
+```scala
+val v1 = Some(2)
+val v2 = Some(-3)
+
+val result = for {
+  i1 <- v1
+  i2 <- v2 if i2 > 0
+} yield i1 * i2
+// res: Option[Int] = None
+```
 
 ## Either 型
 
@@ -145,6 +167,14 @@ v1.flatMap(i1 =>
 ### Either の基本操作
 
 ### Either と for 式
+
+## Try 型
+
+### Success と Failure
+
+### Try の基本操作
+
+### Try と for 式
 
 ## 例外処理
 
