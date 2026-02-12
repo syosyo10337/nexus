@@ -292,18 +292,47 @@ val failed = for {
 // res: Failure(java.lang.ArithmeticException: / by zero)
 ```
 
-## 例外処理
-
-### try-catch-finally
-
-### カスタム例外
-
 ## エラーハンドリングのベストプラクティス
 
 ### Option vs Try vs Either
 
-### エラーの伝搬
+まず基本的にJavaで`null`を使うような場面では**Option**を使うのがよいでしょう。コレクションの中に存在しなかったり、ストレージから条件に合うものを発見できなかったりした場合はOptionで十分です。
 
-### エラーメッセージの設計
+次に**Either**ですが、Optionを使うのでは情報が不足しており、かつ、**エラー状態が代数的データ型としてちゃんと定められるもの**に使うのがよいでしょう。Javaでチェック例外を使っていたようなところで使う、つまり**復帰可能なエラーだけに使う**という考え方でもよいです。Either と例外を併用するのもアリです。
 
-## まとめ
+**Try**はJavaの例外をどうしても値として扱いたい場合に用いるとよいです。非同期プログラミングで使ったり、実行結果を保存しておきあとで中身を参照したい場合などに使うことも考えられます。
+
+#### toRight メソッド
+
+`Option` から `Either` への変換には `toRight` を使います。パターンマッチ的な考え方で、`Some(x)` は `Right(x)` に、`None` は指定した値を `Left` に変換します。
+
+```scala
+val opt: Option[Int] = Some(42)
+val eitherRight = opt.toRight("error message")
+// res: Right(42)
+
+val opt2: Option[Int] = None
+val eitherLeft = opt2.toRight("error message")
+// res: Left(error message)
+```
+
+#### merge メソッド
+
+`Either[A, A]` の場合、`merge` メソッドで `Left` と `Right` を同じ型に統一して取り出せます。これはfor式でyield後に`Either[LogError, Success]`のような型になったときに、外側で1つの型として扱いたい場合に便利です。
+
+```scala
+sealed trait Result
+case class Success(value: String) extends Result
+case class Error(msg: String) extends Result
+
+val e1: Either[Error, Success] = Right(Success("ok"))
+val e2: Either[Error, Success] = Left(Error("ng"))
+
+// mergeで Either[Result, Result] → Result に統一
+val r1: Result = e1.merge // Success("ok")
+val r2: Result = e2.merge // Error("ng")
+```
+
+## 参考
+
+- [実践的なDB操作をOptionとEitherで表現する](https://scala-text.github.io/scala_text/error-handling.html#option%E3%81%AE%E4%BE%8B%E5%A4%96%E5%87%A6%E7%90%86%E3%82%92either%E3%81%A7%E3%83%AA%E3%83%95%E3%82%A1%E3%82%AF%E3%82%BF%E3%81%99%E3%82%8B%E5%AE%9F%E4%BE%8B)
