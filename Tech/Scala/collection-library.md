@@ -101,7 +101,7 @@ list.tail.tail.tail == Nil  // true
 
 ### :: （Cons 演算子）
 
-コンスと呼びます。
+コンスと呼びます。prepend
 `::` は左辺の要素を右辺のリストの先頭に追加する演算子です（Cons = Construction）。
 
 ```scala
