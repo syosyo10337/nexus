@@ -164,17 +164,133 @@ val result = for {
 
 ### Left と Right
 
+`Either[E, A]` は「失敗 or 成功」のどちらかを表す型です。慣習として `Left` が失敗、`Right` が成功を表します。`Try` が例外を扱うのに対し、`Either` は**ドメインに合わせたエラー型**を持てる点が特徴です。
+
+```scala
+def parseInt(s: String): Either[String, Int] =
+  if (s.matches("-?\\d+")) Right(s.toInt)
+  else Left(s"not a number: $s")
+
+parseInt("10")
+// res: Right(10)
+
+parseInt("x")
+// res: Left(not a number: x)
+```
+
 ### Either の基本操作
 
+`map` と `flatMap` は `Right` のときだけ適用され、`Left` はそのまま伝搬します。`Left` の値に対する変換には `left.map` を使います。
+
+```scala
+val e1: Either[String, Int] = Right(3)
+val e2: Either[String, Int] = Left("boom")
+
+e1.map(_ * 3)
+// res: Right(9)
+
+e2.map(_ * 3)
+// res: Left(boom)
+
+e2.left.map(msg => s"error: $msg")
+// res: Left(error: boom)
+```
+
+`getOrElse` でデフォルト値を返すこともできます。
+
+```scala
+e2.getOrElse(0)
+// res: 0
+```
+
 ### Either と for 式
+
+`Either` も for 式で合成できます。途中で `Left` が出ると、以降は評価されず `Left` が返ります。
+
+```scala
+def parse(s: String): Either[String, Int] =
+  if (s.matches("-?\\d+")) Right(s.toInt)
+  else Left(s"not a number: $s")
+
+def divide(a: Int, b: Int): Either[String, Int] =
+  if (b == 0) Left("division by zero") else Right(a / b)
+
+val result = for {
+  a <- parse("10")
+  b <- parse("2")
+  c <- divide(a, b)
+} yield c
+// res: Right(5)
+
+val failed = for {
+  a <- parse("10")
+  b <- parse("0")
+  c <- divide(a, b)
+} yield c
+// res: Left(division by zero)
+```
 
 ## Try 型
 
 ### Success と Failure
 
+`Try[A]` は例外を値として扱うための型で、成功時は `Success(value)`、失敗時は `Failure(exception)` になります。
+
+```scala
+import scala.util.{Try, Success, Failure}
+
+def parseInt(s: String): Try[Int] = Try(s.toInt)
+
+parseInt("42")
+// res: Success(42)
+
+parseInt("x")
+// res: Failure(java.lang.NumberFormatException: For input string: "x")
+```
+
 ### Try の基本操作
 
+`map` と `flatMap` は成功時のみ適用され、失敗はそのまま伝搬します。失敗時の代替値は `getOrElse`、例外の変換は `recover` / `recoverWith` で行います。
+
+```scala
+val t1 = Try(10 / 2)
+val t2 = Try(10 / 0)
+
+t1.map(_ * 3)
+// res: Success(15)
+
+t2.map(_ * 3)
+// res: Failure(java.lang.ArithmeticException: / by zero)
+
+t2.getOrElse(0)
+// res: 0
+
+t2.recover { case _: ArithmeticException => 0 }
+// res: Success(0)
+```
+
 ### Try と for 式
+
+`Try` も `Option` と同様に for 式で合成できます。途中で `Failure` が発生すると、それ以降は評価されず失敗が伝搬します。
+
+```scala
+def divide(a: Int, b: Int): Try[Int] = Try(a / b)
+def parse(s: String): Try[Int] = Try(s.toInt)
+
+val result = for {
+  a <- parse("10")
+  b <- parse("2")
+  c <- divide(a, b)
+} yield c
+// res: Success(5)
+
+val failed = for {
+  a <- parse("10")
+  b <- parse("0")
+  c <- divide(a, b)
+} yield c
+// res: Failure(java.lang.ArithmeticException: / by zero)
+```
 
 ## 例外処理
 
