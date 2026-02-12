@@ -57,7 +57,6 @@ implicit class RichString(src: String) {
 extension (src: String) {
   def smile: String = src + ":-)"
 }
-
 ```
 
 ### 参考
@@ -81,6 +80,8 @@ implicit val aConnection: Connection = connectDatabase(....)
 ```
 
 このような文脈を引き渡すためのimplicit parameterはPlay FrameworkやO/Rマッパーなどで出てきます。
+
+暗黙的ですねー
 
 ### 参考
 
