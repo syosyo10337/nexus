@@ -4,8 +4,8 @@ tags:
   - type-class
   - functional-programming
 created: 2026-02-13
-updated_at: 2026-02-13
-status: draft
+updated_at: 2026-02-14
+status: active
 ---
 
 # 型クラス（Type Class）
@@ -14,38 +14,16 @@ status: draft
 
 ## 型クラスの基本概念
 
-### 従来の多形性の問題点
+型クラスは関数型プログラミングの強力なパターンで、既存の型を変更することなく**型に応じた異なるふるまい**を実現します。型クラスを理解するための詳細な理論と `Additive` の実装例については [Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
 
-通常のオブジェクト指向では、インターフェースを定義して実装クラスを作ります。
+型クラスの主な利点：
 
-```scala
-trait Drawable {
-  def draw(): String
-}
-
-class Circle extends Drawable {
-  def draw(): String = "●"
-}
-
-class Square extends Drawable {
-  def draw(): String = "■"
-}
-```
-
-しかし、**既存の型を変更できない場合**や、**後から新しい機能を追加したい場合**に問題が生じます。例えば、`Int` や `String` に新しいメソッドを追加したい場合です。
-
-### 型クラスの利点
-
-型クラスは以下の特徴を持ちます：
-
-1. **既存の型を変更しない**：既に定義されたクラスに影響を与えない
+1. **既存の型を変更しない**
 2. **型安全**：コンパイル時に型チェックされる
-3. **柔軟な拡張**：新しい型への対応を簡単に追加できる
-4. **アドホック多形**：同じ関数が異なる型に対して異なるふるまいをする
+3. **柔軟な拡張**：新しい型への対応が容易
+4. **アドホック多形**：同じ関数が異なる型で異なるふるまいをする
 
-## 型クラスの構造
-
-型クラスは以下の3つから構成されます：
+## 型クラスの構造と実装パターン
 
 ### 1. 型クラスの定義（Trait）
 
@@ -59,7 +37,7 @@ trait Show[A] {
 
 ### 2. 型クラスのインスタンス定義
 
-各型に対して、型クラスがどのように振る舞うかを定義します。`implicit object` で定義することで、暗黙的に選択されます。
+各型に対して、型クラスがどのように振る舞うかを定義します。
 
 ```scala
 implicit object ShowInt extends Show[Int] {
@@ -84,6 +62,8 @@ def printAs[A](a: A)(implicit show: Show[A]): Unit = {
   println(show.show(a))
 }
 ```
+
+詳細な型クラス実装例（`Additive` パターン、型クラスと implicit の相互作用）については [Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
 
 ## 使用例
 
@@ -150,151 +130,22 @@ show(42)
 
 `[A: Show]` は `(implicit show: Show[A])` の省略形です。
 
-## 実践例：汎用な合計メソッド
+## 標準ライブラリでの活用
 
-### Additive 型クラス
+Scalaの型クラスパターンは標準ライブラリの様々な場所で使われています。[Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
 
-```scala
-trait Additive[A] {
-  def zero: A
-  def plus(a: A, b: A): A
-}
+## implicit の探索範囲
 
-implicit object IntAdditive extends Additive[Int] {
-  def zero: Int = 0
-  def plus(a: Int, b: Int): Int = a + b
-}
+implicit parameter と型クラスインスタンスの探索範囲については [Tech/Scala/implicit.md](../implicit.md#implicitの探索範囲) を参照してください。
 
-implicit object StringAdditive extends Additive[String] {
-  def zero: String = ""
-  def plus(a: String, b: String): String = a + b
-}
+## 型クラス設計のベストプラクティス
 
-implicit object ListAdditive extends Additive[List[Int]] {
-  def zero: List[Int] = List()
-  def plus(a: List[Int], b: List[Int]): List[Int] = a ++ b
-}
-```
+型クラスを効果的に設計するためのポイント：
 
-### 汎用 sum メソッド
-
-```scala
-def sum[A](lst: List[A])(implicit m: Additive[A]): A = {
-  lst.foldLeft(m.zero)((x, y) => m.plus(x, y))
-}
-
-sum(List(1, 2, 3))                    // 6
-sum(List("Hello", " ", "World"))      // "Hello World"
-sum(List(List(1, 2), List(3, 4)))     // List(1, 2, 3, 4)
-```
-
-## 型クラス vs 継承
-
-| 特性           | 継承   | 型クラス |
-| -------------- | ------ | -------- |
-| 既存型の変更   | 不可   | 可能     |
-| 事前計画       | 必要   | 不要     |
-| 複数の振る舞い | 難しい | 簡単     |
-| 型安全性       | ◯      | ◯◯       |
-| 関数型         | ✗      | ◯        |
-
-## implicit の探索順序
-
-`implicit parameter` が探索される範囲（優先度順）：
-
-1. ローカルスコープで定義されたもの
-2. `import` で指定されたもの
-3. **型クラスのコンパニオンオブジェクト**で定義されたもの
-4. 親クラス（super class）で定義されたもの
-
-### コンパニオンオブジェクトでの定義
-
-型を定義するときに、同時に型クラスインスタンスを定義する場合がよくあります。
-
-```scala
-case class User(name: String, age: Int)
-
-object User {
-  implicit object UserShow extends Show[User] {
-    def show(user: User): String =
-      s"User(${user.name}, ${user.age})"
-  }
-}
-
-show(User("Alice", 30))
-// User(Alice, 30)
-// -> import不要でコンパニオンオブジェクトから自動探索
-```
-
-## 標準ライブラリでの型クラス
-
-### Numeric 型クラス
-
-標準ライブラリには `Numeric` という型クラスがあり、数値演算を汎用的に行えます。
-
-```scala
-def sum[A](nums: List[A])(implicit num: Numeric[A]): A = {
-  nums.foldLeft(num.zero)((a, b) => num.plus(a, b))
-}
-
-sum(List(1, 2, 3))          // 6
-sum(List(1.1, 2.2, 3.3))    // 6.6
-```
-
-### Ordering 型クラス
-
-ソート時に異なる順序を定義できます。
-
-```scala
-implicit val intOrdering: Ordering[Int] = Ordering.Int
-
-List(3, 1, 2).sorted  // List(1, 2, 3)
-```
-
-## 型クラスの設計原則
-
-### 1. 単一責任
-
-型クラスは1つの関心事のみを表現するべき。
-
-```scala
-// Good: 1つの責任
-trait Show[A] {
-  def show(a: A): String
-}
-
-// Bad: 複数の責任
-trait ShowAndSerialize[A] {
-  def show(a: A): String
-  def serialize(a: A): Array[Byte]
-}
-```
-
-### 2. 一貫性
-
-同じ型に対する複数の実装は避ける。
-
-```scala
-// Bad: 型に対して複数の Show インスタンスを定義
-implicit object UserShow1 extends Show[User] { ... }
-implicit object UserShow2 extends Show[User] { ... }
-// -> コンパイルエラー
-```
-
-### 3. 拡張性
-
-新しい型を追加するときに、既存のコードを変更しない。
-
-```scala
-// 後から新しい型対応を追加
-case class Point(x: Int, y: Int)
-
-object Point {
-  implicit object PointShow extends Show[Point] {
-    def show(p: Point): String = s"(${{p.x}}, ${{p.y}})"
-  }
-}
-```
+1. **単一責任**：1つの型クラスは1つの関心事のみを表現
+2. **一貫性**：同じ型に対する複数の実装は避ける
+3. **拡張性**：新しい型対応の追加時に既存コードを変更しない
+4. **シグネチャ**：Context Bounds で簡潔に表現
 
 ## まとめ
 
