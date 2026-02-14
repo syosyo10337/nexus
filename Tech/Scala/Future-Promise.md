@@ -274,7 +274,7 @@ object CountDownLatchSample {
       waitMilliSec
     }
 
-    // ④ 各 Future が完了したら、Promise に結果を入れる
+    // ④ 各 Future が完了したら、Promise に結果を入れる f.foreachに届いたら実行する処理を登録しておく
     futures.foreach { f =>
       f.foreach { waitMilliSec =>
         val index = indexHolder.getAndIncrement  // 0, 1, 2, 3, 4, ...
@@ -284,7 +284,7 @@ object CountDownLatchSample {
       }
     }
 
-    // ⑤ Promise の Future から結果を読み取る
+    // ⑤ Promise の Future から結果を読み取る p.future.foreachに届いたら実行する処理を登録しておく
     promises.foreach { p =>
       p.future.foreach { waitMilliSec => println(waitMilliSec) }
     }
