@@ -199,6 +199,7 @@ one match {
   case 1 => "one"
   case 2 => "two"
   case _ => "other"
+}
 ```
 
 JavaやCにあるswitchのfallthrough of the functionality is absent, but if you want to match with multiple conditions, use `|`.

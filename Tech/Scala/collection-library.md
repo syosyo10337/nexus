@@ -4,7 +4,7 @@ tags:
   - collections
   - standard-library
 created: 2026-02-08
-updated_at: 2026-02-08
+updated_at: 2026-02-14
 status: active
 ---
 
@@ -334,6 +334,24 @@ r1.sum        // 15
 r2.toList     // List(1, 2, 3, 4)
 r3.contains(6) // true
 ```
+
+## map の本質：「箱の中身を変換する」操作
+
+`map` は配列専用の操作ではない。Scala では **「箱（コンテナ）の中身に関数を適用する」** という共通パターンとして、さまざまな型に定義されている。
+
+```scala
+List(1, 2, 3).map(_ * 2)       // List(2, 4, 6)    ← 各要素に適用
+Some(3).map(_ * 2)              // Some(6)          ← 中身に適用
+Future(3).map(_ * 2)            // Future(6)        ← 届いたら適用
+```
+
+| 型 | 箱の中身 | `map` の意味 |
+|---|---|---|
+| `List[A]` | 複数の値 | 各要素を変換 |
+| `Option[A]` | 値が1つあるか、ないか | あれば変換、なければ `None` のまま |
+| `Future[A]` | いずれ届く値 | 届いたら変換する「予約」 |
+
+この共通パターンがわかると、`flatMap` や `for` 式が `List` 以外でも使える理由が理解できる。詳しくは [Future と Promise](Future-Promise.md) を参照。
 
 ## 主要な操作
 
