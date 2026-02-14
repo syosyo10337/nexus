@@ -88,7 +88,17 @@ val combined: Future[(Int, Int)] = for {
 
 ## Promise とは
 
-Future が「読み取り側」なら、Promise は「書き込み側」。
+**Promise = 「いつか値を届けるよ」という約束。**
+
+```
+友達: 「来週までにレポート送るよ」 ← Promise（約束する側）
+自分: 「OK、届いたら読むね」       ← Future（届くのを待つ側）
+```
+
+- `promise.success(42)` = 約束を果たした
+- `promise.failure(err)` = 約束を破った
+
+Future が「いつか届く値」なら、Promise は「いつか届けると約束した値」。同じ箱の表と裏。
 
 ### Future だけでは困る場面
 
