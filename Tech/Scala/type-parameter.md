@@ -3,8 +3,8 @@ tags:
   - Scala
   - Type System
   - Generics
-create_at: 2026-02-06
-updated_at: 2026-02-08
+created: 2026-02-06
+updated_at: 2026-02-14
 status: active
 ---
 
@@ -41,6 +41,26 @@ identity(true)           // 型推論により Boolean と判断される
 ## Scalaにおける変性（Variance）
 
 変性の理論的な背景については [variance-and-subtyping](../Programming/variance-and-subtyping.md) を参照してください。ここではScalaでの具体的な記法と実装例を解説します。
+
+### 変性とは何か？—「席に座れるか」の問題
+
+**基本的な問題**：サブタイプ関係が容器（ジェネリクス）に伝播するのか？
+
+- `Dog <: Animal` であることは明らか
+- では `Box[Dog] <: Box[Animal]` か？`List[Dog] <: List[Animal]` か？
+
+答え：「容器が何をするか」によって決まる
+
+#### 容器の役割による分類
+
+1. **読む専用**（`get` や戻り値）→ **共変** `[+T]` が安全
+   - `Box[Dog]` は `Box[Animal]` の「席に座れる」理由：読む側は Animal を期待しているが、Dog の情報の方がより具体的で安全
+
+2. **書く専用**（`set` や引数）→ **反変** `[-T]` が安全
+   - `Handler[Animal]` は `Handler[Dog]` の「席に座れる」理由：書く側は Dog を入れたいが、Handler は Animal を受け付けるので安全
+
+3. **読み書き両方** → **不変** `[T]` のみ
+   - 関連性がない
 
 ### 変性の記法
 
@@ -237,28 +257,64 @@ addDog(List[AnyRef]())       // ✅ OK (AnyRef >: Dog)
 
 ### Lower Bound と共変の組み合わせ
 
-共変 `[+A]` では型パラメータを引数に受け取れませんが、Lower Bound `[E >: A]` を使うことで回避できます。
+共変 `[+A]` では型パラメータを引数に受け取れませんが、Lower Bound `[E >: A]` を使うことで回避できます。これは共変の安全性を保ちながら、柔軟に入力を受け入れるための仕組みです。
 
-**Stackの例**：
+#### なぜ `:>` が必要？「席に座る」メタファーで理解
+
+**共変のルール**：`Box[Dog]` は `Box[Animal]` の席に座れる（昇格できる）
 
 ```scala
-trait Stack[+A] {  // 共変
-  def push[E >: A](e: E): Stack[E]  // ← Lower Bound で回避!
+val dogBox: Box[Dog] = new Box(new Dog)
+val animalBox: Box[Animal] = dogBox  // ✅ Dog は Animal の子型なので座れる
+```
+
+**問題**：共変の容器に値を入れるメソッドがあると危険
+
+```scala
+// もし Box が共変で put メソッドを持っていたら...
+class BadBox[+T](var value: T) {  // 共変
+  def put(item: T): Unit = { value = item }  // ❌ これはNG
 }
+
+val dogBox: BadBox[Dog] = new BadBox(new Dog)
+val animalBox: BadBox[Animal] = dogBox  // 席に座った
+animalBox.put(new Cat)  // Cat を入れてしまう!
+val result: Dog = dogBox.get  // 💥 Cat が返ってくる！破壊される
 ```
 
-**仕組み**：
-
-- `Stack[Dog]` に対して `push` を呼ぶとき
-- `E >: Dog` という制約により、Dog 以上の型のみ受け入れる
-- 結果の型は `Stack[E]` になる（より汎用的な型に拡張される）
+**解決策**：Lower Bound を使って「受け入れられる上限」を柔軟に
 
 ```scala
-val dogStack: Stack[Dog] = ...「AnyRef => AnyRef」の席に「String => String」を座らせようとしている
+trait Stack[+A] {  // 共変だから Stack[Dog] は Stack[Animal] の席に座れる
+  def push[E >: A](e: E): Stack[E]  // ← E >: A で「A 以上の型なら受け入れる」
+}
 
-val animalStack: Stack[Animal] = dogStack.push(new Cat)
-// Cat を追加 → Dog と Cat の共通の親型 Animal に拡張される
+val dogStack: Stack[Dog] = new NonEmptyStack(new Dog, ...)
+val animalStack: Stack[Animal] = dogStack  // ✅ Stack[Dog] は Stack[Animal] の席に座る
+
+// push のときは何が起きるか
+val newStack = dogStack.push(new Cat)
+// E >: Dog という制約：Dog と Cat の共通の親は Animal
+// → 戻り値は Stack[Animal] に拡張される
 ```
+
+**`[E >: A]` の仕組み**：
+
+- `E` は Dog「以上」（Dog の親型）でなければならない
+- `push` に渡せるのは Dog か Dog の親型（Animal など）
+- 結果の `Stack[E]` は、より汎用的な型に「昇格」する
+
+#### 「席に座る」を共変・反変で比較
+
+| 変性 | ルール                                                    | 「席に座る」の例                   | 入力時の対処法            |
+| ---- | --------------------------------------------------------- | ---------------------------------- | ------------------------- |
+| 共変 | `Dog <: Animal` ならば、`Box[Dog] <: Box[Animal]`         | Dog対応版が Animal対応の席に座れる | `[E >: A]` で上限を広げる |
+| 反変 | `Dog <: Animal` ならば、`Handler[Animal] <: Handler[Dog]` | Animal対応版が Dog対応の席に座れる | 反変パラメータ自体が汎用  |
+
+**直感的な理解**：
+
+- **共変**：読むことに最適化 → 「具体的な Dog の情報を読む」ので、`Box[Dog]` は「より汎用的な Animal の席」つまり読む側の期待より詳しい情報を返せる
+- **反変**：書くことに最適化 → 「何を受け付けるか」で見ると、`Handler[Animal]`（何でも受け付ける）は「Dog専門版の席」つまり書く側の期待より柔軟に対応できる
 
 ## Scalaの型パラメータまとめ
 

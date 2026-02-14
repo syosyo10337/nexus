@@ -96,7 +96,7 @@ Dog <: Animal なので、Animalの席にDogを座らせてOK
 
 ### 問題の背景
 
-```text
+```scala
 class Dog extends Animal        // ← Dog <: Animal（継承によるサブタイプ関係）
 trait Box[T]                    // ← ジェネリック型（T は型パラメータ）
 

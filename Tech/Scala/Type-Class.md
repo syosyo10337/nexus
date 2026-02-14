@@ -14,7 +14,7 @@ status: active
 
 ## 型クラスの基本概念
 
-型クラスは関数型プログラミングの強力なパターンで、既存の型を変更することなく**型に応じた異なるふるまい**を実現します。型クラスを理解するための詳細な理論と `Additive` の実装例については [Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
+型クラスは関数型プログラミングの強力なパターンで、既存の型を変更することなく**型に応じた異なるふるまい**を実現します。型クラスを理解するための詳細な理論と `Additive` の実装例については [Tech/Scala/implicit.md](implicit.md#implicit-parameterの型クラス) を参照してください。
 
 型クラスの主な利点：
 
