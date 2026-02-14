@@ -269,7 +269,7 @@ List(1, 2, 3).foldRight(List[Int]())(_ :: _)  // List(1, 2, 3)
 
 #### foldLeftの練習
 
-`def mkString[T](list: List[T])(sep: String): String = ???
+`def mkString[T](list: List[T])(sep: String): String = ???`
 `この宣言のmkStringを自作する
 
 ```scala

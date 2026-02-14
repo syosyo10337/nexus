@@ -63,7 +63,7 @@ def printAs[A](a: A)(implicit show: Show[A]): Unit = {
 }
 ```
 
-詳細な型クラス実装例（`Additive` パターン、型クラスと implicit の相互作用）については [Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
+詳細な型クラス実装例（`Additive` パターン、型クラスと implicit の相互作用）については [Tech/Scala/implicit.md](implicit.md#implicit-parameterの型クラス) を参照してください。
 
 ## 使用例
 
@@ -75,8 +75,6 @@ printAs("hello")   // "hello"
 printAs(true)      // "true"
 ```
 
-### List の値を表示する
-
 ```scala
 def showList[A](lst: List[A])(implicit show: Show[A]): String = {
   lst.map(show.show).mkString("[", ", ", "]")
@@ -87,33 +85,6 @@ showList(List("a", "b", "c"))     // "["a", "b", "c"]"
 ```
 
 コンパイラが自動的に `ShowInt` または `ShowString` を選択します。
-
-## 型クラスの実装パターン
-
-### パターン 1：Helper メソッド
-
-型クラスの使用を簡潔にするため、ヘルパーメソッドを定義することがよくあります。
-
-```scala
-def show[A](a: A)(implicit s: Show[A]): String = s.show(a)
-
-show(42)
-// -> "42"
-```
-
-### パターン 2：Enrichment（拡張メソッド）
-
-implicit class を使って、あたかも元の型にメソッドが追加されたように見せかけます。
-
-```scala
-implicit class ShowOps[A](a: A)(implicit show: Show[A]) {
-  def show: String = show.show(a)
-}
-
-42.show            // "42"
-"hello".show       // "hello"
-true.show          // "true"
-```
 
 ### パターン 3：Context Bound
 
@@ -129,14 +100,15 @@ show(42)
 ```
 
 `[A: Show]` は `(implicit show: Show[A])` の省略形です。
+つまり、`Show[A]のインスタンスをimplicitly[Show[A]]`として取得することができます。
 
 ## 標準ライブラリでの活用
 
-Scalaの型クラスパターンは標準ライブラリの様々な場所で使われています。[Tech/Scala/implicit.md](../implicit.md#implicit-parameterの型クラス) を参照してください。
+Scalaの型クラスパターンは標準ライブラリの様々な場所で使われています。[Tech/Scala/implicit.md](implicit.md#implicit-parameterの型クラス) を参照してください。
 
 ## implicit の探索範囲
 
-implicit parameter と型クラスインスタンスの探索範囲については [Tech/Scala/implicit.md](../implicit.md#implicitの探索範囲) を参照してください。
+implicit parameter と型クラスインスタンスの探索範囲については [Tech/Scala/implicit.md](implicit.md#implicitの探索範囲) を参照してください。
 
 ## 型クラス設計のベストプラクティス
 
