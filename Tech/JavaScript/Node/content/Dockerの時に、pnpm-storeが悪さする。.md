@@ -7,7 +7,7 @@ created: 2026-01-03
 status: active
 ---
 
-# Dockerの時に、pnpm-storeが悪さする。
+# Dockerの時に、pnpm-storeが悪さする
 
 pnpm は content-addressable store という仕組みを使用しており、すべてのパッケージをグローバルな [Crafteo](https://blog.crafteo.io/2023/07/16/169/)ディスク上のストアに保管します。プロジェクトの node_modules は、この pnpm store の内容へのシンボリックリンクまたはハードリンクとなり、ダウンロード時間を大幅に削減できます。
 
@@ -82,7 +82,7 @@ services:
       - .:/app
       - /app/.next
       - node_modules:/app/node_modules
-    environment: 
+    environment:
       - NODE_ENV=development
 volumes:
   node_modules:

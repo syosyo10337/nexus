@@ -3,6 +3,7 @@ tags:
   - javascript
   - data
 created: 2026-01-03
+updated_at: 2026-02-15
 status: active
 ---
 
@@ -74,6 +75,10 @@ RUN cp -ar /opt/node_modules ./  && npm install --omit=optional
 この時実際にnode_modulesが作成されるのは、`**npm install**`を実行したタイミング
 
 ## pnpm
+
+パッケージマネージャーの一つ。ハードリンクを活用してディスク容量を節約し、高速なインストールを実現する。
+
+詳細は [pnpm.md](./pnpm.md) を参照。
 
 [Dockerの時に、pnpm-storeが悪さする。](Node%20js/Docker%E3%81%AE%E6%99%82%E3%81%AB%E3%80%81pnpm-store%E3%81%8C%E6%82%AA%E3%81%95%E3%81%99%E3%82%8B%E3%80%82%2029f38cdd027d806199a3d93341e68bb8.html)
 
