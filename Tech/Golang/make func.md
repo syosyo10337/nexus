@@ -5,7 +5,7 @@ tags:
 created: 2026-01-03
 status: active
 ---
-
+マウスのドライバ/ソフトウェア側マウスのドライバ/ソフトウェア側
 # make func
 
 `make`関数は、Goの組み込み関数で、**slice、map、channel**の3つの参照型を初期化するために使用される特別な関数です。
