@@ -9,22 +9,9 @@ status: active
 
 # useMemo
 
-[
-
-useMemo – React
-
 The library for web and native user interfaces
+<https://react.dev/reference/react/useMemo#how-to-tell-if-a-calculation-is-expensive>
 
-![](React/Attachments/apple-touch-icon%203.png)https://react.dev/reference/react/useMemo#how-to-tell-if-a-calculation-is-expensive
-
-![](og-reference%202.png)](https://react.dev/reference/react/useMemo#how-to-tell-if-a-calculation-is-expensive)
-
-[
-
-【React】useMemo の使い時をまとめる
-
-chot Inc. で Web エンジニアをしているすてぃんです。今回は社内で useMemo の使い時がわからんという話題が挙がったので、ケースによる使い時と解説をまとめました。コードレビュー時などの参考になれば幸いです。
-
-![](React/Attachments/icon%202.png)https://zenn.dev/chot/articles/react-when-to-use-memo
-
-![](React/Attachments/og-base-w1200-v2.png)](https://zenn.dev/chot/articles/react-when-to-use-memo)
+<https://react.dev/reference/react/useMemo#how-to-tell-if-a-calculation-is-expensive>
+<https://zenn.dev/chot/articles/react-when-to-use-memo>
+<https://zenn.dev/chot/articles/react-when-to-use-memo>
