@@ -8,46 +8,6 @@ created: 2026-01-03
 status: active
 ---
 
-# Upgrade Flutter 3.7 → 3.13
-
-[Intl](#77d27e91-502e-4843-933a-935d4c767bb2)
-
-[Flutter_Form_builder](#99cd4f53-a517-43a9-af1a-869fda384c07)
-
-[[9.0.0]](#9e269e4b-3601-4639-a5fc-5d168cadb3bc)
-
-[BREAKING CHANGES](#7e52aac2-6d94-4fd3-a2b2-6715d5dfeebf)
-
-[form_builder_validators](#4f5694aa-3c1a-47b5-bfee-bf7f36e794d5)
-
-[Flutter本体の話](#76fff635-0898-463c-9821-263b99ac12c9)
-
-[ビルド時のエラー](#ce4b46ca-ce4c-4cc5-bf23-0172f1edf55a)
-
-[asset_manifest重複](#7ce9bd52-1e7c-43fe-a985-4e07cd0a1dc7)
-
-[症状](#71d78d61-e601-4876-ad57-9a489180d550)
-
-[対処](#a89bbc43-2c0c-4848-bcc9-215737d16a11)
-
-[form_builder 9.2は Flutter 3.16が必要](#26c0116e-906c-4e30-b706-dbe212abfc3f)
-
-[症状](#557f8c3f-1b40-4e94-a213-88df3ae512fc)
-
-[対処](#ceba8656-1688-4d70-a1ee-d8f52c246ae1)
-
-[FallThroughError();がない](#1768749a-0274-4c9a-95e5-7823569dd330)
-
-[症状](#e91311c7-7f82-463e-98cd-ba2cf73afb86)
-
-[対処](#22ef99d1-2bb1-4c51-ac6b-a023bab7dfcf)
-
-[Firebase_coreを含めたライブラリがDart3対応のためにmajor update必要](#06e1004c-6e6f-45a7-ba5f-3468bf21c374)
-
-[minSdkVersionの指定](#97d58b15-2f74-44ab-9a18-8374a77443aa)
-
-[Further Things to think about](#08b2e2f2-7428-4203-afce-17bcb1789bee)
-
 # Intl
 
 - Because zas_cityhall_square depends on flutter_localizations from sdk which depends on intl 0.18.1, intl 0.18.1 is required.  
@@ -65,30 +25,26 @@ status: active
 ### BREAKING CHANGES
 
 - 👁️[Improve autovalidateMode](https://github.com/flutter-form-builder-ecosystem/flutter_form_builder/pull/1232)
-    
-    - On FormBuilderField, `autovalidateMode` change default from `AutovalidateMode.onUserInteraction` to `AutovalidateMode.disabled`
-    
+
+  - On FormBuilderField, `autovalidateMode` change default from `AutovalidateMode.onUserInteraction` to `AutovalidateMode.disabled`
 
 _import 'package:flutter_form_builder/flutter_form_builder.dart'; で検索する。_
 
 - (利用なし)[Refactor FormBuilderField](https://github.com/flutter-form-builder-ecosystem/flutter_form_builder/pull/1238)
-    
-    - Add widget to remove decoration property from core. Now exist two field widgets:
-        
+
+  - Add widget to remove decoration property from core. Now exist two field widgets:
+
         1. `FormBuilderField`: Refactored. Now don't included decoration property or references to this property
-        
+
         2. `FormBuilderFieldDecoration`: New. Like the old `FormBuilderField`
-        
-    
 
 - (利用なし)[Remove FormBuilderCupertinoSegmentedControl](https://github.com/flutter-form-builder-ecosystem/flutter_form_builder/pull/1240)
-    
-    - Remove `FormBuilderCupertinoSegmentedControl` field. Included on [form_builder_cupertino_fields](https://pub.dev/packages/form_builder_cupertino_fields)
-    
-    - Update custom fields example without cupertino widgets
-    
-    - Remove cupertino icons dependency
-    
+
+  - Remove `FormBuilderCupertinoSegmentedControl` field. Included on [form_builder_cupertino_fields](https://pub.dev/packages/form_builder_cupertino_fields)
+
+  - Update custom fields example without cupertino widgets
+
+  - Remove cupertino icons dependency
 
 - Update intl version to 0.18.0
 
@@ -135,7 +91,7 @@ google_font 4.0.xに変更
 
 ### 対処
 
-https://github.com/flutter-form-builder-ecosystem/flutter_form_builder/issues/1359
+<https://github.com/flutter-form-builder-ecosystem/flutter_form_builder/issues/1359>
 
 pubspec.yamlの記述を変更
 
@@ -160,9 +116,9 @@ cloud_firestore changelog | Flutter package
 
 Flutter plugin for Cloud Firestore, a cloud-hosted, noSQL database with live synchronization and offline support on Android and iOS.
 
-![](flutter-logo-32x32%202.png)https://pub.dev/packages/cloud_firestore/changelog#460
+![](flutter-logo-32x32%202.png)<https://pub.dev/packages/cloud_firestore/changelog#460>
 
-![](pub-dev-icon-cover-image%202.png)](https://pub.dev/packages/cloud_firestore/changelog#460)
+![](pub-dev-icon-cover-image%202.png)](<https://pub.dev/packages/cloud_firestore/changelog#460>)
 
 ## Firebase_coreを含めたライブラリがDart3対応のためにmajor update必要
 
@@ -202,8 +158,6 @@ flutter build apk
 
 [
 
-https://github.com/ZERO-TO-ONE-TEAM/zas-cityhall-square/blob/ad8ec93e044ee808a7352afe0648a817f7d35432/lib/widgets/webview_drag_gesture_pull_to_refresh.dart#L109-L124
+<https://github.com/ZERO-TO-ONE-TEAM/zas-cityhall-square/blob/ad8ec93e044ee808a7352afe0648a817f7d35432/lib/widgets/webview_drag_gesture_pull_to_refresh.dart#L109-L124>
 
-
-
-](https://github.com/ZERO-TO-ONE-TEAM/zas-cityhall-square/blob/ad8ec93e044ee808a7352afe0648a817f7d35432/lib/widgets/webview_drag_gesture_pull_to_refresh.dart#L109-L124)
+](<https://github.com/ZERO-TO-ONE-TEAM/zas-cityhall-square/blob/ad8ec93e044ee808a7352afe0648a817f7d35432/lib/widgets/webview_drag_gesture_pull_to_refresh.dart#L109-L124>)
