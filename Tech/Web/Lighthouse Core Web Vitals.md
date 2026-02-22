@@ -4,7 +4,7 @@ tags:
   - lighthouse
   - core-web-vitals
 created: 2026-02-22
-updated_at: 2026-02-22
+updated_at: 2026-02-23
 status: active
 ---
 
@@ -98,3 +98,131 @@ FCP〜TTI の間で、メインスレッドを 50ms 以上ブロックした「L
 5. 繰り返し改善
 
 特に効果が大きいのは **画像最適化**（LCP）、**JS 分割**（TBT/INP）、**サイズ明示**（CLS）の3つで、多くのサイトではこれだけでスコアが大幅に改善する。
+
+---
+
+## DPR と srcSet — 画像パフォーマンスの要
+
+### DPR (Device Pixel Ratio) とは
+
+DPR はデバイスの物理ピクセルと CSS ピクセルの比率。`window.devicePixelRatio` で取得できる。
+
+| デバイス例 | DPR | CSS 100px に必要な物理ピクセル |
+| --- | --- | --- |
+| 一般的なデスクトップ | 1x | 100px |
+| Retina MacBook / iPhone | 2x | 200px |
+| iPhone Pro Max / 高解像度 Android | 3x | 300px |
+
+DPR 2x のデバイスに 1x の画像を表示するとぼやけるが、全デバイスに 3x 画像を配信すると帯域を無駄に消費する。ここで `srcset` が活きる。
+
+### srcset によるレスポンシブ画像
+
+`srcset` は、ブラウザがデバイスの DPR やビューポート幅に応じて最適な画像を自動選択する仕組み。
+
+#### パターン 1: DPR ベース (x ディスクリプタ)
+
+固定幅の画像に対して DPR ごとに異なる解像度のファイルを提供する。
+
+```html
+<img
+  src="hero-400w.jpg"
+  srcset="
+    hero-400w.jpg 1x,
+    hero-800w.jpg 2x,
+    hero-1200w.jpg 3x
+  "
+  width="400"
+  height="300"
+  alt="Hero image"
+/>
+```
+
+- `1x` — DPR 1 のデバイス用 (400px 幅)
+- `2x` — DPR 2 のデバイス用 (800px 幅)
+- `3x` — DPR 3 のデバイス用 (1200px 幅)
+- ブラウザが DPR を見て自動で最適なものを選択する
+
+#### パターン 2: ビューポート幅ベース (w ディスクリプタ + sizes)
+
+レスポンシブレイアウトで画像の表示幅が変わる場合に使う。こちらのほうが汎用的。
+
+```html
+<img
+  src="hero-800w.jpg"
+  srcset="
+    hero-400w.jpg   400w,
+    hero-800w.jpg   800w,
+    hero-1200w.jpg 1200w,
+    hero-1600w.jpg 1600w
+  "
+  sizes="
+    (max-width: 600px) 100vw,
+    (max-width: 1200px) 50vw,
+    800px
+  "
+  alt="Hero image"
+/>
+```
+
+- `400w` は「この画像の実際の幅は 400px」という意味
+- `sizes` はブラウザに「この画像が画面上で何 px で表示されるか」のヒントを与える
+- ブラウザは `sizes` の値 × DPR で必要な画像幅を算出し、`srcset` から最適なものを選択する
+- 例: DPR 2x で `sizes` が `50vw`、ビューポート 1200px → 表示幅 600px × 2 = 1200w の画像を選択
+
+### `<picture>` でフォーマット分岐を追加
+
+`srcset` と組み合わせて、AVIF/WebP の出し分けも行える。
+
+```html
+<picture>
+  <source
+    type="image/avif"
+    srcset="hero-400w.avif 400w, hero-800w.avif 800w, hero-1200w.avif 1200w"
+    sizes="(max-width: 600px) 100vw, 50vw"
+  />
+  <source
+    type="image/webp"
+    srcset="hero-400w.webp 400w, hero-800w.webp 800w, hero-1200w.webp 1200w"
+    sizes="(max-width: 600px) 100vw, 50vw"
+  />
+  <img
+    src="hero-800w.jpg"
+    srcset="hero-400w.jpg 400w, hero-800w.jpg 800w, hero-1200w.jpg 1200w"
+    sizes="(max-width: 600px) 100vw, 50vw"
+    alt="Hero image"
+  />
+</picture>
+```
+
+ブラウザは上から順に対応するフォーマットを探し、AVIF > WebP > JPEG の優先順で配信される。
+
+### パフォーマンスへのインパクト
+
+| 対策 | 影響する指標 | 効果 |
+| --- | --- | --- |
+| `srcset` + `sizes` で適切な画像配信 | LCP, 帯域削減 | DPR 1x デバイスへの過剰配信を防止（転送量 50-75% 削減も可能） |
+| AVIF/WebP + `<picture>` | LCP, 帯域削減 | JPEG 比で 30-50% のファイルサイズ削減 |
+| LCP 画像に `fetchpriority="high"` | LCP | ブラウザが最優先でフェッチする |
+| LCP 画像に `loading="lazy"` を付けない | LCP | lazy にすると Intersection Observer 待ちで遅延する |
+| `width` / `height` を明示 | CLS | レイアウトシフトを防止 |
+| `<link rel="preload">` で先読み | LCP | HTML パース前にフェッチを開始 |
+
+### Next.js / フレームワークでの対応
+
+多くのフレームワークは `srcset` を自動生成してくれる。
+
+```tsx
+// Next.js の Image コンポーネント
+// 内部で srcset を自動生成し、DPR やビューポートに応じた画像を配信する
+import Image from 'next/image';
+
+<Image
+  src="/hero.jpg"
+  width={800}
+  height={600}
+  alt="Hero"
+  priority  // LCP 画像は priority を付ける (fetchpriority="high" + preload 相当)
+/>
+```
+
+フレームワークを使わない場合は、ビルドツール（sharp, imagemin 等）で複数解像度の画像を事前生成し、手動で `srcset` を記述する。
