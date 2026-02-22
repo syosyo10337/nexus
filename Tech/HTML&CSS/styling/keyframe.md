@@ -2,6 +2,7 @@
 tags:
   - html-css
   - animation
+  - performance
 created: 2026-01-04
 updated_at: 2026-02-23
 status: active
@@ -13,16 +14,14 @@ status: active
 
 ---
 
-## @keyframes
-
-### Syntax
+## Syntax
 
 ```css
 @keyframes <animation-name> {
   from {
     /* = 0% */
   }
-  <percentage > {
+  <percentage> {
   }
   to {
     /* = 100% */
@@ -92,3 +91,64 @@ animation: <name> <duration> <timing-function> <delay> <iteration-count>
   }
 }
 ```
+
+---
+
+## パフォーマンス最適化
+
+### will-change
+
+ブラウザに「このプロパティがこれから変わる」と事前に伝えるヒントプロパティ。
+
+```css
+.animated-element {
+  will-change: transform;
+}
+```
+
+**仕組み:**
+
+1. ブラウザがヒントを受け取り、対象要素を独自の**合成レイヤー (composite layer)** に昇格させる
+2. レイヤーが分離されると、アニメーション時にその要素だけを動かせばよく、周囲の要素の再描画 (repaint) が不要になる
+3. 仕様上は GPU 使用を「強制」するものではないが、合成レイヤー昇格の結果、実際にはほぼ確実に GPU で合成処理が行われる
+
+**注意点:**
+
+- 乱用すると各レイヤーがメモリを消費し、逆にパフォーマンスが悪化する
+- 常時指定するのではなく、アニメーション開始前に JS で付与 → 終了後に解除するのが理想
+
+```javascript
+el.addEventListener("mouseenter", () => {
+  el.style.willChange = "transform, opacity";
+});
+el.addEventListener("animationend", () => {
+  el.style.willChange = "auto";
+});
+```
+
+### prefers-reduced-motion
+
+OS のアクセシビリティ設定（「視差効果を減らす」等）を検知するメディアクエリ。前庭障害やモーション過敏のユーザーへの配慮として、アニメーションを無効化または軽減する。
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .animated-element {
+    animation: none;
+  }
+}
+```
+
+対応する OS 設定:
+
+| OS         | 設定場所                                                         |
+| ---------- | ---------------------------------------------------------------- |
+| macOS      | システム設定 > アクセシビリティ > ディスプレイ > 視差効果を減らす |
+| Windows 11 | 設定 > アクセシビリティ > 視覚効果 > アニメーション効果          |
+| iOS        | 設定 > アクセシビリティ > 動作                                   |
+| Android 9+ | 設定 > ユーザー補助 > アニメーションの削除                       |
+
+---
+
+## 関連
+
+- [無限スクロール (フィルムロール)](infinite-scroll-filmroll.md) — `@keyframes` + `transform` を使ったシームレスループの実践例
