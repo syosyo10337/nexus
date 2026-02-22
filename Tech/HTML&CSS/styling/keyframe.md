@@ -3,74 +3,92 @@ tags:
   - html-css
   - animation
 created: 2026-01-04
+updated_at: 2026-02-23
 status: active
 ---
 
-👓
+# @keyframes
 
-# keyframe
+より複雑なアニメーションを実装するには、`@keyframes` と `animation` プロパティを組み合わせる。経過時間ごとのアニメーションを細かく設定できる。
 
 ---
 
-より複雑なアニメーションを実装するには、keyframe と animation を使います。keyframe を使うと、経過時間ごとのアニメーションを細かく設定することができます。
+## @keyframes
 
-```Sass
-e.g.)
-@keyframe Animation Name {
-   0% {...}
-   100% {...}
+### Syntax
+
+```css
+@keyframes <animation-name> {
+  from {
+    /* = 0% */
+  }
+  <percentage > {
+  }
+  to {
+    /* = 100% */
+  }
 }
-
-
-/* 書式 */
-＠keyframe アニメーション名 {
-	0%(from){ 変化させるプロパティ: 値; }
-	?0%{ 変化させるプロパティ: 値; }
-	100%(to) 変化させるプロパティ: 値; }
- }
 ```
 
-`0% - 100%`に関しては、`from　- to`での代用可能
+- `0%` は `from`、`100%` は `to` で代用可能
+- 途中の任意のパーセンテージ (`25%`, `50%` など) も指定できる
 
-ここで指定した変化させるプロパティを、animationプロパティで制御する。
+### Example
 
-## `animation:`
+```css
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+```
 
-こちらは、実際に変化させたいプロパティ自身につける。
+---
 
-```Sass
-e.g.) /* 透明から、0.3sかけてアニメーションが浮き上がる指定 */
+## animation プロパティ
+
+変化させたい要素に対して付与する。
+
+### Syntax
+
+```css
+animation: <name> <duration> <timing-function> <delay> <iteration-count>
+  <direction> <fill-mode> <play-state>;
+```
+
+個別プロパティ:
+
+| プロパティ                  | 説明                 | 値の例                                  |
+| --------------------------- | -------------------- | --------------------------------------- |
+| `animation-name`            | @keyframes 名を指定  | `fadeIn`                                |
+| `animation-duration`        | アニメーションの長さ | `0.3s`, `2s`                            |
+| `animation-delay`           | 開始までの遅延       | `1s`                                    |
+| `animation-timing-function` | イージング           | `linear`, `ease`, `ease-in-out`         |
+| `animation-iteration-count` | 繰り返し回数         | `1`, `infinite`                         |
+| `animation-direction`       | 再生方向             | `normal`, `reverse`, `alternate`        |
+| `animation-fill-mode`       | 終了後の状態         | `none`, `forwards`, `backwards`, `both` |
+| `animation-play-state`      | 再生/停止            | `running`, `paused`                     |
+
+### Example
+
+```css
+/* 透明から 0.3s かけてフェードインする */
 #modalContent {
   background: white;
   padding: 20px;
   border-radius: 15px;
-
-  animation-name: fadeIn;
-	animation-duration: .3s;
-	animation-fill-mode:forwards;
+  animation: fadeIn 0.3s forwards;
 }
-@keyframes fadeIn{
+
+@keyframes fadeIn {
   from {
-  opacity: 0;
+    opacity: 0;
   }
-
   to {
-  opacity: 1;
+    opacity: 1;
   }
-}
-```
-
-以下参考までに、animation関連のプロパティを例示しておきます。
-
-```Sass
-
-animation-name: move;
-animation-duration: 2s;
-animation-delay: 1s;
-animation-fill-mode: forwards; --移動後の位置にとどまる。
-animation-iteration-count: infinite;
-animation-direction: alternate-reverse;
-animation-timing-function: linear
-#これらはanimationの一括指定プロパティが使えます。
 }
 ```
