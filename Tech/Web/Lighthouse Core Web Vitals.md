@@ -14,13 +14,13 @@ Lighthouse が測定する主要パフォーマンス指標と、その改善手
 
 ## 指標一覧
 
-| 指標 | 意味 | 良い基準 |
-| --- | --- | --- |
-| FCP (First Contentful Paint) | 最初のコンテンツが見えるまで | < 1.8s |
-| LCP (Largest Contentful Paint) | メインコンテンツが見えるまで | < 2.5s |
-| TBT (Total Blocking Time) | メインスレッドがブロックされた合計時間 | < 200ms |
-| CLS (Cumulative Layout Shift) | レイアウトのズレ量 | < 0.1 |
-| INP (Interaction to Next Paint) | インタラクションへの応答速度 | < 200ms |
+| 指標                            | 意味                                   | 良い基準 |
+| ------------------------------- | -------------------------------------- | -------- |
+| FCP (First Contentful Paint)    | 最初のコンテンツが見えるまで           | < 1.8s   |
+| LCP (Largest Contentful Paint)  | メインコンテンツが見えるまで           | < 2.5s   |
+| TBT (Total Blocking Time)       | メインスレッドがブロックされた合計時間 | < 200ms  |
+| CLS (Cumulative Layout Shift)   | レイアウトのズレ量                     | < 0.1    |
+| INP (Interaction to Next Paint) | インタラクションへの応答速度           | < 200ms  |
 
 ---
 
@@ -63,7 +63,123 @@ FCP〜TTI の間で、メインスレッドを 50ms 以上ブロックした「L
 
 ---
 
-## CLS (Cumulative Layout Shift) — 目標: < 0.1
+### 画像・動画の「重すぎる」閾値とフォーマット別ガイド
+
+## なぜCDNが関係するのか（前提）
+
+まず重要な考え方として、「ファイルサイズ」と「転送サイズ」と「体感速度」は別物です。
+
+```text
+オリジンサーバーのファイルサイズ
+    ↓ CDNがgzip/Brotli圧縮
+転送サイズ（実際にネットワークを流れる量）
+    ↓ ブラウザがデコード・レンダリング
+体感速度（LCP等）
+```
+
+CDNがエッジキャッシュで配信すれば物理的な距離の問題は解決しますが、**ファイルサイズ自体が大きければCDNがあっても遅い**のは変わりません。今回のsoypoy.comはまさにそのケースです。
+
+---
+
+## フォーマット別・実践的な閾値の目安
+
+### 🖼️ 静止画像
+
+| フォーマット | 用途             | 目標サイズ | 上限の目安 | 備考                                                  |
+| ------------ | ---------------- | ---------- | ---------- | ----------------------------------------------------- |
+| **AVIF**     | 写真・一般画像   | ~50KB      | 150KB      | ✅ 最高圧縮率、Chrome/Firefox/Safari対応済            |
+| **WebP**     | 写真・一般画像   | ~80KB      | 200KB      | ✅ 現在のデファクトスタンダード、全モダンブラウザ対応 |
+| **JPEG**     | 写真             | ~100KB     | 300KB      | ⚠️ 新規採用は非推奨、レガシー対応のみ                 |
+| **PNG**      | 透過が必要な画像 | ~50KB      | 150KB      | ⚠️ 写真用途は絶対NG、イラスト・ロゴ向け               |
+| **SVG**      | アイコン・ロゴ   | ~5KB       | 30KB       | ✅ ベクターなのでサイズ依存しないが複雑なSVGは重い    |
+| **GIF**      | アニメーション   | 非推奨     | —          | ⚠️ Video要素かWebP/AVIFアニメーションに移行           |
+
+**soypoy.comの問題箇所：**
+
+- `fuda_filmroll_left.png` → **1,382 KiB** （目標の約10倍、PNGで写真用途は最悪の組み合わせ）
+- `HeroSecRibon.svg` → **157 KiB** （SVGとして異常に重い。中身が複雑すぎる可能性）
+
+---
+
+### 🎬 動画
+
+| フォーマット         | 目標サイズ | 上限の目安 | 備考                                  |
+| -------------------- | ---------- | ---------- | ------------------------------------- |
+| **WebM (VP9)**       | 1MB以下    | 3MB        | ✅ ブラウザ対応◎、圧縮率高            |
+| **WebM (AV1)**       | 800KB以下  | 2MB        | ✅ 最高圧縮率だがエンコードが重い     |
+| **MP4 (H.264)**      | 2MB以下    | 5MB        | ✅ 互換性最高、サイズはWebMより大きい |
+| **MP4 (H.265/HEVC)** | 1MB以下    | 3MB        | ⚠️ Safariのみ対応、ライセンス問題あり |
+
+**soypoy.comの問題箇所：**
+
+- `hero.webm` → **9,028 KiB（約9MB）** → 上限の3倍。WebMなのに重すぎる＝解像度かビットレートが高すぎる
+
+---
+
+## 「どこで閾値を考えるか」のフレームワーク
+
+数字の暗記より、この考え方が重要です。
+
+### 1. 表示サイズ × デバイスピクセル比で計算する
+
+```text
+必要な解像度 = 表示CSS幅 × デバイスピクセル比(DPR)
+
+例: 346px表示 × DPR2 = 692px が実際に必要な解像度
+   → 828pxの画像は不要（soypoy.comの実際のケース）
+```
+
+### 2. 接続回線別の転送時間で考える
+
+| 回線                            | 実効速度  | 1MBの転送時間 |
+| ------------------------------- | --------- | ------------- |
+| Slow 4G（Lighthouseデフォルト） | 約1.6Mbps | 約5秒         |
+| 一般的な4G                      | 約20Mbps  | 約0.4秒       |
+| WiFi                            | 約50Mbps  | 約0.16秒      |
+
+**Lighthouseは常にSlow 4G条件でテストします。** だから9MBの動画は理論上45秒以上かかることになります。LCPが72.5秒という数字はここから来ています。
+
+### 3. Page Weight Budgetの考え方（業界標準）
+
+```text
+ページ全体の転送サイズの目安:
+  モバイル: 1MB以下（理想）〜 2MB（許容）
+  デスクトップ: 2MB以下（理想）〜 5MB（許容）
+
+soypoy.com: 25,228 KiB（約25MB）→ 目標の10〜25倍
+```
+
+---
+
+## 具体的な改善コマンド（参考）
+
+```bash
+# Squooshコマンドライン（Google製）
+npx @squoosh/cli --avif '{"cqLevel":33}' input.jpg
+
+# ffmpegで動画を圧縮
+ffmpeg -i hero_original.webm \
+  -vcodec libvpx-vp9 \
+  -crf 35 -b:v 0 \
+  -vf scale=1280:-1 \  # 1280px幅にリサイズ
+  hero.webm
+
+# Next.jsはImageコンポーネントが自動変換してくれるが
+# PNG→AVIF変換は手動でやるほうが確実
+```
+
+---
+
+## soypoy.comへの処方箋（画像・動画限定）
+
+| ファイル                       | 現状        | 推奨対応                                  | 期待削減率                  |
+| ------------------------------ | ----------- | ----------------------------------------- | --------------------------- |
+| `hero.webm`                    | 9MB WebM    | 解像度下げ＋CRF調整                       | **-70〜80%** → 約1.8〜2.7MB |
+| `fuda_filmroll_left/right.png` | 各1.3MB PNG | WebP/AVIF化＋表示サイズに合わせたリサイズ | **-90%以上** → 各100KB程度  |
+| `HeroSecRibon.svg`             | 157KB SVG   | SVGの最適化（SVGO使用）                   | **-50〜70%** → 50KB程度     |
+| `/_next/image`系               | 各80〜250KB | Next.jsのsizes propを正しく指定           | **-40〜60%**                |
+
+これらだけで転送量は25MBから**5〜8MB程度**まで削減できる見込みです。CDNを入れるのはその後でも十分効果が出ます。 CLS (Cumulative Layout Shift) — 目標: < 0.1
 
 ページ読み込み中に要素が予期せず動いた量のスコア。ボタンを押そうとしたら広告が挿入されてズレる、あの現象。
 
@@ -107,11 +223,11 @@ FCP〜TTI の間で、メインスレッドを 50ms 以上ブロックした「L
 
 DPR はデバイスの物理ピクセルと CSS ピクセルの比率。`window.devicePixelRatio` で取得できる。
 
-| デバイス例 | DPR | CSS 100px に必要な物理ピクセル |
-| --- | --- | --- |
-| 一般的なデスクトップ | 1x | 100px |
-| Retina MacBook / iPhone | 2x | 200px |
-| iPhone Pro Max / 高解像度 Android | 3x | 300px |
+| デバイス例                        | DPR | CSS 100px に必要な物理ピクセル |
+| --------------------------------- | --- | ------------------------------ |
+| 一般的なデスクトップ              | 1x  | 100px                          |
+| Retina MacBook / iPhone           | 2x  | 200px                          |
+| iPhone Pro Max / 高解像度 Android | 3x  | 300px                          |
 
 DPR 2x のデバイスに 1x の画像を表示するとぼやけるが、全デバイスに 3x 画像を配信すると帯域を無駄に消費する。ここで `srcset` が活きる。
 
@@ -126,11 +242,7 @@ DPR 2x のデバイスに 1x の画像を表示するとぼやけるが、全デ
 ```html
 <img
   src="hero-400w.jpg"
-  srcset="
-    hero-400w.jpg 1x,
-    hero-800w.jpg 2x,
-    hero-1200w.jpg 3x
-  "
+  srcset="hero-400w.jpg 1x, hero-800w.jpg 2x, hero-1200w.jpg 3x"
   width="400"
   height="300"
   alt="Hero image"
@@ -198,14 +310,14 @@ DPR 2x のデバイスに 1x の画像を表示するとぼやけるが、全デ
 
 ### パフォーマンスへのインパクト
 
-| 対策 | 影響する指標 | 効果 |
-| --- | --- | --- |
-| `srcset` + `sizes` で適切な画像配信 | LCP, 帯域削減 | DPR 1x デバイスへの過剰配信を防止（転送量 50-75% 削減も可能） |
-| AVIF/WebP + `<picture>` | LCP, 帯域削減 | JPEG 比で 30-50% のファイルサイズ削減 |
-| LCP 画像に `fetchpriority="high"` | LCP | ブラウザが最優先でフェッチする |
-| LCP 画像に `loading="lazy"` を付けない | LCP | lazy にすると Intersection Observer 待ちで遅延する |
-| `width` / `height` を明示 | CLS | レイアウトシフトを防止 |
-| `<link rel="preload">` で先読み | LCP | HTML パース前にフェッチを開始 |
+| 対策                                   | 影響する指標  | 効果                                                          |
+| -------------------------------------- | ------------- | ------------------------------------------------------------- |
+| `srcset` + `sizes` で適切な画像配信    | LCP, 帯域削減 | DPR 1x デバイスへの過剰配信を防止（転送量 50-75% 削減も可能） |
+| AVIF/WebP + `<picture>`                | LCP, 帯域削減 | JPEG 比で 30-50% のファイルサイズ削減                         |
+| LCP 画像に `fetchpriority="high"`      | LCP           | ブラウザが最優先でフェッチする                                |
+| LCP 画像に `loading="lazy"` を付けない | LCP           | lazy にすると Intersection Observer 待ちで遅延する            |
+| `width` / `height` を明示              | CLS           | レイアウトシフトを防止                                        |
+| `<link rel="preload">` で先読み        | LCP           | HTML パース前にフェッチを開始                                 |
 
 ### Next.js / フレームワークでの対応
 
@@ -214,15 +326,15 @@ DPR 2x のデバイスに 1x の画像を表示するとぼやけるが、全デ
 ```tsx
 // Next.js の Image コンポーネント
 // 内部で srcset を自動生成し、DPR やビューポートに応じた画像を配信する
-import Image from 'next/image';
+import Image from "next/image";
 
 <Image
   src="/hero.jpg"
   width={800}
   height={600}
   alt="Hero"
-  priority  // LCP 画像は priority を付ける (fetchpriority="high" + preload 相当)
-/>
+  priority // LCP 画像は priority を付ける (fetchpriority="high" + preload 相当)
+/>;
 ```
 
 フレームワークを使わない場合は、ビルドツール（sharp, imagemin 等）で複数解像度の画像を事前生成し、手動で `srcset` を記述する。
