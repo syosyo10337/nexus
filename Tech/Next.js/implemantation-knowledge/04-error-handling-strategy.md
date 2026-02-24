@@ -1,13 +1,28 @@
+---
+tags:
+  - nextjs
+  - react
+  - error-handling
+  - error-boundary
+  - typescript
+created: 2026-02-24
+updated_at: 2026-02-24
+status: active
+---
+
 # エラーハンドリング三層構造
+
+Next.js App Router (v15) における階層的エラーハンドリング戦略。グローバルエラー、ページレベルエラー、コンポーネントレベルエラーの三層構造により、適切な粒度でエラーをキャッチし、UIレベルで処理する。
 
 ## 関連ドキュメント
 
+- [エラークラス設計](05-error-class-design.md) - ApiError/NetworkError の型安全な分類
 - [Next.jsロギングアーキテクチャ設計](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E8%A8%AD%E8%A8%88.md) - クライアントエラーレポーティングの詳細設計
 - [Next.jsロギング実装例とベストプラクティス](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E5%AE%9F%E8%A3%85%E4%BE%8B%E3%81%A8%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9.md) - エラーログの実装例
 
 ## 三層構造の全体像
 
-Birdcageのエラーハンドリングは、Next.js App Routerの機構を活かした**三層構造**で設計されている。各層はキャッチするエラーの範囲とログレベルが異なり、漏れなくエラーを捕捉する。
+Next.js App Routerのエラーハンドリングは、**三層構造**で設計される。各層はキャッチするエラーの範囲とログレベルが異なり、漏れなくエラーを捕捉する。
 
 ```text
 Layer 1: global-error.tsx (LogLevel.Fatal)
@@ -555,7 +570,7 @@ void reportClientError({
 
 詳細な実装とアーキテクチャについては、以下を参照：
 
-- [Next.jsロギングアーキテクチャ設計](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E8%A8%AD%E8%A8%88.md#クライアントエラーレポーティングアーキテクチャ) - 3層アーキテクチャとエラーシリアライゼーション
+- [Next.jsロギングアーキテクチャ設計](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E8%A8%AD%E8%A8%88.md#クライアントエラーレポーティング設計) - 3層アーキテクチャとエラーシリアライゼーション
 - [Next.jsロギング実装例とベストプラクティス](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E5%AE%9F%E8%A3%85%E4%BE%8B%E3%81%A8%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9.md#クライアントサイド実装例) - reportClientError()の完全な実装
 
 ---
@@ -595,14 +610,14 @@ export default function RootLayout({ children }) {
 
 詳細な実装については、以下を参照：
 
-- [Next.jsロギングアーキテクチャ設計](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E8%A8%AD%E8%A8%88.md#3-unhandledrejection未処理promise-rejection) - エラーキャプチャポイントの設計
+- [Next.jsロギングアーキテクチャ設計](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E3%82%A2%E3%83%BC%E3%82%AD%E3%83%86%E3%82%AF%E3%83%81%E3%83%A3%E8%A8%AD%E8%A8%88.md#クライアントエラーレポーティング設計) - エラーキャプチャポイントの設計
 - [Next.jsロギング実装例とベストプラクティス](../Next.js%E3%83%AD%E3%82%AE%E3%83%B3%E3%82%B0%E5%AE%9F%E8%A3%85%E4%BE%8B%E3%81%A8%E3%83%99%E3%82%B9%E3%83%88%E3%83%97%E3%83%A9%E3%82%AF%E3%83%86%E3%82%A3%E3%82%B9.md#setupglobalerrorhandlers-実装) - setupGlobalErrorHandlers()の完全な実装
 
 ---
 
 ## エラーの流れまとめ
 
-```
+```text
 [ブラウザでエラー発生]
     |
     |--- レンダリング中のエラー?
