@@ -1,3 +1,14 @@
+---
+tags:
+  - nextjs
+  - react
+  - app-router
+  - server-components
+created: 2026-02-24
+updated_at: 2026-02-24
+status: active
+---
+
 # ページ組み立てパターン
 
 Next.js 15 App Router におけるページの組み立て方のベストプラクティスをまとめる。

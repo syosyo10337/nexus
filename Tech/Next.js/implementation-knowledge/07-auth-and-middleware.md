@@ -1,3 +1,14 @@
+---
+tags:
+  - nextjs
+  - auth
+  - next-auth
+  - middleware
+created: 2026-02-24
+updated_at: 2026-02-24
+status: active
+---
+
 # 認証 & ミドルウェア
 
 NextAuth.js 5 beta を用いた認証設定、ミドルウェアによるアクセス制御、Request ID の伝播、テナント情報の取得パターンをまとめる。

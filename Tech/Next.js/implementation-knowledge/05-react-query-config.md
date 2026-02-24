@@ -1,3 +1,14 @@
+---
+tags:
+  - nextjs
+  - react-query
+  - tanstack-query
+  - caching
+created: 2026-02-24
+updated_at: 2026-02-24
+status: active
+---
+
 # React Query設定思想
 
 React Query（TanStack Query）の設定方針と、QueryClient の構成について解説する。

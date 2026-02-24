@@ -1,3 +1,14 @@
+---
+tags:
+  - nextjs
+  - server-actions
+  - react-hook-form
+  - zod
+created: 2026-02-24
+updated_at: 2026-02-24
+status: active
+---
+
 # Server Action 実装パターン
 
 Next.js の Server Action を使ったフォーム送信・データ変更処理のベストプラクティスをまとめる。
