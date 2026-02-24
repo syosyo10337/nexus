@@ -65,7 +65,7 @@ export default defineConfig({
       override: {
         // NOTE: 認証やハンドリングを実装するためのfetch関数のwrapper
         mutator: {
-          path: "./src/api/fetchers/server.ts",
+          path: "./src/api/fetchers/server.ts",https://orval.dev/docs/versions/v8#enhanced-zod-integration
           name: "customServerFetch",
         },
         fetch: {
@@ -766,7 +766,7 @@ function extractCustomHeaders(request: NextRequest): HeadersInit {
 
 ## リクエストフロー図
 
-```
+```text
 [ブラウザ]
     |
     |--- RSC / Server Action --------------------------> customServerFetch --> Backend API
@@ -786,7 +786,7 @@ function extractCustomHeaders(request: NextRequest): HeadersInit {
 
 **Server Component（RSC）の場合:**
 
-```
+```texst
 Page Component (RSC)
   └─> getCommunityEvents()                     // *.ts から import
         └─> customServerFetch('/v1/events')    // 直接BE APIへ
@@ -797,7 +797,7 @@ Page Component (RSC)
 
 **Client Component（React Query）の場合:**
 
-```
+```text
 EventList Component (Client)
   └─> useListAdmissions()                              // *.query.ts から import
         └─> customClientFetch('/api/proxy/v1/events')  // API Route経由
