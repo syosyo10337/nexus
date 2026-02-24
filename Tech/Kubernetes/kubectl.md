@@ -4,7 +4,7 @@ tags:
   - k8s
   - kubectl
 created: 2026-01-11
-updated: 2026-01-21
+updated_at: 2026-02-24
 status: active
 ---
 
@@ -114,6 +114,65 @@ kubectl get pod --selector(-l) <labelkey>=<labelvalue>
 ```
 
 同様にlogsもlabel指定で絞り込むことができます。
+
+## トラブルシューティングの調査フロー
+
+エラーの原因を調査する際の基本的な流れ:
+
+### 1. 全体の状態を確認
+
+まずはリソースの一覧で STATUS や READY を確認する。
+
+```bash
+kubectl get pods
+kubectl get deploy
+kubectl get svc
+```
+
+### 2. 異常なリソースを特定
+
+- Pod の STATUS が `Running` 以外 (`Pending`, `CrashLoopBackOff`, `Error` など)
+- READY が `0/1` (起動していない)
+- RESTARTS が多い (頻繁に再起動している)
+
+### 3. describe で詳細情報を確認
+
+イベントログやエラーメッセージから原因を特定する。
+
+```bash
+kubectl describe pod <pod名>
+kubectl describe deploy <deployment名>
+```
+
+**describe で分かること:**
+
+- イメージの取得エラー (`ImagePullBackOff`)
+- リソース不足 (`Insufficient cpu/memory`)
+- ボリュームのマウントエラー
+- K8s レベルのイベント履歴
+
+### 4. logs でアプリケーションログを確認
+
+Pod は起動しているがアプリケーションが正しく動作していない場合。
+
+```bash
+kubectl logs <pod名>
+kubectl logs <pod名> -c <container名>  # 複数コンテナの場合
+kubectl logs <pod名> --previous        # 前回起動時のログ (CrashLoopBackOff 時)
+```
+
+**logs で分かること:**
+
+- アプリケーションのエラーメッセージ
+- 環境変数や設定の問題
+- 接続エラー (DB やAPI)
+
+### describe と logs の使い分け
+
+| ツール     | 用途                                           | 例                                     |
+| ---------- | ---------------------------------------------- | -------------------------------------- |
+| `describe` | Pod が起動しない、K8s インフラレベルの問題     | イメージが取得できない、リソース不足   |
+| `logs`     | Pod は起動しているがアプリケーションの動作異常 | コード内のエラー、接続エラー、設定ミス |
 
 ## 参考
 
