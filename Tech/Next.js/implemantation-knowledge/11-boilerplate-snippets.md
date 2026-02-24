@@ -8,22 +8,22 @@
 
 ## 目次
 
-| # | スニペット | 用途 |
-|---|-----------|------|
-| 1 | [ServerActionState + ValidateBodyResult 型](#1-serveractionstate--validatebodyresultt-型) | Server Action の戻り値型定義 |
-| 2 | [Server Action テンプレート](#2-server-action-テンプレート) | Server Action の実装雛形 |
-| 3 | [customServerFetch テンプレート](#3-customserverfetch-テンプレート) | Server Component / Server Action 用 fetch ラッパー |
-| 4 | [customClientFetch テンプレート](#4-customclientfetch-テンプレート) | Client Component 用 fetch ラッパー |
-| 5 | [shouldRetry + QueryClient config](#5-shouldretry--queryclient-config-テンプレート) | React Query のリトライ制御とデフォルト設定 |
-| 6 | [useQueryControl hook](#6-usequerycontrolt-hook) | URL SearchParams によるフィルタ・ページネーション管理 |
-| 7 | [useFormModal hook](#7-useformodalt-hook) | 作成/編集モーダルの状態管理 |
-| 8 | [画像フィールド Discriminated Union schema](#8-画像フィールド-discriminated-union-schema) | Zod による画像入力の型安全なバリデーション |
-| 9 | [ClientErrorBoundary コンポーネント](#9-clienterrorboundary-コンポーネント) | クライアントサイドエラーバウンダリ |
-| 10 | [ルーティング定数パターン](#10-ルーティング定数パターン) | 型安全なルート定数定義 |
-| 11 | [Middleware テンプレート](#11-middleware-テンプレートauth-check--request-id) | 認証チェック + Request ID 付与 |
-| 12 | [Zustand persist + skipHydration](#12-zustand-persist--skiphydration-テンプレート) | ウィザードフォーム用の永続化ストア |
-| 13 | [Vitest 3プロジェクト構成](#13-vitest-3プロジェクト構成テンプレート) | client / server / storybook の3環境テスト設定 |
-| 14 | [ESLint boundaries 設定](#14-eslint-boundaries-設定テンプレート) | レイヤー間の依存ルール強制 |
+| #   | スニペット                                                                                | 用途                                                  |
+| --- | ----------------------------------------------------------------------------------------- | ----------------------------------------------------- |
+| 1   | [ServerActionState + ValidateBodyResult 型](#1-serveractionstate--validatebodyresultt-型) | Server Action の戻り値型定義                          |
+| 2   | [Server Action テンプレート](#2-server-action-テンプレート)                               | Server Action の実装雛形                              |
+| 3   | [customServerFetch テンプレート](#3-customserverfetch-テンプレート)                       | Server Component / Server Action 用 fetch ラッパー    |
+| 4   | [customClientFetch テンプレート](#4-customclientfetch-テンプレート)                       | Client Component 用 fetch ラッパー                    |
+| 5   | [shouldRetry + QueryClient config](#5-shouldretry--queryclient-config-テンプレート)       | React Query のリトライ制御とデフォルト設定            |
+| 6   | [useQueryControl hook](#6-usequerycontrolt-hook)                                          | URL SearchParams によるフィルタ・ページネーション管理 |
+| 7   | [useFormModal hook](#7-useformodalt-hook)                                                 | 作成/編集モーダルの状態管理                           |
+| 8   | [画像フィールド Discriminated Union schema](#8-画像フィールド-discriminated-union-schema) | Zod による画像入力の型安全なバリデーション            |
+| 9   | [ClientErrorBoundary コンポーネント](#9-clienterrorboundary-コンポーネント)               | クライアントサイドエラーバウンダリ                    |
+| 10  | [ルーティング定数パターン](#10-ルーティング定数パターン)                                  | 型安全なルート定数定義                                |
+| 11  | [Middleware テンプレート](#11-middleware-テンプレートauth-check--request-id)              | 認証チェック + Request ID 付与                        |
+| 12  | [Zustand persist + skipHydration](#12-zustand-persist--skiphydration-テンプレート)        | ウィザードフォーム用の永続化ストア                    |
+| 13  | [Vitest 3プロジェクト構成](#13-vitest-3プロジェクト構成テンプレート)                      | client / server / storybook の3環境テスト設定         |
+| 14  | [ESLint boundaries 設定](#14-eslint-boundaries-設定テンプレート)                          | レイヤー間の依存ルール強制                            |
 
 ---
 
@@ -37,18 +37,18 @@ Server Action の戻り値を **Discriminated Union** で定義する。`success
 // src/shared/types/server-action.ts
 export type ServerActionState =
   | { success: true }
-  | { success: false; message: string }
+  | { success: false; message: string };
 
 export type ValidateBodyResult<APIRequestBody> =
   | { error: ServerActionState; data: undefined }
-  | { error: undefined; data: APIRequestBody }
+  | { error: undefined; data: APIRequestBody };
 ```
 
 ```typescript
 // src/shared/constants/server-action-state.ts
-import type { ServerActionState } from '../types/server-action'
+import type { ServerActionState } from "../types/server-action";
 
-export const INITIAL_STATE: ServerActionState = { success: false, message: '' }
+export const INITIAL_STATE: ServerActionState = { success: false, message: "" };
 ```
 
 ### 使用方法
@@ -58,13 +58,16 @@ export const INITIAL_STATE: ServerActionState = { success: false, message: '' }
 - `INITIAL_STATE` は `useActionState` の初期値として渡す
 
 ```typescript
-const [state, formAction, isPending] = useActionState(createXxxAction, INITIAL_STATE)
+const [state, formAction, isPending] = useActionState(
+  createXxxAction,
+  INITIAL_STATE
+);
 
 if (state.success) {
   // success: true — message プロパティは存在しない
 } else {
   // success: false — state.message に安全にアクセス可能
-  toast.error(state.message)
+  toast.error(state.message);
 }
 ```
 
@@ -78,51 +81,51 @@ if (state.success) {
 
 ```typescript
 // src/features/{domain}/actions/{action-name}.ts
-'use server'
+"use server";
 
-import { revalidatePath } from 'next/cache'
+import { revalidatePath } from "next/cache";
 import type {
   ServerActionState,
   ValidateBodyResult,
-} from '@/shared/types/server-action'
+} from "@/shared/types/server-action";
 
 export async function createXxxAction(
   _prevState: ServerActionState,
-  data: FormData | SomeType,
+  data: FormData | SomeType
 ): Promise<ServerActionState> {
   try {
     // 1. Transform & Validate
-    const { error, data: validated } = _validateAndTransform(data)
-    if (error) return error
+    const { error, data: validated } = _validateAndTransform(data);
+    if (error) return error;
 
     // 2. API Call
-    await apiClient.createXxx(validated)
+    await apiClient.createXxx(validated);
 
     // 3. Revalidate
-    revalidatePath('/xxx')
+    revalidatePath("/xxx");
 
     // 4. Return success
-    return { success: true }
+    return { success: true };
   } catch (error) {
-    console.error('Error:', error)
-    return { success: false, message: 'エラーが発生しました' }
+    console.error("Error:", error);
+    return { success: false, message: "エラーが発生しました" };
   }
 }
 
 function _validateAndTransform(
-  data: SomeType,
+  data: SomeType
 ): ValidateBodyResult<ApiRequestBody> {
   const payload = {
     /* transform: フォームデータを API リクエスト形式に変換 */
-  }
-  const result = zodSchema.safeParse(payload)
+  };
+  const result = zodSchema.safeParse(payload);
   if (!result.success) {
     return {
-      error: { success: false, message: 'データ形式が正しくありません' },
+      error: { success: false, message: "データ形式が正しくありません" },
       data: undefined,
-    }
+    };
   }
-  return { error: undefined, data: result.data }
+  return { error: undefined, data: result.data };
 }
 ```
 
@@ -134,12 +137,15 @@ function _validateAndTransform(
 4. クライアント側では `useActionState` で消費する
 
 ```typescript
-'use client'
-import { useActionState } from 'react'
-import { createXxxAction } from '@/features/xxx/actions/create-xxx-action'
-import { INITIAL_STATE } from '@/shared/constants/server-action-state'
+"use client";
+import { useActionState } from "react";
+import { createXxxAction } from "@/features/xxx/actions/create-xxx-action";
+import { INITIAL_STATE } from "@/shared/constants/server-action-state";
 
-const [state, formAction, isPending] = useActionState(createXxxAction, INITIAL_STATE)
+const [state, formAction, isPending] = useActionState(
+  createXxxAction,
+  INITIAL_STATE
+);
 ```
 
 ---
@@ -158,56 +164,56 @@ npm install server-only
 
 ```typescript
 // src/api/fetchers/server.ts
-import 'server-only'
-import { cookies, headers } from 'next/headers'
+import "server-only";
+import { cookies, headers } from "next/headers";
 
 export interface CustomServerFetchOptions extends RequestInit {
-  skipAuth?: boolean
+  skipAuth?: boolean;
 }
 
 export async function customServerFetch<T>(
   url: string,
-  options: CustomServerFetchOptions,
+  options: CustomServerFetchOptions
 ): Promise<T> {
-  const headersList = await headers()
-  const requestId = headersList.get('x-request-id') ?? 'unknown'
+  const headersList = await headers();
+  const requestId = headersList.get("x-request-id") ?? "unknown";
 
-  const requestUrl = url.startsWith('/')
+  const requestUrl = url.startsWith("/")
     ? `${process.env.API_BASE_URL}${url}`
-    : url
+    : url;
   const requestHeaders: HeadersInit = {
     ...(!(options.body instanceof FormData) && {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     }),
-    'x-request-id': requestId,
+    "x-request-id": requestId,
     ...options.headers,
-  }
+  };
 
   if (!options.skipAuth) {
-    const cookieStore = await cookies()
-    const token = cookieStore.get('session-token')
-    if (token) requestHeaders['cookie'] = `session=${token.value};`
+    const cookieStore = await cookies();
+    const token = cookieStore.get("session-token");
+    if (token) requestHeaders["cookie"] = `session=${token.value};`;
   }
 
   const response = await fetch(requestUrl, {
     ...options,
     headers: requestHeaders,
-  })
+  });
   const data = response.headers
-    .get('content-type')
-    ?.includes('application/json')
+    .get("content-type")
+    ?.includes("application/json")
     ? await response.json()
-    : await response.text()
+    : await response.text();
 
   if (!response.ok) {
     throw createApiError(
       response.status,
-      data?.message ?? 'API request failed',
-      data,
-    )
+      data?.message ?? "API request failed",
+      data
+    );
   }
 
-  return data as T
+  return data as T;
 }
 ```
 
@@ -228,48 +234,48 @@ Client Component から Next.js の API Route（プロキシ）経由でバッ�
 
 ```typescript
 // src/api/fetchers/client.ts
-'use client'
+"use client";
 
 export interface CustomClientFetchOptions extends RequestInit {
-  skipAuth?: boolean
+  skipAuth?: boolean;
 }
 
 export async function customClientFetch<T>(
   url: string,
-  options: CustomClientFetchOptions = {},
+  options: CustomClientFetchOptions = {}
 ): Promise<T> {
-  const proxyBase = options.skipAuth ? '/api/proxy-public' : '/api/proxy'
-  const requestUrl = url.startsWith('/')
+  const proxyBase = options.skipAuth ? "/api/proxy-public" : "/api/proxy";
+  const requestUrl = url.startsWith("/")
     ? `${window.location.origin}${url}`
-    : url
+    : url;
   const requestHeaders: HeadersInit = {
     ...(!(options.body instanceof FormData) && {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     }),
     ...options.headers,
-  }
+  };
 
   const response = await fetch(requestUrl, {
     ...options,
     headers: requestHeaders,
-    credentials: 'same-origin',
-  })
+    credentials: "same-origin",
+  });
 
   const data = response.headers
-    .get('content-type')
-    ?.includes('application/json')
+    .get("content-type")
+    ?.includes("application/json")
     ? await response.json()
-    : await response.text()
+    : await response.text();
 
   if (!response.ok) {
     throw createApiError(
       response.status,
-      data?.message ?? 'API request failed',
-      data,
-    )
+      data?.message ?? "API request failed",
+      data
+    );
   }
 
-  return data as T
+  return data as T;
 }
 ```
 
@@ -296,10 +302,10 @@ npm install @tanstack/react-query
 
 ```typescript
 // src/shared/components/utility/query-client-provider/config.ts
-import { QueryClient, type QueryClientConfig } from '@tanstack/react-query'
+import { QueryClient, type QueryClientConfig } from "@tanstack/react-query";
 
 export function createQueryClient(): QueryClient {
-  return new QueryClient(queryClientConfig)
+  return new QueryClient(queryClientConfig);
 }
 
 export const queryClientConfig: QueryClientConfig = {
@@ -314,15 +320,15 @@ export const queryClientConfig: QueryClientConfig = {
     },
     mutations: { retry: false },
   },
-}
+};
 
 function shouldRetry(failureCount: number, error: unknown): boolean {
   // AbortError（ユーザーによるキャンセル）はリトライしない
-  if (error instanceof DOMException && error.name === 'AbortError')
-    return false
+  if (error instanceof DOMException && error.name === "AbortError")
+    return false;
   // リトライ不要なエラークラスをここに追加する
   // if (error instanceof BadRequestError || error instanceof UnauthorizedError) return false
-  return failureCount < 3
+  return failureCount < 3;
 }
 ```
 
@@ -344,27 +350,27 @@ URL の SearchParams を利用して、フィルタ条件やページネーシ�
 
 ```typescript
 // src/shared/hooks/use-query-control.ts
-'use client'
+"use client";
 
-import { useRouter, useSearchParams, usePathname } from 'next/navigation'
-import { useCallback, useTransition, useMemo } from 'react'
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useCallback, useTransition, useMemo } from "react";
 
 interface QueryControlConfig<
   TParams extends Record<string, string | undefined>,
 > {
-  paramKeys: Record<string, keyof TParams>
-  resetTriggerKeys: readonly (keyof TParams)[]
-  pageKey?: keyof TParams
+  paramKeys: Record<string, keyof TParams>;
+  resetTriggerKeys: readonly (keyof TParams)[];
+  pageKey?: keyof TParams;
 }
 
 interface QueryControlResult<
   TParams extends Record<string, string | undefined>,
 > {
-  currentValues: TParams
-  isPending: boolean
-  updateParam: (key: keyof TParams, value: string | undefined) => void
-  updateParams: (updates: Partial<TParams>) => void
-  updatePage: (page: number) => void
+  currentValues: TParams;
+  isPending: boolean;
+  updateParam: (key: keyof TParams, value: string | undefined) => void;
+  updateParams: (updates: Partial<TParams>) => void;
+  updatePage: (page: number) => void;
 }
 
 export function useQueryControl<
@@ -372,70 +378,70 @@ export function useQueryControl<
 >({
   paramKeys,
   resetTriggerKeys,
-  pageKey = 'page' as keyof TParams,
+  pageKey = "page" as keyof TParams,
 }: QueryControlConfig<TParams>): QueryControlResult<TParams> {
-  const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams()
-  const [isPending, startTransition] = useTransition()
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const navigate = useCallback(
     (params: URLSearchParams) => {
       startTransition(() => {
-        router.push(`${pathname}?${params.toString()}`)
-      })
+        router.push(`${pathname}?${params.toString()}`);
+      });
     },
-    [pathname, router],
-  )
+    [pathname, router]
+  );
 
   const updateSearchParams = useCallback(
     (updates: Partial<TParams>) => {
-      const params = new URLSearchParams(searchParams.toString())
+      const params = new URLSearchParams(searchParams.toString());
       Object.entries(updates).forEach(([key, value]) => {
-        if (value === undefined || value === '') params.delete(key)
-        else params.set(key, value as string)
-      })
+        if (value === undefined || value === "") params.delete(key);
+        else params.set(key, value as string);
+      });
       // フィルタ変更時はページ番号をリセット
-      const isFilterChange = Object.keys(updates).some(k =>
-        resetTriggerKeys.includes(k as keyof TParams),
-      )
-      if (isFilterChange) params.delete(pageKey as string)
-      navigate(params)
+      const isFilterChange = Object.keys(updates).some((k) =>
+        resetTriggerKeys.includes(k as keyof TParams)
+      );
+      if (isFilterChange) params.delete(pageKey as string);
+      navigate(params);
     },
-    [searchParams, navigate, resetTriggerKeys, pageKey],
-  )
+    [searchParams, navigate, resetTriggerKeys, pageKey]
+  );
 
   const updateParam = useCallback(
     (key: keyof TParams, value: string | undefined) => {
-      updateSearchParams({ [key]: value } as Partial<TParams>)
+      updateSearchParams({ [key]: value } as Partial<TParams>);
     },
-    [updateSearchParams],
-  )
+    [updateSearchParams]
+  );
 
   const updateParams = useCallback(
     (updates: Partial<TParams>) => {
-      updateSearchParams(updates)
+      updateSearchParams(updates);
     },
-    [updateSearchParams],
-  )
+    [updateSearchParams]
+  );
 
   const updatePage = useCallback(
     (page: number) => {
-      updateSearchParams({ [pageKey]: page.toString() } as Partial<TParams>)
+      updateSearchParams({ [pageKey]: page.toString() } as Partial<TParams>);
     },
-    [updateSearchParams, pageKey],
-  )
+    [updateSearchParams, pageKey]
+  );
 
   const currentValues = useMemo(() => {
-    const values = {} as TParams
-    Object.values(paramKeys).forEach(paramKey => {
-      ;(values as any)[paramKey] =
-        searchParams.get(paramKey as string) ?? undefined
-    })
-    return values
-  }, [searchParams, paramKeys])
+    const values = {} as TParams;
+    Object.values(paramKeys).forEach((paramKey) => {
+      (values as any)[paramKey] =
+        searchParams.get(paramKey as string) ?? undefined;
+    });
+    return values;
+  }, [searchParams, paramKeys]);
 
-  return { currentValues, isPending, updateParam, updateParams, updatePage }
+  return { currentValues, isPending, updateParam, updateParams, updatePage };
 }
 ```
 
@@ -445,26 +451,26 @@ export function useQueryControl<
 
 ```typescript
 type EventListParams = {
-  status?: string
-  keyword?: string
-  page?: string
-}
+  status?: string;
+  keyword?: string;
+  page?: string;
+};
 
 const { currentValues, isPending, updateParam, updatePage } =
   useQueryControl<EventListParams>({
     paramKeys: {
-      status: 'status',
-      keyword: 'keyword',
-      page: 'page',
+      status: "status",
+      keyword: "keyword",
+      page: "page",
     },
-    resetTriggerKeys: ['status', 'keyword'], // これらが変更されたらページをリセット
-  })
+    resetTriggerKeys: ["status", "keyword"], // これらが変更されたらページをリセット
+  });
 
 // フィルタ変更（ページ番号は自動リセット）
-updateParam('status', 'published')
+updateParam("status", "published");
 
 // ページ変更
-updatePage(3)
+updatePage(3);
 ```
 
 ---
@@ -477,45 +483,45 @@ updatePage(3)
 
 ```typescript
 // src/shared/hooks/use-form-modal.ts
-'use client'
+"use client";
 
-import { useState } from 'react'
+import { useState } from "react";
 
-type FormModalMode = 'create' | 'edit'
+type FormModalMode = "create" | "edit";
 
 export interface FormModalControls<T> {
-  isOpen: boolean
-  mode: FormModalMode
-  initialData: T | undefined
-  openCreateModal: () => void
-  openEditModal: (data: T) => void
-  closeModal: () => void
+  isOpen: boolean;
+  mode: FormModalMode;
+  initialData: T | undefined;
+  openCreateModal: () => void;
+  openEditModal: (data: T) => void;
+  closeModal: () => void;
 }
 
 export function useFormModal<T>(): FormModalControls<T> {
-  const [isOpen, setIsOpen] = useState(false)
-  const [mode, setMode] = useState<FormModalMode>('create')
-  const [initialData, setInitialData] = useState<T | undefined>()
+  const [isOpen, setIsOpen] = useState(false);
+  const [mode, setMode] = useState<FormModalMode>("create");
+  const [initialData, setInitialData] = useState<T | undefined>();
 
   return {
     isOpen,
     mode,
     initialData,
     openCreateModal: () => {
-      setMode('create')
-      setInitialData(undefined)
-      setIsOpen(true)
+      setMode("create");
+      setInitialData(undefined);
+      setIsOpen(true);
     },
     openEditModal: (data: T) => {
-      setMode('edit')
-      setInitialData(data)
-      setIsOpen(true)
+      setMode("edit");
+      setInitialData(data);
+      setIsOpen(true);
     },
     closeModal: () => {
-      setIsOpen(false)
-      setInitialData(undefined)
+      setIsOpen(false);
+      setInitialData(undefined);
     },
-  }
+  };
 }
 ```
 
@@ -555,15 +561,15 @@ npm install zod@^3.24  # Zod v4
 
 ```typescript
 // src/shared/validators/image-field.ts
-import { z } from 'zod'
+import { z } from "zod";
 
 export const IMAGE_FIELD_TYPES = {
-  EXISTING: 'existing',
-  NEW: 'new',
-  EMPTY: 'empty',
-} as const
+  EXISTING: "existing",
+  NEW: "new",
+  EMPTY: "empty",
+} as const;
 
-export const requiredImageFieldSchema = z.discriminatedUnion('type', [
+export const requiredImageFieldSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal(IMAGE_FIELD_TYPES.EXISTING),
     url: z.url(),
@@ -572,15 +578,15 @@ export const requiredImageFieldSchema = z.discriminatedUnion('type', [
     type: z.literal(IMAGE_FIELD_TYPES.NEW),
     file: z
       .file()
-      .mime(['image/jpeg', 'image/png'], { error: 'JPEG、PNGのみ対応' })
-      .max(5 * 1024 * 1024, { error: '5MB以下にしてください' }),
+      .mime(["image/jpeg", "image/png"], { error: "JPEG、PNGのみ対応" })
+      .max(5 * 1024 * 1024, { error: "5MB以下にしてください" }),
   }),
   z.object({
     type: z.literal(IMAGE_FIELD_TYPES.EMPTY),
   }),
-])
+]);
 
-export type ImageFieldValue = z.infer<typeof requiredImageFieldSchema>
+export type ImageFieldValue = z.infer<typeof requiredImageFieldSchema>;
 ```
 
 ### 使用方法
@@ -590,28 +596,30 @@ export type ImageFieldValue = z.infer<typeof requiredImageFieldSchema>
 ```typescript
 // 既存画像がある場合
 const existingImage: ImageFieldValue = {
-  type: 'existing',
-  url: 'https://example.com/image.jpg',
-}
+  type: "existing",
+  url: "https://example.com/image.jpg",
+};
 
 // 新規アップロード
 const newImage: ImageFieldValue = {
-  type: 'new',
+  type: "new",
   file: selectedFile, // File オブジェクト
-}
+};
 
 // 画像未設定
-const emptyImage: ImageFieldValue = { type: 'empty' }
+const emptyImage: ImageFieldValue = { type: "empty" };
 
 // Server Action 内での変換例
-function transformImageField(image: ImageFieldValue): string | File | undefined {
+function transformImageField(
+  image: ImageFieldValue
+): string | File | undefined {
   switch (image.type) {
-    case 'existing':
-      return undefined // 変更なし — API に送信しない
-    case 'new':
-      return image.file // FormData に追加
-    case 'empty':
-      return '' // 削除を示す空文字
+    case "existing":
+      return undefined; // 変更なし — API に送信しない
+    case "new":
+      return image.file; // FormData に追加
+    case "empty":
+      return ""; // 削除を示す空文字
   }
 }
 ```
@@ -683,9 +691,9 @@ function DefaultFallback({ error, resetErrorBoundary }: FallbackProps) {
 
 ```tsx
 // app/events/page.tsx
-import { Suspense } from 'react'
-import { ClientErrorBoundary } from '@/shared/components/utility/client-error-boundary'
-import { EventListContainer } from './_components/event-list-container'
+import { Suspense } from "react";
+import { ClientErrorBoundary } from "@/shared/components/utility/client-error-boundary";
+import { EventListContainer } from "./_components/event-list-container";
 
 export default function EventsPage() {
   return (
@@ -694,7 +702,7 @@ export default function EventsPage() {
         <EventListContainer />
       </Suspense>
     </ClientErrorBoundary>
-  )
+  );
 }
 ```
 
@@ -708,7 +716,7 @@ export default function EventsPage() {
 
 ```typescript
 // src/shared/constants/routes.ts
-const eventBase = '/events'
+const eventBase = "/events";
 
 const EVENT_ROUTES = {
   INDEX: eventBase,
@@ -719,15 +727,15 @@ const EVENT_ROUTES = {
     STEP2: `${eventBase}/new/step2`,
     CONFIRMATION: `${eventBase}/new/confirmation`,
   },
-} as const
+} as const;
 
 const ROUTES = {
-  ROOT: '/',
+  ROOT: "/",
   EVENTS: EVENT_ROUTES,
-  LOGIN: '/login',
-} as const
+  LOGIN: "/login",
+} as const;
 
-export { EVENT_ROUTES, ROUTES }
+export { EVENT_ROUTES, ROUTES };
 ```
 
 ### 使用方法
@@ -766,34 +774,29 @@ npm install next-auth@beta
 
 ```typescript
 // src/middleware.ts
-import { NextResponse } from 'next/server'
-import { auth as middleware } from '@/auth'
+import { NextResponse } from "next/server";
+import { auth as middleware } from "@/auth";
 
-const authExemptPaths = ['/login', '/api/auth', '/api/public']
+const authExemptPaths = ["/login", "/api/auth", "/api/public"];
 
-export default middleware(req => {
-  const requestId =
-    req.headers.get('x-request-id') ?? crypto.randomUUID()
-  let response = NextResponse.next()
+export default middleware((req) => {
+  const requestId = req.headers.get("x-request-id") ?? crypto.randomUUID();
+  let response = NextResponse.next();
 
   if (
     !req.auth &&
-    !authExemptPaths.some(p => req.nextUrl.pathname.startsWith(p))
+    !authExemptPaths.some((p) => req.nextUrl.pathname.startsWith(p))
   ) {
-    response = NextResponse.redirect(
-      new URL('/login', req.nextUrl.origin),
-    )
+    response = NextResponse.redirect(new URL("/login", req.nextUrl.origin));
   }
 
-  response.headers.set('x-request-id', requestId)
-  return response
-})
+  response.headers.set("x-request-id", requestId);
+  return response;
+});
 
 export const config = {
-  matcher: [
-    '/((?!_next/static|_next/image|favicon.ico|public).*)',
-  ],
-}
+  matcher: ["/((?!_next/static|_next/image|favicon.ico|public).*)"],
+};
 ```
 
 ### 使用方法
@@ -819,45 +822,40 @@ npm install zustand
 
 ```typescript
 // src/features/{domain}/stores/wizard-form-store.ts
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface WizardFormState<T> {
-  formData: Partial<T>
-  hasHydrated: boolean
-  updateFormData: <K extends keyof T>(
-    key: K,
-    data: T[K] | undefined,
-  ) => void
-  resetFormData: () => void
-  hydrate: () => Promise<void>
+  formData: Partial<T>;
+  hasHydrated: boolean;
+  updateFormData: <K extends keyof T>(key: K, data: T[K] | undefined) => void;
+  resetFormData: () => void;
+  hydrate: () => Promise<void>;
 }
 
-export const useWizardFormStore = create<
-  WizardFormState<YourFormType>
->()(
+export const useWizardFormStore = create<WizardFormState<YourFormType>>()(
   persist(
     (set, get) => ({
       formData: {},
       hasHydrated: false,
       updateFormData: (key, data) =>
-        set(state => ({
+        set((state) => ({
           formData: { ...state.formData, [key]: data },
         })),
       resetFormData: () => set({ formData: {} }),
       hydrate: async () => {
-        if (get().hasHydrated) return
-        await useWizardFormStore.persist.rehydrate()
-        set({ hasHydrated: true })
+        if (get().hasHydrated) return;
+        await useWizardFormStore.persist.rehydrate();
+        set({ hasHydrated: true });
       },
     }),
     {
-      name: 'wizard-form-store',
-      partialize: state => ({ formData: state.formData }),
+      name: "wizard-form-store",
+      partialize: (state) => ({ formData: state.formData }),
       skipHydration: true,
-    },
-  ),
-)
+    }
+  )
+);
 ```
 
 ### 使用方法
@@ -904,77 +902,74 @@ npm install -D @storybook/addon-vitest @vitest/browser-playwright
 
 ```typescript
 // vitest.config.ts
-import path from 'path'
-import { fileURLToPath } from 'url'
-import { storybookTest } from '@storybook/addon-vitest/vitest-plugin'
-import react from '@vitejs/plugin-react'
-import { playwright } from '@vitest/browser-playwright'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import { configDefaults, defineConfig } from 'vitest/config'
+import path from "path";
+import { fileURLToPath } from "url";
+import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import react from "@vitejs/plugin-react";
+import { playwright } from "@vitest/browser-playwright";
+import tsconfigPaths from "vite-tsconfig-paths";
+import { configDefaults, defineConfig } from "vitest/config";
 
 const dirname =
-  typeof __dirname !== 'undefined'
+  typeof __dirname !== "undefined"
     ? __dirname
-    : path.dirname(fileURLToPath(import.meta.url))
+    : path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
   plugins: [tsconfigPaths(), react()],
   test: {
-    env: { ENV: 'test', NODE_ENV: 'test' },
+    env: { ENV: "test", NODE_ENV: "test" },
     projects: [
       {
         extends: true,
         test: {
-          name: { label: 'client', color: 'green' },
-          environment: 'jsdom',
-          include: ['**/use-*.test.ts', '**/*.client.test.ts'],
+          name: { label: "client", color: "green" },
+          environment: "jsdom",
+          include: ["**/use-*.test.ts", "**/*.client.test.ts"],
           exclude: [
             ...configDefaults.exclude,
-            '**/*.server.test.tsx',
-            '**/*.stories.tsx',
+            "**/*.server.test.tsx",
+            "**/*.stories.tsx",
           ],
-          setupFiles: ['./src/test/vitest.setup.ts'],
+          setupFiles: ["./src/test/vitest.setup.ts"],
         },
       },
       {
         extends: true,
         test: {
-          name: { label: 'server', color: 'blue' },
-          environment: 'node',
-          include: [
-            '**/*.server.test.{ts,tsx}',
-            '**/*.test.ts',
-          ],
+          name: { label: "server", color: "blue" },
+          environment: "node",
+          include: ["**/*.server.test.{ts,tsx}", "**/*.test.ts"],
           exclude: [
             ...configDefaults.exclude,
-            '**/use-*.test.ts',
-            '**/*.stories.tsx',
+            "**/use-*.test.ts",
+            "**/*.stories.tsx",
           ],
-          setupFiles: ['./src/test/vitest.setup.ts'],
+          setupFiles: ["./src/test/vitest.setup.ts"],
         },
       },
       {
         plugins: [
           storybookTest({
-            configDir: path.join(dirname, '.storybook'),
+            configDir: path.join(dirname, ".storybook"),
           }),
         ],
         extends: true,
         test: {
-          name: { label: 'storybook', color: 'magenta' },
+          name: { label: "storybook", color: "magenta" },
           isolate: false,
           browser: {
             enabled: true,
             headless: true,
             provider: playwright(),
-            instances: [{ browser: 'chromium' }],
+            instances: [{ browser: "chromium" }],
           },
-          setupFiles: ['.storybook/vitest.setup.ts'],
+          setupFiles: [".storybook/vitest.setup.ts"],
         },
       },
     ],
   },
-})
+});
 ```
 
 ### 使用方法
@@ -1013,72 +1008,69 @@ npm install -D eslint-plugin-boundaries
 
 ```javascript
 // eslint-config/import-boundary.mjs
-import boundaries from 'eslint-plugin-boundaries'
+import boundaries from "eslint-plugin-boundaries";
 
 export const importBoundaryConfig = [
   {
     plugins: { boundaries },
-    files: ['src/**/*.{js,jsx,ts,tsx}'],
+    files: ["src/**/*.{js,jsx,ts,tsx}"],
     settings: {
-      'boundaries/elements': [
+      "boundaries/elements": [
         {
-          type: 'app',
-          pattern: 'src/app/**/*',
-          mode: 'file',
+          type: "app",
+          pattern: "src/app/**/*",
+          mode: "file",
         },
         {
-          type: 'feature',
-          pattern: 'src/features/(*)/**/*',
-          capture: ['featureName'],
-          mode: 'file',
+          type: "feature",
+          pattern: "src/features/(*)/**/*",
+          capture: ["featureName"],
+          mode: "file",
         },
         {
-          type: 'shared',
-          pattern: 'src/shared/**/*',
-          mode: 'file',
+          type: "shared",
+          pattern: "src/shared/**/*",
+          mode: "file",
         },
         {
-          type: 'api',
-          pattern: 'src/api/**/*',
-          mode: 'file',
+          type: "api",
+          pattern: "src/api/**/*",
+          mode: "file",
         },
       ],
     },
     rules: {
-      'boundaries/element-types': [
-        'error',
+      "boundaries/element-types": [
+        "error",
         {
-          default: 'disallow',
+          default: "disallow",
           rules: [
             {
-              from: ['app'],
-              allow: ['app', 'feature', 'shared', 'api'],
+              from: ["app"],
+              allow: ["app", "feature", "shared", "api"],
             },
             {
-              from: ['feature'],
+              from: ["feature"],
               allow: [
-                [
-                  'feature',
-                  { featureName: '${from.featureName}' },
-                ],
-                'shared',
-                'api',
+                ["feature", { featureName: "${from.featureName}" }],
+                "shared",
+                "api",
               ],
             },
             {
-              from: ['shared'],
-              allow: ['shared', 'api'],
+              from: ["shared"],
+              allow: ["shared", "api"],
             },
             {
-              from: ['api'],
-              allow: ['api', 'shared'],
+              from: ["api"],
+              allow: ["api", "shared"],
             },
           ],
         },
       ],
     },
   },
-]
+];
 ```
 
 ### 使用方法
@@ -1088,21 +1080,21 @@ export const importBoundaryConfig = [
 
 ```javascript
 // eslint.config.mjs
-import { importBoundaryConfig } from './eslint-config/import-boundary.mjs'
+import { importBoundaryConfig } from "./eslint-config/import-boundary.mjs";
 
 export default [
   // ... 他の設定
   ...importBoundaryConfig,
-]
+];
 ```
 
 **依存ルールの要約**:
 
-| レイヤー | インポート可能な対象 |
-|----------|---------------------|
-| `app` | `app`, `feature`, `shared`, `api` |
+| レイヤー  | インポート可能な対象               |
+| --------- | ---------------------------------- |
+| `app`     | `app`, `feature`, `shared`, `api`  |
 | `feature` | 同一 feature のみ, `shared`, `api` |
-| `shared` | `shared`, `api` |
-| `api` | `api`, `shared` |
+| `shared`  | `shared`, `api`                    |
+| `api`     | `api`, `shared`                    |
 
 feature 間のクロスインポートは禁止されており、feature 間で共有したいロジックは `shared` に昇格させる必要がある。

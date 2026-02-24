@@ -329,6 +329,32 @@ interface SerializedFile {
   lastModified?: number;
 }
 
+// Fileを含む型をシリアライズ可能な型に変換
+type Serializable<T> = T extends File
+  ? SerializedFile
+  : T extends File | null
+    ? SerializedFile | null
+    : T extends File | undefined
+      ? SerializedFile | undefined
+      : T extends (infer U)[]
+        ? Serializable<U>[]
+        : T extends object
+          ? { [K in keyof T]: Serializable<T[K]> }
+          : T;
+
+// 逆変換の型
+type Deserializable<T> = T extends SerializedFile
+  ? File
+  : T extends SerializedFile | null
+    ? File | null
+    : T extends SerializedFile | undefined
+      ? File | undefined
+      : T extends (infer U)[]
+        ? Deserializable<U>[]
+        : T extends object
+          ? { [K in keyof T]: Deserializable<T[K]> }
+          : T;
+
 const isFile = (value: unknown): value is File => {
   return value instanceof File;
 };
@@ -376,6 +402,7 @@ const base64ToFile = async (
   lastModified?: number
 ): Promise<File> => {
   try {
+    // Data URLのバリデーション
     if (!base64.startsWith("data:")) {
       throw new Error("Invalid base64 string");
     }
@@ -425,7 +452,6 @@ async function convertFilesToBase64<T>(data: T): Promise<Serializable<T>> {
   return data as Serializable<T>;
 }
 
-// 逆変換も同様の再帰構造
 async function convertBase64ToFiles<T>(data: T): Promise<Deserializable<T>> {
   if (isSerializedFile(data)) {
     return (await base64ToFile(
@@ -453,6 +479,8 @@ async function convertBase64ToFiles<T>(data: T): Promise<Deserializable<T>> {
 
   return data as Deserializable<T>;
 }
+
+export { convertFilesToBase64, convertBase64ToFiles };
 ```
 
 ### 仕組み
