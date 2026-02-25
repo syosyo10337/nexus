@@ -5,6 +5,7 @@ tags:
   - styling
   - server
 created: 2026-01-03
+updated_at: 2026-02-25
 status: active
 ---
 
@@ -16,21 +17,13 @@ status: active
 
 `rendering engine`でいわれる内容とも少し異なるらしい。
 
-# React語としてのrender
+## React語としてのrender
 
 **「レンダー」とは、React がコンポーネントを呼び出すことです。**
 
-[
+[レンダーとコミット – React](https://ja.react.dev/learn/render-and-commit)
 
-レンダーとコミット – React
-
-The library for web and native user interfaces
-
-![](React/Attachments/apple-touch-icon%201.png)https://ja.react.dev/learn/render-and-commit
-
-![](og-learn.png)](https://ja.react.dev/learn/render-and-commit)
-
-ただし！SSRで登場で、Hydrationという概念とともに、serverでstatig HTMLが生成されるようになりました。
+ただし！SSRで登場で、Hydrationという概念とともに、serverでstatic HTMLが生成されるようになりました。
 
 CSR ↔ SSR
 
@@ -48,4 +41,4 @@ Next.js公式ドキュメント(最新)やReact公式ドキュメントでは:
 
 dynamic renderingとは？SSGについて
 
-[![](4-wire-diagram-rsc-rendering-lifecycle.jpg)](rendering%E3%81%A3%E3%81%A6%E3%81%AA%E3%82%93%E3%81%A0%EF%BC%9F/4-wire-diagram-rsc-rendering-lifecycle.jpg)
+![RSC rendering lifecycle](Attachments/4-wire-diagram-rsc-rendering-lifecycle.jpg)
