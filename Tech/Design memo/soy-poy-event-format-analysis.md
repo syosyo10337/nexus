@@ -1,90 +1,103 @@
 # SOY-POY Instagram Event Post Format Analysis
 
 ## Overview
-Analysis of event posts from @soy.poy_ Instagram account to understand the structure and formatting conventions used for event announcements.
+
+Analysis of event posts from @soy.poy\_ Instagram account to understand the structure and formatting conventions used for event announcements.
 
 ---
 
 ## 1. Heading Categories (見出しの種類)
 
 ### Basic Information (基本情報)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 日時 | Date & Time | Event date and time |
-| 日程 | Schedule | Event schedule |
-| 時間 | Time | Time details |
-| タイムスケジュール | Time Schedule | Detailed timeline |
+
+| Japanese           | English       | Description         |
+| ------------------ | ------------- | ------------------- |
+| 日時               | Date & Time   | Event date and time |
+| 日程               | Schedule      | Event schedule      |
+| 時間               | Time          | Time details        |
+| タイムスケジュール | Time Schedule | Detailed timeline   |
 
 ### Pricing (料金)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 参加費 | Participation Fee | Entry fee |
-| チケット | Ticket | Ticket price |
-| 料金 | Price | General pricing |
-| チケット料金 | Ticket Price | Specific ticket price |
+
+| Japanese     | English           | Description           |
+| ------------ | ----------------- | --------------------- |
+| 参加費       | Participation Fee | Entry fee             |
+| チケット     | Ticket            | Ticket price          |
+| 料金         | Price             | General pricing       |
+| チケット料金 | Ticket Price      | Specific ticket price |
 
 ### Location (場所)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 会場 | Venue | Event venue |
-| 場所 | Location | Place |
+
+| Japanese | English  | Description |
+| -------- | -------- | ----------- |
+| 会場     | Venue    | Event venue |
+| 場所     | Location | Place       |
 
 ### Content (内容)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 内容 | Content | Event content |
-| イベント内容 | Event Content | Event details |
+
+| Japanese     | English            | Description   |
+| ------------ | ------------------ | ------------- |
+| 内容         | Content            | Event content |
+| イベント内容 | Event Content      | Event details |
 | 演奏予定曲目 | Planned Repertoire | Music program |
 
 ### Description (説明)
-| Japanese | English | Description |
-|----------|---------|-------------|
+
+| Japanese             | English           | Description         |
+| -------------------- | ----------------- | ------------------- |
 | オープンマイクとは？ | What is Open Mic? | Explanation section |
-| 大切にしていること | What We Value | Values/philosophy |
+| 大切にしていること   | What We Value     | Values/philosophy   |
 
 ### Recruitment (募集)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 募集 | Recruitment | Call for participants |
+
+| Japanese       | English        | Description            |
+| -------------- | -------------- | ---------------------- |
+| 募集           | Recruitment    | Call for participants  |
 | 出展希望の方へ | For Exhibitors | For vendors/exhibitors |
 
 ### Performers (出演者)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 出演者 | Performers | Cast list |
-| 出演者紹介 | Performer Introduction | Performer bios |
-| 出演 | Appearance | Performance credits |
+
+| Japanese   | English                | Description         |
+| ---------- | ---------------------- | ------------------- |
+| 出演者     | Performers             | Cast list           |
+| 出演者紹介 | Performer Introduction | Performer bios      |
+| 出演       | Appearance             | Performance credits |
 
 ### Booking (予約)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| ご予約方法 | Reservation Method | How to book |
-| 申し込み | Application | Sign up |
-| 予約フォーム | Reservation Form | Booking form |
+
+| Japanese     | English            | Description  |
+| ------------ | ------------------ | ------------ |
+| ご予約方法   | Reservation Method | How to book  |
+| 申し込み     | Application        | Sign up      |
+| 予約フォーム | Reservation Form   | Booking form |
 
 ### Special (特別)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 当日の特別なお楽しみ | Special Treats | Special offerings |
-| 公演を彩る特別な３つのお楽しみ | 3 Special Highlights | Featured extras |
+
+| Japanese                       | English              | Description       |
+| ------------------------------ | -------------------- | ----------------- |
+| 当日の特別なお楽しみ           | Special Treats       | Special offerings |
+| 公演を彩る特別な３つのお楽しみ | 3 Special Highlights | Featured extras   |
 
 ### Seating (座席)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 座席スタイルのご案内 | Seating Guide | Seating information |
-| 座席スタイル変更のお知らせ | Seating Change Notice | Seating updates |
+
+| Japanese                   | English               | Description         |
+| -------------------------- | --------------------- | ------------------- |
+| 座席スタイルのご案内       | Seating Guide         | Seating information |
+| 座席スタイル変更のお知らせ | Seating Change Notice | Seating updates     |
 
 ### Organization (主催)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| 主催 | Organizer | Host/organizer |
+
+| Japanese | English   | Description    |
+| -------- | --------- | -------------- |
+| 主催     | Organizer | Host/organizer |
 
 ### Film/Music Specific (映画・音楽)
-| Japanese | English | Description |
-|----------|---------|-------------|
-| あらすじ | Synopsis | Story summary |
-| メインキャスト | Main Cast | Leading performers |
-| 監督・脚本・プロデューサー | Director/Writer/Producer | Film credits |
+
+| Japanese                   | English                  | Description        |
+| -------------------------- | ------------------------ | ------------------ |
+| あらすじ                   | Synopsis                 | Story summary      |
+| メインキャスト             | Main Cast                | Leading performers |
+| 監督・脚本・プロデューサー | Director/Writer/Producer | Film credits       |
 
 ---
 
@@ -92,51 +105,51 @@ Analysis of event posts from @soy.poy_ Instagram account to understand the struc
 
 ### Primary Heading Markers
 
-| Symbol | Name | Usage | Frequency |
-|--------|------|-------|-----------|
-| ■ | Black Square | Main headings | ★★★★★ Most common |
-| 【】 | Lenticular Brackets | Titles, announcements | ★★★★☆ Very common |
-| ⭐️ / ⭐︎ | Star | Event titles, highlights | ★★★☆☆ Common |
-| ▷ | Triangle | Section headers | ★★☆☆☆ Moderate |
-| ⟡ | Four-pointed Star | Decorative headers | ★☆☆☆☆ Rare |
-| ◎ | Circled Bullet | Sub-headings | ★☆☆☆☆ Rare |
+| Symbol  | Name                | Usage                    | Frequency         |
+| ------- | ------------------- | ------------------------ | ----------------- |
+| ■       | Black Square        | Main headings            | ★★★★★ Most common |
+| 【】    | Lenticular Brackets | Titles, announcements    | ★★★★☆ Very common |
+| ⭐️ / ⭐︎ | Star                | Event titles, highlights | ★★★☆☆ Common      |
+| ▷       | Triangle            | Section headers          | ★★☆☆☆ Moderate    |
+| ⟡       | Four-pointed Star   | Decorative headers       | ★☆☆☆☆ Rare        |
+| ◎       | Circled Bullet      | Sub-headings             | ★☆☆☆☆ Rare        |
 
 ### Emoji Markers
 
-| Symbol | Name | Usage |
-|--------|------|-------|
-| 📍 | Pin | Location/venue |
-| 🗓️ | Calendar | Date/schedule |
-| 🎤 | Microphone | Open mic events |
-| 🍹 | Drink | Drink included |
-| 👉 | Pointing Right | Links/CTAs |
+| Symbol | Name           | Usage           |
+| ------ | -------------- | --------------- |
+| 📍     | Pin            | Location/venue  |
+| 🗓️     | Calendar       | Date/schedule   |
+| 🎤     | Microphone     | Open mic events |
+| 🍹     | Drink          | Drink included  |
+| 👉     | Pointing Right | Links/CTAs      |
 
 ### List Markers
 
-| Symbol | Name | Usage |
-|--------|------|-------|
-| ・ | Middle Dot | Bullet points |
-| ○ | Circle | Sub-items |
-| ① ② ③ | Circled Numbers | Numbered lists |
-| ※ | Reference Mark | Notes/disclaimers |
+| Symbol | Name            | Usage             |
+| ------ | --------------- | ----------------- |
+| ・     | Middle Dot      | Bullet points     |
+| ○      | Circle          | Sub-items         |
+| ① ② ③  | Circled Numbers | Numbered lists    |
+| ※      | Reference Mark  | Notes/disclaimers |
 
 ### Quotation/Title Markers
 
-| Symbol | Name | Usage |
-|--------|------|-------|
-| 《》 | Double Angle Brackets | Event/song titles |
-| 『』 | Corner Brackets | Event/work titles |
-| "" | Quotation Marks | Quotes, emphasis |
+| Symbol | Name                  | Usage             |
+| ------ | --------------------- | ----------------- |
+| 《》   | Double Angle Brackets | Event/song titles |
+| 『』   | Corner Brackets       | Event/work titles |
+| ""     | Quotation Marks       | Quotes, emphasis  |
 
 ### Dividers (区切り線)
 
-| Symbol | Description | Usage |
-|--------|-------------|-------|
-| ——— | Short Em Dash Line | Section breaks |
-| ———————————— | Long Em Dash Line | Major section breaks |
-| ――――― | Horizontal Bar Line | Section dividers |
-| - - - - - - | Spaced Hyphens | Light dividers |
-| ⸻ | Long Dash | Section separator |
+| Symbol       | Description         | Usage                |
+| ------------ | ------------------- | -------------------- |
+| ———          | Short Em Dash Line  | Section breaks       |
+| ———————————— | Long Em Dash Line   | Major section breaks |
+| ―――――        | Horizontal Bar Line | Section dividers     |
+| - - - - - -  | Spaced Hyphens      | Light dividers       |
+| ⸻            | Long Dash           | Section separator    |
 
 ---
 
@@ -291,6 +304,7 @@ Photographed by @username
 ## 4. Symbol Usage Summary
 
 ### Most Commonly Used
+
 1. **■** - Standard heading marker (SOY-POY official style)
 2. **【】** - Title/announcement wrapper
 3. **📍** - Location indicator
@@ -298,6 +312,7 @@ Photographed by @username
 5. **———** - Section dividers
 
 ### Style Guidelines Observed
+
 - **SOY-POY official posts**: Primarily use ■ for headings
 - **Guest/collaboration posts**: Often use 【】 for structure
 - **Emoji usage**: Minimal, purposeful (📍🎤🍹)
