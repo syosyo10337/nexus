@@ -95,7 +95,7 @@ internal.example.com
 
 #### 登録プロセスの全体像
 
-```
+```text
 1. ドメインレジストラでドメインを購入
    ↓
    【TLDサーバへの登録】← ここでNSレコードが登録される
@@ -118,7 +118,7 @@ internal.example.com
 
 VPC内のEC2インスタンスなどのパブリックIPにドメインを割り当てる場合：
 
-```
+```text
 【パブリックDNSの場合】
 Route 53パブリックホストゾーン
   ├─ web.example.com → EC2のElastic IP (52.xxx.xxx.xxx)
