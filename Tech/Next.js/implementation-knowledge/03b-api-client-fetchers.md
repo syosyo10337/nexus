@@ -133,7 +133,7 @@ const buildRequestHeaders = async (
 - **Tenant ID自動注入**: `getTenant()` から取得したテナントIDを `X-Tenant-ID` ヘッダーに付与。マルチテナント環境での認証に必須。
 - **Auth.jsセッションの流用**: クライアントのセッショントークンをBE APIとのサーバー間通信用Cookieとして転送。
 - **リクエストID伝搬**: `x-request-id` ヘッダーにより、フロントエンドからバックエンドまで一貫したトレーシングを実現。
-- **`ApiError` ヒエラルキー**: HTTPステータスコードに応じた型安全なエラークラスを自動生成（詳細は [04-error-handling-strategy.md](./04-error-handling-strategy.md) を参照）。
+- **`ApiError` ヒエラルキー**: HTTPステータスコードに応じた型安全なエラークラスを自動生成（詳細は [エラークラス設計](./05-error-class-design.md) を参照）。
 
 ---
 

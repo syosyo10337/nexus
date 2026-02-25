@@ -156,32 +156,7 @@ function shouldRetry(failureCount: number, error: unknown): boolean {
 | サーバーエラー (5xx)      | する     | 一時的な障害の可能性がある。時間をおけば回復する場合がある         |
 | ネットワークエラー        | する     | 一時的な接続断の可能性がある                                       |
 
-これらのカスタムエラークラスは `@/shared/errors/api-error` で定義されている:
-
-```typescript
-// src/shared/errors/api-error/api-error.ts
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-    public data?: unknown
-  ) {
-    super(message);
-    this.name = "ApiError";
-  }
-}
-
-export class BadRequestError extends ApiError {
-  constructor(message: string, data?: unknown) {
-    shouldRetry;
-    super(400, message, data);
-    this.name = "BadRequestError";
-  }
-}
-
-// UnauthorizedError (401), ForbiddenError (403),
-// NotFoundError (404), ConflictError (409) も同様の構造
-```
+これらのカスタムエラークラスの詳細は [05-error-class-design.md](./05-error-class-design.md) を参照。
 
 ### retryDelay: Exponential Backoff
 
@@ -315,16 +290,4 @@ export default async function RootLayout({
 
 ### 配置に関する注意点
 
-**QueryProvider は `<html>` 要素の外側に配置されている。** これは一見奇妙に見えるが、Next.js App Router では有効なパターンである。React のコンテキストプロバイダーは DOM ノードを生成せず、論理的なツリー構造として機能するため、HTML 構造に影響しない。
-
-**Server Component から Client Component をラップする構造:**
-
-```text
-RootLayout（Server Component, async function）
-  └── QueryProvider（'use client'）
-        └── <html>
-              └── <body>
-                    └── {children}
-```
-
-`layout.tsx` は `import 'server-only'` を宣言した Server Component であり、内部で `QueryProvider`（Client Component）をレンダリングしている。Server Component は Client Component を子として持てるが、その逆はできない（Server Component を Client Component の内部でインポートすることはできない）。この境界をルートレイアウトで設定することで、アプリ全体の Client Component が QueryClient にアクセスできる。
+**QueryProvider は `<html>` 要素の外側に配置されている。** React のコンテキストプロバイダーは DOM ノードを生成せず論理的なツリー構造として機能するため、HTML 構造に影響しない。`layout.tsx` は `import 'server-only'` を宣言した Server Component であり、内部で `QueryProvider`（Client Component）をレンダリングしている。この境界をルートレイアウトで設定することで、アプリ全体の Client Component が QueryClient にアクセスできる。

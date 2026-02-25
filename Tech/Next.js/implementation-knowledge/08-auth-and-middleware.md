@@ -168,51 +168,7 @@ export const config = {
 
 ### customServerFetch での Request ID 取得
 
-```typescript
-// src/api/fetchers/server.ts
-export async function customServerFetch<T>(
-  url: string,
-  options: CustomServerFetchOptions
-): Promise<T> {
-  const tenant = await getTenant();
-  const tenantId = tenant?.id ?? "unknown";
-  const headersList = await headers();
-  const requestId = headersList.get("x-request-id") ?? "unknown";
-  // ...
-
-  log.debug(
-    {
-      tenantId,
-      authSkipped: options.skipAuth,
-      httpRequest: {
-        requestMethod: method,
-        requestUrl: requestUrl,
-      },
-    },
-    "BE API request started"
-  );
-
-  // ...
-}
-```
-
-```typescript
-// buildRequestHeaders 内でリクエストヘッダーに付与
-const buildRequestHeaders = async (
-  headers?: HeadersInit,
-  body?: BodyInit | null,
-  skipAuth = false,
-  requestId?: string
-): Promise<HeadersInit> => {
-  const contentTypeHeader = getContentTypeHeader(body);
-
-  const defaultHeaders: HeadersInit = {
-    ...contentTypeHeader,
-    ...(requestId && { "x-request-id": requestId }),
-  };
-  // ...
-};
-```
+customServerFetch 内でミドルウェアが付与した `x-request-id` を `headers()` から取得し、BE API へのリクエストヘッダーに自動付与する。完全な実装は [03b-api-client-fetchers.md](./03b-api-client-fetchers.md) を参照。
 
 ミドルウェアで生成された `x-request-id` は `next/headers` の `headers()` 関数を通じて Server Component や Server Action から取得できる。`customServerFetch` はこの値を BE API へのリクエストヘッダーに自動的に付与する。エラー発生時のログにも `requestId` を含めることで、フロントエンドからバックエンドまでの一連のリクエストを追跡可能にしている。
 
