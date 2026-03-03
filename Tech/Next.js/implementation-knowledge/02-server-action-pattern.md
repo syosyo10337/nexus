@@ -13,6 +13,8 @@ status: active
 
 Next.js の Server Action を使ったフォーム送信・データ変更処理のベストプラクティスをまとめる。
 
+前提知識: [useActionState](../../React/useActionState.md) — React 19のフック（API・基本概念）
+
 ---
 
 ## ServerActionState 型定義

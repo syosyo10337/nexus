@@ -2256,50 +2256,9 @@ root.render(
 同時性モード？
 処理の優先順位づけを行うことで、より快適にレスポンスシブな画面を作成するための機能。
 
-## useTransition
+詳細は個別ファイルを参照。
 
-パフォーマンスの最適化を行った上でも、処理が重い場合に、優先順位づけをする目的で使用すること。
-e.g.)
-const [isPending, startTransition] = useTransition();
-// 第二引数にとったstartTransitionのコールバック関数に、実行の優先順位を下げたい処理を記述する。
-const changeHandler = (e) => {
-startTransition(() => {
-setFilterVal(e.target.value);
-})
-};
-
-- isPendingは、startTransitionの処理が終了前であればtrue、でなければfalseを返す。
-
-## useDeferredValue
-
-こちらも、先ほどのものと同様に遅延処理されることで、更新させるものの優先順位を設定することができる。
-
-こちらの場合には、引数に遅延処理させたいものをそのまま囲む。
-e.g.)
-
-const filterdItems = dummyItems
-.filter((item) => {
-if (filterVal === "") return true;
-return item.includes(filterVal);
-})
-.map((item) => (
-
-<li key={item}>{item}</li>
-));
-
-const deferredItems = useDeferredValue(filterdItems);
-
-return (
-<>
-<input type="text" onChange={changeHandler} />
-{/_{isPending && <div>Loading...</div>}_/}
-
-<ul>
-{deferredItems}
-</ul>
-</>
-);
-};
+- [useTransition](useTransition.md) — 状態更新の優先順位を下げる（useDeferredValue, startTransitionも含む）
 
 # REST APIを使ったサーバーとの連携
 
@@ -2465,19 +2424,3 @@ return (
 </>
 );
 
-## startTransition
-
-ダイナミックインポートを非同期にバックグラウンドで取得するまで、その直前の画面を表示し続けてくれる。
-<button onClick={() => {
-startTransition(() => {
-setCompA((prev) => !prev)}
-)}
-}
-
-> //onClickの時に無名のコールバック関数が呼ばれて、その中の処理として、
-> //startTransition()を呼び出しテイル。
-> //startTransitionの引数に取られた、コールバック関数内に記述された関数処理が、終了するまで、非同期に画面を更新しないでくれるってことですね。
-
-```
-
-```
