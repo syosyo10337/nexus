@@ -98,6 +98,9 @@ brew update && brew upgrade
 
 # 不要なファイルを削除
 brew cleanup
+
+# Brewfileという形でインストールされているものをfileの形で残しておきたい
+  brew bundle dump --file=~/dotfiles/Brewfile --force
 ```
 
 ## brew と apt の対応表
