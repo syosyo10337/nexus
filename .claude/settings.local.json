@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git mv:*)",
+      "Bash(shuf)",
+      "Bash(python3:*)",
+      "WebFetch(domain:scala-text.github.io)",
+      "Skill(factcheck)",
+      "Skill(factcheck:*)",
+      "Bash(npx markdownlint-cli2:*)",
+      "Skill(note)",
+      "Skill(note:*)",
+      "WebFetch(domain:blog.stefanwaldhauser.me)"
+    ]
+  }
+}
