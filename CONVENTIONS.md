@@ -13,7 +13,7 @@
 ---
 tags:
   - tag-name
-created: YYYY-MM-DD
+created_at: YYYY-MM-DD
 updated_at: YYYY-MM-DD
 status: draft | active | archived
 ---
@@ -22,7 +22,7 @@ status: draft | active | archived
 | フィールド   | 必須 | 説明                                       |
 | ------------ | ---- | ------------------------------------------ |
 | `tags`       | Yes  | kebab-case。リスト形式で記述               |
-| `created`    | Yes  | ファイル作成日。Linter が自動挿入          |
+| `created_at` | Yes  | ファイル作成日。Linter が自動挿入          |
 | `updated_at` | No   | 最終更新日。エージェントが編集時に更新する |
 | `status`     | Yes  | `draft` / `active` / `archived`            |
 
@@ -42,7 +42,8 @@ published: YYYY-MM-DD
 
 | 旧フィールド | 正規フィールド | 対象ファイル数（概算） |
 | ------------ | -------------- | ---------------------- |
-| `create_at`  | `created`      | 5                      |
+| `create_at`  | `created_at`   | 5                      |
+| `created`    | `created_at`   | —                      |
 | `updated`    | `updated_at`   | 20                     |
 
 ---

@@ -1,6 +1,6 @@
 ---
 tags: []
-created: <% tp.date.now("YYYY-MM-DD") %>
+created_at: <% tp.date.now("YYYY-MM-DD") %>
 status: draft
 ---
 
