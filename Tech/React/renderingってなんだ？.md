@@ -20,7 +20,7 @@ status: active
 ## React語としてのrender
 
 **「レンダー」とは、React がコンポーネントを呼び出すことです。**
-
+もっというと、VirtualDOMが成果物
 [レンダーとコミット – React](https://ja.react.dev/learn/render-and-commit)
 
 ただし！SSRで登場で、Hydrationという概念とともに、serverでstatic HTMLが生成されるようになりました。

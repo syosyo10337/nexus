@@ -12,7 +12,7 @@ status: active
 
 RSCでは、Server ComponentsはHTMLとRSC Payload(特殊なJSONフォーマット)を生成します。Client Componentsはプレースホルダーとして含まれ、後でクライアント側でHydrationされます。 [Getting Started: Server and Client Components | Next.js +2](https://nextjs.org/docs/app/getting-started/server-and-client-components)
 
-### **生成されるもの**
+## **生成されるもの**
 
 1. **HTML**: 完全なページ構造とコンテンツ
 
@@ -51,6 +51,7 @@ function ClientComponent() {
 # RSC playloadとは？
 
 > The RSC Payload is a compact binary representation of the rendered React Server Components tree. It's used by React on the client to update the browser's DOM. The RSC Payload contains:  
+>
 > - The rendered result of Server Components  
 > - Placeholders for where Client Components should be rendered and references to their JavaScript files  
 > - Any props passed from a Server Component to a Client Component
@@ -66,19 +67,7 @@ I:1:{"module":"./Counter.js"}    ← Module（Client Component）
 $:2:["div",null,{"children":"Hello"}]  ← DOM定義
 ```
 
-## RSC Payload [#](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#rsc-payload)
-
-The RSC payload is a special data format that the server generates as it renders the component tree, and it includes the following:
-
-- The rendered HTML,
-
-- Placeholders where the Client Components should be rendered,
-
-- References to the Client Components’ JavaScript files,
-
-- Instructions on which JavaScript files it should invoke,
-
-- Any props passed from a Server Component to a Client Component.
+ref. RSC Payload [#](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#rsc-payload)
 
 [
 
