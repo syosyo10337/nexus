@@ -1,23 +1,22 @@
 ---
 tags:
   - react
-  - hooks
   - component
-  - state
-created: 2026-01-03
+  - server
+  - rsc
+created_at: 2026-01-03
+updated_at: 2026-03-22
 status: active
 ---
 
 # RSC(React Server Component)
 
-RSCでは、Server ComponentsはHTMLとRSC Payload(特殊なJSONフォーマット)を生成します。Client Componentsはプレースホルダーとして含まれ、後でクライアント側でHydrationされます。 [Getting Started: Server and Client Components | Next.js +2](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+RSCでは、Server ComponentsはHTMLとRSC Payload(特殊なJSONフォーマット)を生成します。Client Componentsはプレースホルダーとして含まれ、後でクライアント側でHydrationされます。 [Getting Started: Server and Client Components | Next.js](https://nextjs.org/docs/app/getting-started/server-and-client-components)
 
-## **生成されるもの**
+## 生成されるもの
 
 1. **HTML**: 完全なページ構造とコンテンツ
-
 2. **RSC Payload**: Server Componentsの実行結果(JSON形式)
-
 3. **JavaScript**: Client Componentsのコード
 
 ```TypeScript
@@ -48,15 +47,15 @@ function ClientComponent() {
 <script>/* Client Component JS */</script>
 ```
 
-# RSC playloadとは？
+## RSC Payloadとは？
 
-> The RSC Payload is a compact binary representation of the rendered React Server Components tree. It's used by React on the client to update the browser's DOM. The RSC Payload contains:  
+> The RSC Payload is a compact binary representation of the rendered React Server Components tree. It's used by React on the client to update the browser's DOM. The RSC Payload contains:
 >
-> - The rendered result of Server Components  
-> - Placeholders for where Client Components should be rendered and references to their JavaScript files  
+> - The rendered result of Server Components
+> - Placeholders for where Client Components should be rendered and references to their JavaScript files
 > - Any props passed from a Server Component to a Client Component
 
-renderedされたRSC treeのコンパクトな、binary表現です。
+renderedされたRSC treeのコンパクトなbinary表現です。
 
 ReactによってClientで使われて、DOMを更新するそうな。
 
@@ -67,26 +66,32 @@ I:1:{"module":"./Counter.js"}    ← Module（Client Component）
 $:2:["div",null,{"children":"Hello"}]  ← DOM定義
 ```
 
-ref. RSC Payload [#](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#rsc-payload)
+ref. [RSC Payload](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#rsc-payload)
 
-[
+## Server Componentの「静的さ」
 
-Getting Started: Server and Client Components
+ブラウザ上での Server Component は:
 
-Learn how you can use React Server and Client Components to render parts of your application on the server or the client.
+- **JS なし、イベントハンドラなし、state なし、hydration なし** → 操作不能という意味で静的
+- ただし**固定された HTML ではない** → サーバーから新しい RSC Payload を受け取れば更新可能
 
-![](https://nextjs.org/favicon.ico?favicon.d29c4393.ico)https://nextjs.org/docs/app/getting-started/server-and-client-components
+RSC Payload という中間形式が**コンポーネントツリーの構造を保持**しているため、ページ全体をリロードせずに Server Component 部分だけを差し替えられる。これが従来の SSR（ページ単位のリロードが必要）との大きな違い。
 
-![](React/Attachments/docs-og%201.png)](https://nextjs.org/docs/app/getting-started/server-and-client-components)
+## RSCの革新
 
-Reactコンポーネントの変遷について
+コンポーネントツリーの中に**ネットワーク境界（server/client boundary）** を引けるようになったこと。
 
-[
+従来はページ単位で「サーバーで描画するか、クライアントで描画するか」を決めていたが、RSC では**コンポーネント単位**で「JS をクライアントに送るか否か」を制御できる。
 
-The Forensics Of React Server Components (RSCs) — Smashing Magazine
+## 参考
 
-React Server Components (RSCs) combine the best of client-side rendering, and author Lazar Nikolov thoroughly examines how we got here with a deep look at the impact that RSCs have on the page load timeline.
+[Getting Started: Server and Client Components](https://nextjs.org/docs/app/getting-started/server-and-client-components)
 
-![](https://www.smashingmagazine.com/images/favicon/favicon.ico)https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#the-early-days-react-client-side-rendering
+[The Forensics Of React Server Components (RSCs) — Smashing Magazine](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#the-early-days-react-client-side-rendering)
 
-![](forensics-of-react-server-components.jpg)](https://www.smashingmagazine.com/2024/05/forensics-react-server-components/#the-early-days-react-client-side-rendering)
+## 関連ノート
+
+- [renderingってなんだ？](renderingってなんだ？.md) - React におけるレンダリングの正体
+- [hydrationとは？？](hydrationとは？？.md) - SSR後のクライアント側プロセス
+- [SC/CC vs CSR/SSR - 2つの分類軸を理解する](SC%20CC%20vs%20CSR%20SSR%20-%202つの分類軸を理解する.md) - 直交する2つの概念の統合的理解
+- [Static and Dynamic Rendering](Static%20and%20Dynamic%20Rendering.md) - App RouterにおけるSSR/SSGの再定義
