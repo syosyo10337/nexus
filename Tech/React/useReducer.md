@@ -59,11 +59,10 @@ export default Example;
 ## useReducerの利点/useStateの違い(Function programingの視点から)
 
 - 純粋関数であることを保つには、reducerの方が扱いやすい。
-    
-    - もし、純粋関数でなければ、関数の単体テストが書けない形になる。
-    
 
-# 四則演算をするもプログラムを書いてみた。
+  - もし、純粋関数でなければ、関数の単体テストが書けない形になる。
+
+## 四則演算をするもプログラムを書いてみた
 
 reduxの思想に乗っとるならtypeにやる操作を指定して、payloadに必要な情報を渡してあげることになるらしい。
 
@@ -167,3 +166,4 @@ function Example() {
 
 export default Example;
 ```
+

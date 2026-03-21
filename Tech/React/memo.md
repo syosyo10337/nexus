@@ -15,10 +15,10 @@ props が変わらなければ再レンダリングをスキップする。
 > 値のメモ化 → [useMemo](useMemo.md)
 > 関数のメモ化 → [useCallback](useCallback.md)
 
-## なぜ必要か — 再レンダリングの仕組み
+## なぜ必要か — 前提となるReact再レンダリングの仕組み
 
 React は親コンポーネントが再レンダリングされると、**props が変わっていなくても子を再レンダリングする**。
-これがデフォルトの挙動。
+また、propsが変わったか？の判断は、shallow compare(===)によって行われる。
 
 ```text
 Parent (state変更) → 再レンダリング
