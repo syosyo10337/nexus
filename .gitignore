@@ -10,3 +10,6 @@
 # その他の個人設定
 .DS_Store
 .trash/
+
+# Claude Code ローカル設定（個人マシン固有の permission allowlist など）
+.claude/settings.local.json
