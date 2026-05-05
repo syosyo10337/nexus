@@ -4,7 +4,8 @@ tags:
   - hooks
   - component
   - state
-created: 2022-12-24
+created_at: 2022-12-24
+updated_at: 2026-05-05
 status: active
 ---
 
@@ -363,7 +364,7 @@ onChange={(e) => {
 
 # Stateとrendering(ステートとレンダリング)
 
-前述もしてあるけれども、Stateを使うことによって、コンポーネント自体のサイレンダーしてくれる。not only the part of EventLister
+詳細は [Reactライフサイクル](Reactライフサイクル.md) §1〜§2 を参照。
 
 # Stateを使う際に注意すべき点
 
@@ -484,118 +485,10 @@ const new = current;としても、currentが示す配列へのアドレスをne
 
 
 # Stateとコンポーネントの関係
-ステートはコンポーネント毎に保持される。言い換えると、Reactはreact要素によって成り立つツリー構造の位置に基づいて、stateの識別をしている。なので、同名のコンポーネントがツリー構造内に複数存在したとしても、ツリー構造の位置での識別が行えるため、別々にstateを持つことができます。
-//よって、例えば真偽値によって、同種の2つのコンポーネントをツリー内での同じ位置に置き換えるような場合には、stateが区別されない。<-属性(プロパティだけ変更したい時)を出しわけたい時に良い。(stateは共有される。)
-{ユースケース別}
- 1. stateを共有して属性を切り替えたい->同一ツリー位置に条件分岐で置き換える。
- 2. stateを独立させて、stateは切り替え毎に初期化 -> key属性をつけて、一意に識別
- 3. stateを独立させつつ、stateも保持し続けたい。 -> 親コンポにstateをそれぞれ用意。propsを使って、子コンポへstateをわたす。
 
+詳細は [Stateとコンポーネント](Stateとコンポーネント.md) と [Reactライフサイクル](Reactライフサイクル.md) §2, §3 を参照。
 
-1.
-```
-
-const Example = () => {
-const [toggle, setToggle] = useState(true);
-const toggleComponent = () => {
-setToggle(prev => !prev);
-}
-return (
-<>
-<button onClick={toggleComponent}>切り替え</button>
-{ toggle ? <Count title="A"/> : <Count title="B"/>}
-</>
-)
-
-}
-const Count = ({title}) => {
-const [count, setCount] = useState(0);
-const countUp = () => {
-setCount((prevstate) => prevstate + 1);
-};
-const countDown = () => {
-setCount(count - 1);
-};
-return (
-<>
-
-<h3>{title}: {count}</h3>
-<button onClick={countUp}>+</button>
-<button onClick={countDown}>-</button>
-</>
-);
-};
-
-export default Example;
-
-```
-
-2.
-- 上のような同じツリー位置に、同種のコンポーネントを配置した上で、切り替えなど出しわけをしたい。かつ、"状態も独立させたい時"には、key属性を使う。
-//keyプロパティによって、コンポーネントを一意に識別できる。
-ただし、このままだと、切り替えた時に、値が初期化されてしまう。
-//コンポーネントが消滅するため、stateの値が消滅する。
-
-3.
-- propsをつかって、stateを渡す。
-こうすることで、親コンポーネントで定義したstateを子コンポーネントに渡すことができるようになるので、
-以下のような場合に用いられる。
- 1. コンポーネントが消滅する可能性がある場合に(toggleでの切り替えなど)
- 2. 特定のstateを複数の子コンポーネントで共有したい時。
-
-//さらに、親コンポーネントで2つstateを用意して、子コンポーネントに割り振るようにprop経由で、stateを渡すと、子コンポーネントが消滅するような場合にも、状態を保持し続けることができる。
-
-```
-
-e.g.)
-import { useState } from "react";
-
-const Example = () => {
-const [ toggle, setToggle ] = useState(true);
-const [countA, setCountA] = useState(0); //Count(子コンポ)用のstate
-const [countB, setCountB] = useState(0); //Count(子コンポ)用のstate
-const toggleComponent = () => {@t-gyo
-
-github 上で動くagentについては指示を追加した。
-ただ、現状copilot chatへの指示を分離することは難しそうでした。。。
-暴発しても困る内容は少なさそうで、ずんだ口調も廃止してみました。
-
-<https://linear.app/syoya/issue/DEV-823/avalon-nest%E3%81%AB%E9%85%8D%E7%BD%AE%E3%81%97%E3%81%9Fcustom-insturctionmd%E3%82%92colipot%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%9F%E9%96%8B%E7%99%BA%E8%80%85%E3%81%AB%E5%BD%B1%E9%9F%BF%E3%81%97%E3%81%AA%E3%81%84%E3%82%88%E3%81%86%E3%81%AB%E3%81%99%E3%82%8B%E6%96%B9%E6%B3%95%E3%81%AE%E6%A4>
-
-```jsx
-setToggle(prev => !prev);
-}
-return (
-<>
-<button onClick={toggleComponent}>toggle</button>
-{ toggle ?
-<Count key="A" title="A" count={countA} setCount={setCountA}/> //propsとして、Countコンポへ渡している。
-: <Count key="B" title="B" count={countB} setCount={setCountB}/>
-}
-</>
-)
-}
-//これによって、Countコンポの中では、 setCountというと、setCountBやら、SetCountAなどの事前に親コンポで設定されたuseStateの更新関数を指すようになる。
-const Count = ({ title, count, setCount }) => {
-const countUp = () => {
-setCount((prevstate) => prevstate + 1);
-};
-const countDown = () => {
-setCount(count - 1);
-};
-return (
-<>
-
-<h3>{title}: {count}</h3>
-<button onClick={countUp}>+</button>
-<button onClick={countDown}>-</button>
-</>
-);
-};
-
-```
-
-## Reactにおける配列操作
+# Reactにおける配列操作
 
 - 配列の要素をliとして、表示する工夫
 
